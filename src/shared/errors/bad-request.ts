@@ -1,4 +1,4 @@
-import SiteError from "@shared/errors/site-error";
+import {SiteError} from "@shared/errors/site-error";
 import StatusCode from "status-code-enum";
 
 export class BadRequestError extends SiteError {
