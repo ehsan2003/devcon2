@@ -25,7 +25,6 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler>
     protected abstract validator?: ValidationChain[];
 
     protected initialize() {
-        console.log('initializing')
         this.router = Router();
         this.setMiddleware()
         this.setRouter()

@@ -43,7 +43,6 @@ class register extends BaseController<localRequestHandler> {
 
     constructor() {
         super();
-        console.log('instanciating');
         this.initialize();
     }
 }
