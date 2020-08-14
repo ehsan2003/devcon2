@@ -1,12 +1,12 @@
-import {BaseController, hashPassword, Roles} from "@shared/utils";
-import {RequestHandler, Router} from "express";
+import {BaseController, hashPassword, secureUserInfo} from "@shared/utils";
+import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import User from "@models/User";
 import {extractProps} from "@shared/utils";
 import {handleUnique} from "@shared/utils";
 import {signJwt} from "@shared/utils";
 
-type localRequestHandler = RequestHandler<{}, { msg: string }, { password: string, username: string, email: string }>;
+type localRequestHandler = RequestHandler<{}, { msg: string, token: string, result: ReturnType<typeof secureUserInfo> }, { password: string, username: string, email: string }>;
 
 class register extends BaseController<localRequestHandler> {
     readonly access = null;
@@ -18,6 +18,7 @@ class register extends BaseController<localRequestHandler> {
             const user = new User({...extracted, password: await hashPassword(req.body.password)});
             await user.save().catch(handleUnique('username or email is not unique'))
             const jwtToken = signJwt(user)
+            res.json({msg: 'success', token: jwtToken, result: secureUserInfo(user)})
         }
     ]
     ;
