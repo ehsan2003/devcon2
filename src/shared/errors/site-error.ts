@@ -1,4 +1,4 @@
-export   abstract class SiteError extends Error {
+export abstract class SiteError extends Error {
     abstract readonly status: number
 
     public sanitizeResponse(response: { [key: string]: any }) {
