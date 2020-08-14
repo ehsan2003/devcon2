@@ -3,7 +3,7 @@ import {RequestHandler} from "express";
 import {ValidationChain} from "express-validator";
 import {IUserDoc} from "@models/User";
 
-type localRequestHandler = RequestHandler<{}, {msg:string,result:IUserDoc}, {}, {}>
+type localRequestHandler = RequestHandler<{}, { msg: string, result: IUserDoc }, {}, {}>
 
 class Current extends BaseController<localRequestHandler> {
 
@@ -13,7 +13,7 @@ class Current extends BaseController<localRequestHandler> {
     protected middleware: localRequestHandler[]
         = [
         (async (req, res, next) => {
-            res.json({msg:'success',result:req.user as IUserDoc})
+            res.json({msg: 'success', result: req.user as IUserDoc})
         })
     ];
 
