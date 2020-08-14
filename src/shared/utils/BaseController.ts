@@ -1,18 +1,17 @@
-import {Roles} from "@shared/utils/roles";
+import {Roles} from "@shared/utils";
 import {NextFunction, RequestHandler, Router} from "express";
+
 import passport from "passport";
-import {IUserDoc} from "@models/User";
-import {AccessForbiddenError} from "@shared/errors";
+import {AccessForbiddenError, UnprocessableEntity} from "@shared/errors";
 import {types as utilTypes} from 'util';
 import {ValidationChain, validationResult} from "express-validator";
-import validationMiddleware from "../../../../devcon/src/shared/validationMiddleware";
-import {ValidationError} from "../../../../devcon/src/shared/errors";
 
 export abstract class BaseController<LocalRequestHandler extends RequestHandler> {
+    public abstract readonly method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
     /**
      * indicates minimum role to access this route
      */
-    public abstract readonly access?: Roles | -1 = -1;
+    public abstract readonly access?: Roles | null;
     /**
      * finally used middleware to handle requests
      */
@@ -22,19 +21,29 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler>
      */
     protected abstract middleware: LocalRequestHandler[];
     public abstract readonly path: string;
-    private readonly router: Router;
+    private router: Router = Router();
     protected abstract validator?: ValidationChain[];
 
+    protected initialize() {
+        console.log('initializing')
+        this.router = Router();
+        this.setMiddleware()
+        this.setRouter()
+    }
+
     private setMiddleware() {
+        this.sanitizeCustomMiddleware()
         this.finalMiddleware = [
             ...(this.validator ? [BaseController.constructValidator(this.validator)] : []),
             ...(this.access && this.access >= 0 ? [passport.authenticate('jwt', {session: false}), this.constructAccessChecker()] : []),
-            ...(this.access && this.access === Roles.anonymous ? [passport.authenticate(['jwt', 'anonymous'], {session: false})] : [])
+            ...(this.access && this.access === Roles.anonymous ? [passport.authenticate(['jwt', 'anonymous'], {session: false})] : []),
+            ...this.middleware
         ]
     }
 
     public getRouter() {
         return this.router;
+
     }
 
     private constructAccessChecker(): LocalRequestHandler {
@@ -55,21 +64,15 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler>
     }
 
     private setRouter() {
-        this.router.use(this.path, ...this.finalMiddleware);
+        this.router[this.method](this.path, ...this.finalMiddleware);
     }
 
-    protected constructor() {
-        this.sanitizeCustomMiddleware()
-        this.router = Router();
-        this.setMiddleware()
-        this.setRouter()
-    }
 
     private static constructValidator = (validations: ValidationChain[]) => async (req: Request, res: Response, next: NextFunction) => {
         await Promise.all(validations.map(validation => validation.run(req)));
         const result = validationResult(req);
         if (result.isEmpty())
             return next();
-        next(new ValidationError('validation failed', result.array()));
+        next(new UnprocessableEntity('validation failed', result.array()));
     };
 }

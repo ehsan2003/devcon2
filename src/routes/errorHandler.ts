@@ -7,6 +7,6 @@ export default (isDev: boolean) => (err: SiteError, req: Request, res: Response,
     // console.log(isDev);
     if (isDev)
         responseObject.err = util.inspect(err);
-
+    console.log(err)
     return res.status(err.status).json(err.sanitizeResponse(responseObject));
 };

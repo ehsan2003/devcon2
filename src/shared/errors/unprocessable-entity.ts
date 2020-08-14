@@ -1,4 +1,4 @@
-import SiteError from "./site-error";
+import {SiteError} from "./site-error";
 import StatusCode from "status-code-enum";
 import type {ValidationError} from 'express-validator'
 

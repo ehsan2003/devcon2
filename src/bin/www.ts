@@ -1,7 +1,7 @@
 import 'tsconfig-paths/register';
 import dotenv from 'dotenv';
-
 console.clear();
+console.log(process.version)
 dotenv.config();
 if (process.env.NODE_ENV === 'development')
     process.env.IS_DEV = 'true'

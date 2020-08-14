@@ -2,17 +2,17 @@ import {Schema, model, Document} from 'mongoose';
 import {Roles} from "@shared/utils";
 
 export interface IUserDoc extends Document {
-    name: string;
+    username: string;
     email: string;
     password: string;
     role: Roles;
-    verified: boolean;
 }
 
 const ModelSchema = new Schema({
-    name: {
+    username: {
         type: String,
         required: true,
+        unique: true
     },
     password: {
         type: String,
