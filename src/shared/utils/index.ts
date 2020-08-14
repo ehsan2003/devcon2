@@ -6,4 +6,5 @@ export * from './handle-unique';
 export * from './sign-jwt';
 export * from './extractProps';
 export * from './secureUserInfo'
-export * from './check-password'
+export * from './check-password';
+export * from './verify-by-token';
