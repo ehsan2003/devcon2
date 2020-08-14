@@ -8,6 +8,7 @@ import {ValidationChain, validationResult} from "express-validator";
 
 export abstract class BaseController<LocalRequestHandler extends RequestHandler> {
     public abstract readonly method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
+    protected exactAccess: boolean = false;
     /**
      * indicates minimum role to access this route
      */
@@ -48,7 +49,7 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler>
     private constructAccessChecker(): LocalRequestHandler {
         return <LocalRequestHandler>((req, res, next) => {
             const user = req.user || {role: -1};
-            if (user.role < (this.access as Roles))
+            if (this.exactAccess ? user.role != this.access : (user.role < (this.access as Roles)))
                 next(new AccessForbiddenError('access denied'));
             next();
         })
