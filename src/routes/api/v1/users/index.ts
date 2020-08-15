@@ -6,6 +6,7 @@ import verifyToken from './verify-token';
 import verifySend from './verify-send';
 import resetPasswordSend from './reset-password-send';
 import resetPasswordToken from './reset-password-token';
+import changePassword from './change-password';
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use('/verify/send', verifySend.getRouter());
 router.use('/verify/token', verifyToken.getRouter());
 router.use('/reset-password/send', resetPasswordSend.getRouter());
 router.use('/reset-password/token', resetPasswordToken.getRouter());
+router.use('/change-password', changePassword.getRouter());
 
 export default router;
