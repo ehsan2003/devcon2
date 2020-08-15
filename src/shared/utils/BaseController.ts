@@ -6,13 +6,13 @@ import {AccessForbiddenError, UnprocessableEntity} from "@shared/errors";
 import {types as utilTypes} from 'util';
 import {ValidationChain, validationResult} from "express-validator";
 
-export abstract class BaseController<LocalRequestHandler extends RequestHandler<any,any,any,any>> {
+export abstract class BaseController<LocalRequestHandler extends RequestHandler<any, any, any, any>> {
     public abstract readonly method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
     protected exactAccess: boolean = false;
     /**
      * indicates minimum role to access this route
      */
-    public abstract readonly access?: Roles | null;
+    public abstract readonly access: Roles | null;
     /**
      * finally used middleware to handle requests
      */
@@ -35,8 +35,8 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
         this.sanitizeCustomMiddleware()
         this.finalMiddleware = [
             ...(this.validator ? [BaseController.constructValidator(this.validator)] : []),
-            ...(this.access && this.access >= 0 ? [passport.authenticate('jwt', {session: false}), this.constructAccessChecker()] : []),
-            ...(this.access && this.access === Roles.anonymous ? [passport.authenticate(['jwt', 'anonymous'], {session: false})] : []),
+            ...(this.access !== null && this.access >= 0 ? [passport.authenticate('jwt', {session: false}), this.constructAccessChecker()] : []),
+            ...(this.access === Roles.anonymous ? [passport.authenticate(['jwt', 'anonymous'], {session: false})] : []),
             ...this.middleware
         ]
     }
