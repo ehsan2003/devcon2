@@ -9,7 +9,7 @@ type localRequestHandler = RequestHandler<{}, { msg: string, token: string }, { 
 
 class login extends BaseController<localRequestHandler> {
 
-    readonly access = undefined;
+    readonly access = null;
     readonly method = 'post';
     readonly path: string = '/';
     protected middleware: localRequestHandler[]
