@@ -1,6 +1,6 @@
 import {BaseController, Roles, secureUserInfo, verifyByToken} from "@shared/utils";
 import {RequestHandler} from "express";
-import {ValidationChain} from "express-validator";
+import {param, ValidationChain} from "express-validator";
 import {verificationTypes} from "@models/Verification";
 import {BadRequestError} from "@shared/errors";
 
@@ -24,7 +24,11 @@ class VerifyToken extends BaseController<localRequestHandler> {
         })
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        param('token')
+            .exists().withMessage('token required')
+            .isString().withMessage('token is not a string')
+    ];
 
     constructor() {
         super();
