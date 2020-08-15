@@ -25,7 +25,17 @@ class ChangePassword extends BaseController<localRequestHandler> {
         })
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        body('password')
+            .exists().withMessage('password is required')
+            .isString().withMessage('password is not a string')
+        ,body('new')
+            .exists().withMessage('password is required')
+            .isString().withMessage('password is not a string')
+            .isLength({min: 8, max: 100}).withMessage('password length should be between 8 and 100')
+            .matches(/\d/).withMessage('password should contains number')
+            .matches(/\w/).withMessage('password should contains letters'),
+    ];
 
     constructor() {
         super();
