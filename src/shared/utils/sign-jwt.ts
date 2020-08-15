@@ -5,6 +5,8 @@ import jwt from 'jsonwebtoken';
 import {extractProps} from "@shared/utils";
 
 export const signJwt = (user: IUserDoc) => {
-    const token = jwt.sign(extractProps(user,'email','id'), keys.secretOrKey, configurations.jwtTokenSingOptions);
+    console.log(user);
+    console.log(extractProps(user,'email','id'));
+    const token = jwt.sign(extractProps(user.toObject(),'email','_id'), keys.secretOrKey, configurations.jwtTokenSingOptions);
     return `Bearer ${token}`;
 };
