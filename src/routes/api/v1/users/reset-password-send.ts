@@ -1,8 +1,11 @@
-import {BaseController, Roles} from "@shared/utils";
+import {BaseController, getRandomToken, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
+import Verification, {verificationTypes} from "@models/Verification";
+import User from "@models/User";
+import {NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{}, {msg:string}, {email:string}, {}>
+type localRequestHandler = RequestHandler<{}, { msg: string }, { email: string }, {}>
 
 class ResetPasswordSend extends BaseController<localRequestHandler> {
 
@@ -12,7 +15,16 @@ class ResetPasswordSend extends BaseController<localRequestHandler> {
     protected middleware: localRequestHandler[]
         = [
         (async (req, res, next) => {
-            
+            const {email} = req.body;
+            if (!await User.exists({email}))
+                throw new NotFoundError('user not found');
+            const verificationDoc = new Verification({
+                token: await getRandomToken()
+                , data: {for: verificationTypes.resetPassword, email}
+            });
+            await verificationDoc.save()
+            console.log(verificationDoc.token);
+            res.json({msg: 'success'});
         })
     ];
 
