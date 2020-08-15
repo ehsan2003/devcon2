@@ -29,7 +29,7 @@ class ChangePassword extends BaseController<localRequestHandler> {
         body('password')
             .exists().withMessage('password is required')
             .isString().withMessage('password is not a string')
-        ,body('new')
+        , body('new')
             .exists().withMessage('password is required')
             .isString().withMessage('password is not a string')
             .isLength({min: 8, max: 100}).withMessage('password length should be between 8 and 100')

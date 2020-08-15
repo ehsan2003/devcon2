@@ -5,7 +5,7 @@ import {NotFoundError} from "@shared/errors";
 
 const router = Router();
 
-router.use('/api/v1',require('./api/v1').default);
+router.use('/api/v1', require('./api/v1').default);
 
 router.all('*', (req, res, next) => next(new NotFoundError(`route not found ${req.method} ${req.path}`)));
 router.use(errorLogger(process.env.NODE_ENV === 'development'))

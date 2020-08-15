@@ -8,22 +8,35 @@ import {ValidationChain, validationResult} from "express-validator";
 
 export abstract class BaseController<LocalRequestHandler extends RequestHandler<any, any, any, any>> {
     public abstract readonly method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
-    protected exactAccess: boolean = false;
     /**
      * indicates minimum role to access this route
      */
     public abstract readonly access: Roles | null;
-    /**
-     * finally used middleware to handle requests
-     */
-    private finalMiddleware: LocalRequestHandler[] = [];
+    public abstract readonly path: string;
+    protected exactAccess: boolean = false;
     /**
      * main Router middleware
      */
     protected abstract middleware: LocalRequestHandler[];
-    public abstract readonly path: string;
-    private router: Router = Router();
     protected abstract validator?: ValidationChain[];
+    /**
+     * finally used middleware to handle requests
+     */
+    private finalMiddleware: LocalRequestHandler[] = [];
+    private router: Router = Router();
+
+    private static constructValidator = (validations: ValidationChain[]) => async (req: Request, res: Response, next: NextFunction) => {
+        await Promise.all(validations.map(validation => validation.run(req)));
+        const result = validationResult(req);
+        if (result.isEmpty())
+            return next();
+        next(new UnprocessableEntity('validation failed', result.array()));
+    };
+
+    public getRouter() {
+        return this.router;
+
+    }
 
     protected initialize() {
         this.router = Router();
@@ -39,11 +52,6 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
             ...(this.access === Roles.anonymous ? [passport.authenticate(['jwt', 'anonymous'], {session: false})] : []),
             ...this.middleware
         ]
-    }
-
-    public getRouter() {
-        return this.router;
-
     }
 
     private constructAccessChecker(): LocalRequestHandler {
@@ -66,13 +74,4 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
     private setRouter() {
         this.router[this.method](this.path, ...this.finalMiddleware);
     }
-
-
-    private static constructValidator = (validations: ValidationChain[]) => async (req: Request, res: Response, next: NextFunction) => {
-        await Promise.all(validations.map(validation => validation.run(req)));
-        const result = validationResult(req);
-        if (result.isEmpty())
-            return next();
-        next(new UnprocessableEntity('validation failed', result.array()));
-    };
 }

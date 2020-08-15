@@ -1,4 +1,4 @@
-import {Schema, model, Document} from 'mongoose';
+import {Document, model, Schema} from 'mongoose';
 import {getRandomToken} from "@shared/utils";
 
 export const enum verificationTypes {

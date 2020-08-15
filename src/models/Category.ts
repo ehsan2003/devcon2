@@ -1,4 +1,4 @@
-import {Schema, Types, model, Document, Aggregate, Model, MongooseFilterQuery} from 'mongoose';
+import {Aggregate, Document, model, Model, MongooseFilterQuery, Schema, Types} from 'mongoose';
 
 export interface IGetParentDoc extends ICategoryDoc {
     parents: Array<ICategoryDoc>

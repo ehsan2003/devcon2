@@ -1,4 +1,4 @@
-import {Schema, model, Document} from 'mongoose';
+import {Document, model, Schema} from 'mongoose';
 import {Roles} from "@shared/utils";
 
 export interface IUserDoc extends Document {

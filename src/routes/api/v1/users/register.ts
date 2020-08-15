@@ -1,16 +1,14 @@
-import {BaseController, hashPassword, secureUserInfo} from "@shared/utils";
+import {BaseController, extractProps, handleUnique, hashPassword, secureUserInfo, signJwt} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import User from "@models/User";
-import {extractProps} from "@shared/utils";
-import {handleUnique} from "@shared/utils";
-import {signJwt} from "@shared/utils";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, token: string, result: ReturnType<typeof secureUserInfo> }, { password: string, username: string, email: string }>;
 
 class register extends BaseController<localRequestHandler> {
     readonly access = null;
     readonly method: "all" | "get" | "post" | "put" | "delete" | "patch" | "options" | "head" = 'post';
+    readonly path: string = '/';
     protected middleware: localRequestHandler[]
         = [
         async (req, res, next) => {
@@ -22,8 +20,6 @@ class register extends BaseController<localRequestHandler> {
         }
     ]
     ;
-    readonly path: string = '/';
-
     protected validator: ValidationChain[] = [
         body('password')
             .exists().withMessage('password is required')

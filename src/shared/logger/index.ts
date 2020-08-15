@@ -1,5 +1,4 @@
-import winston from 'winston';
-import {format} from "winston";
+import winston, {format} from 'winston';
 
 const logger = winston.createLogger({
     level: 'silly',

@@ -1,4 +1,4 @@
-import {Request, Response, NextFunction} from 'express';
+import {NextFunction, Request, Response} from 'express';
 import {InternalServerError, SiteError} from '@shared/errors';
 import util from 'util';
 

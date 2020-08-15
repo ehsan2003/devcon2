@@ -1,13 +1,13 @@
 import 'tsconfig-paths/register';
 import dotenv from 'dotenv';
+import logger from "@shared/logger";
+import app from '../app';
+
 console.clear();
 console.log(process.version)
 dotenv.config();
 if (process.env.NODE_ENV === 'development')
     process.env.IS_DEV = 'true'
-
-import logger from "@shared/logger";
-import app from '../app';
 
 const PORT = process.env.PORT || '3001';
 app.listen(PORT, (err: Error) => {

@@ -1,4 +1,4 @@
-import {BaseController, getRandomToken, handleUnique, Roles} from "@shared/utils";
+import {BaseController, getRandomToken, handleUnique} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import Verification, {verificationTypes} from "@models/Verification";

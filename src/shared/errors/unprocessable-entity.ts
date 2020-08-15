@@ -2,7 +2,7 @@ import {SiteError} from "./site-error";
 import StatusCode from "status-code-enum";
 import type {ValidationError} from 'express-validator'
 
-export  class UnprocessableEntity extends SiteError {
+export class UnprocessableEntity extends SiteError {
     readonly status = StatusCode.ClientErrorUnprocessableEntity
 
     constructor(msg: string, public errors: ValidationError[]) {

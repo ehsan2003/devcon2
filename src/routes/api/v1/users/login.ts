@@ -1,8 +1,7 @@
-import {BaseController, checkPassword,} from "@shared/utils";
+import {BaseController, checkPassword, signJwt,} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import User from "@models/User";
-import {signJwt} from "@shared/utils";
 import {BadRequestError} from "@shared/errors";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, token: string }, { password: string, username: string, email: string }>
