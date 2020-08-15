@@ -28,7 +28,11 @@ class ResetPasswordSend extends BaseController<localRequestHandler> {
         })
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        body('email')
+            .exists().withMessage('email required')
+            .isEmail().withMessage('invalid email')
+    ];
 
     constructor() {
         super();
