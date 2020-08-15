@@ -5,5 +5,6 @@ export const verifyByToken = async (token: string, verificationType: verificatio
     const verificationDoc = await Verification.findOne({token});
     if (!verificationDoc || verificationDoc.data.for !== verificationType)
         return false;
+    await verificationDoc.remove();
     return User.findOne({email: verificationDoc.data.email});
 }
