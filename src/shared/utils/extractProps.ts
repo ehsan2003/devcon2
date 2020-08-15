@@ -1,2 +1,2 @@
 export const extractProps = <T extends KeyValuePair, P extends keyof T>(main: T, ...keys: P[]): Pick<T, P> =>
-    <Pick<T, P>>Object.fromEntries(keys.filter(key => Boolean(main[key])).map(key => [key, main[key]]))
+    <Pick<T, P>>Object.fromEntries(keys.filter(key => main.hasOwnProperty(key)).map(key => [key, main[key]]));
