@@ -7,7 +7,7 @@ import {Strategy as AnonymousStrategy} from 'passport-anonymous';
 
 export default (passportInstance: passport.PassportStatic) => {
     passportInstance.use(new Strategy(configurations.passportStrategy, (jwtPayload, done) => {
-        User.findOne({_id: jwtPayload.id}).then(user => {
+        User.findOne({_id: jwtPayload._id}).then(user => {
             if (user)
                 done(null, user);
             else
