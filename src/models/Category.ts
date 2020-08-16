@@ -10,7 +10,7 @@ export interface ICategoryModel extends Model<ICategoryDoc> {
 
 export interface ICategoryDoc extends Document {
     enName: string;
-    handle: string;
+    slug: string;
     parent: Types.ObjectId;
 }
 
@@ -19,7 +19,7 @@ const CategorySchema = new Schema({
         type: String,
         required: true
     },
-    handle: {
+    slug: {
         type: String,
         required: true,
         unique: true
