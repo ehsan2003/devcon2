@@ -6,7 +6,7 @@ import {AccessForbiddenError, UnprocessableEntity} from "@shared/errors";
 import {types as utilTypes} from 'util';
 import {ValidationChain, validationResult} from "express-validator";
 
-export abstract class BaseController<LocalRequestHandler extends RequestHandler<any, any, any, any>> {
+export abstract class BaseController<LocalRequestHandler extends RequestHandler<any, { msg:string }, any, any>> {
     public abstract readonly method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
     /**
      * indicates minimum role to access this route
