@@ -1,8 +1,10 @@
-import {BaseController, Roles} from "@shared/utils";
+import {BaseController, handleUnique, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
-import {body, ValidationChain} from "express-validator";
+import {ValidationChain} from "express-validator";
+import Category, {ICategoryDoc} from "@models/Category";
+import {Types} from "mongoose";
 
-type localRequestHandler = RequestHandler<{}, {msg:string,result:any}, {slug:string,enName:string,id?:string,parent?:string}, {}>
+type localRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc }, { slug: string, enName: string, id?: string, parent?: string }, {}>
 
 class Insert extends BaseController<localRequestHandler> {
 
@@ -12,7 +14,15 @@ class Insert extends BaseController<localRequestHandler> {
     protected middleware: localRequestHandler[]
         = [
         (async (req, res, next) => {
-
+            const {body} = req;
+            const category = new Category({
+                slug: body.slug,
+                enName: body.enName,
+                _id: body.id || new Types.ObjectId(),
+                parent: body.parent || null
+            })
+            await category.save().catch(handleUnique('duplicate slug'));
+            res.json({msg: 'success', result: category});
         })
     ];
 
