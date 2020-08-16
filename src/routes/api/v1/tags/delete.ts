@@ -1,9 +1,9 @@
 import {BaseController, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
-import {ValidationChain} from "express-validator";
+import {query, ValidationChain} from "express-validator";
 import Tag from "@models/Tag";
 import {NotFoundError} from "@shared/errors";
-import {Query} from "mongoose";
+import {isValidObjectId, Query} from "mongoose";
 
 type UnQuery<T> = T extends Query<infer R> ? R : any;
 type localRequestHandler = RequestHandler<{}, { msg: string, result: UnQuery<ReturnType<typeof Tag.deleteMany>> }, {}, { ids: string[] }>
@@ -24,7 +24,12 @@ class Delete extends BaseController<localRequestHandler> {
         })
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        query('ids')
+            .exists().withMessage('ids required')
+            .isArray().withMessage('ids is not an array')
+            .custom((ids) => ids.map((id: unknown) => isValidObjectId(id)).every((isValid: boolean) => isValid)).withMessage(`at least one of the ids is invalid`)
+    ];
 
     constructor() {
         super();
