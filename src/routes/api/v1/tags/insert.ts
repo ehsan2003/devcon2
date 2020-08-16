@@ -1,6 +1,6 @@
 import {BaseController, handleUnique, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
-import {ValidationChain} from "express-validator";
+import {body, ValidationChain} from "express-validator";
 import Tag, {ITagDoc} from "@models/Tag";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, result: ITagDoc }, { slug: string, id?: string }, {}>
@@ -19,7 +19,14 @@ class Insert extends BaseController<localRequestHandler> {
         })
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        body('slug')
+            .exists().withMessage('slug required')
+            .isSlug().withMessage('slug is invalid')
+        , body('id')
+            .optional()
+            .isMongoId().withMessage('id is invalid')
+    ];
 
     constructor() {
         super();
