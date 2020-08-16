@@ -17,7 +17,7 @@ export interface IConfigurations {
         defaultByteLength: number
         encoding: BufferEncoding
     };
-    tags: { search: { limit: number } }
+    tags: { search: { limitDefault: number } }
     categories: { search: { limit: number } }
     posts: { search: { limit: number } }
     image: {
@@ -48,7 +48,7 @@ const configurations: IConfigurations = {
     },
     posts: {search: {limit: 100}},
     categories: {search: {limit: 10}},
-    tags: {search: {limit: 10}},
+    tags: {search: {limitDefault: 10}},
     jwtTokenSingOptions: {
         expiresIn: 3600 * 1000
     },
