@@ -1,9 +1,9 @@
-import {BaseController, Roles} from "@shared/utils";
+import {BaseController, handleUnique, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {ValidationChain} from "express-validator";
-import {ITagDoc} from "@models/Tag";
+import Tag, {ITagDoc} from "@models/Tag";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: ITagDoc }, { slug: string }, {}>
+type localRequestHandler = RequestHandler<{}, { msg: string, result: ITagDoc }, { slug: string, id?: string }, {}>
 
 class Insert extends BaseController<localRequestHandler> {
 
@@ -13,7 +13,9 @@ class Insert extends BaseController<localRequestHandler> {
     protected middleware: localRequestHandler[]
         = [
         (async (req, res, next) => {
-
+            const {slug, id} = req.body;
+            const tag = await Tag.updateOne({id: id}, {slug: slug}, {upsert: true}).catch(handleUnique('duplicate slug or id'));
+            res.json({msg: 'success', result: tag});
         })
     ];
 
