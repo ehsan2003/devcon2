@@ -24,7 +24,19 @@ class Insert extends BaseController<localRequestHandler> {
         })
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        body('slug')
+            .exists().withMessage('slug is required')
+            .isSlug().withMessage('slug is invalid')
+        , body('enName')
+            .exists().withMessage('enName is required')
+            .isString().withMessage('enName is not a string')
+            .isLength({min: 3, max: 20}).withMessage('invalid length')
+        , body('parent')
+            .optional()
+            .isMongoId().withMessage('parent is not a valid mongo id')
+            .custom((parentId) => Category.exists({_id: parentId}).then(exists => exists ? Promise.resolve() : Promise.reject('parent not found')))
+    ];
 
     constructor() {
         super();
