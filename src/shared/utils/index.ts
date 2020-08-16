@@ -8,4 +8,4 @@ export * from './extractProps';
 export * from './secureUserInfo'
 export * from './check-password';
 export * from './verify-by-token';
-export * from './is-valid-regexp'
+export * from './custom-validators';
