@@ -2,11 +2,12 @@ import {Roles} from "@shared/utils";
 import {NextFunction, RequestHandler, Router} from "express";
 
 import passport from "passport";
-import {AccessForbiddenError, UnprocessableEntity} from "@shared/errors";
+import {AccessForbiddenError, ConflictError, UnprocessableEntity} from "@shared/errors";
 import {types as utilTypes} from 'util';
 import {ValidationChain, validationResult} from "express-validator";
+import {mongo} from "mongoose";
 
-export abstract class BaseController<LocalRequestHandler extends RequestHandler<any, { msg:string }, any, any>> {
+export abstract class BaseController<LocalRequestHandler extends RequestHandler<any, { msg: string }, any, any>> {
     public abstract readonly method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
     /**
      * indicates minimum role to access this route
@@ -24,6 +25,15 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
      */
     private finalMiddleware: LocalRequestHandler[] = [];
     private router: Router = Router();
+
+    protected HandleUniqueError(message: string): (err: Error) => never {
+        return (err: Error) => {
+            if (err instanceof mongo.MongoError && err.code === 11000)
+                throw new ConflictError(message);
+            else
+                throw err;
+        }
+    }
 
     private static constructValidator = (validations: ValidationChain[]) => async (req: Request, res: Response, next: NextFunction) => {
         await Promise.all(validations.map(validation => validation.run(req)));
