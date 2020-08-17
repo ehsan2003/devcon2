@@ -1,4 +1,4 @@
-import {BaseController, getRandomToken, handleUnique} from "@shared/utils";
+import {BaseController, getRandomToken} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import Verification, {verificationTypes} from "@models/Verification";
@@ -22,7 +22,7 @@ class ResetPasswordSend extends BaseController<localRequestHandler> {
                 token: await getRandomToken()
                 , data: {for: verificationTypes.resetPassword, email}
             });
-            await verificationDoc.save().catch(handleUnique('duplicate verification data'));
+            await verificationDoc.save().catch(this.HandleUniqueError('duplicate verification data'));
             console.log(verificationDoc.token);
             res.json({msg: 'success'});
         })

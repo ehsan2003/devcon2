@@ -1,4 +1,4 @@
-import {BaseController, handleUnique, Roles} from "@shared/utils";
+import {BaseController, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import Category, {ICategoryDoc} from "@models/Category";
@@ -19,7 +19,7 @@ class Insert extends BaseController<localRequestHandler> {
                 enName: body.enName,
                 parent: body.parent || null
             })
-            await category.save().catch(handleUnique('duplicate slug'));
+            await category.save().catch(this.HandleUniqueError('duplicate slug'));
             res.json({msg: 'success', result: category});
         })
     ];

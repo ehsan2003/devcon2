@@ -1,4 +1,4 @@
-import {BaseController, getRandomToken, handleUnique, Roles} from "@shared/utils";
+import {BaseController, getRandomToken,  Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {ValidationChain} from "express-validator";
 import {IUserDoc} from "@models/User";
@@ -19,7 +19,7 @@ class VerifySend extends BaseController<localRequestHandler> {
                 token: await getRandomToken(),
                 data: {for: verificationTypes.emailVerification, email: user.email}
             })
-            await verificationDoc.save().catch(handleUnique('duplicate verification data'));
+            await verificationDoc.save().catch(this.HandleUniqueError('duplicate verification data'));
             console.log(verificationDoc.token) //todo add email sender method
             res.json({msg: 'success'});
         }
