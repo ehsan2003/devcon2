@@ -15,7 +15,7 @@ class Insert extends BaseController<localRequestHandler> {
         = [
         (async (req, res, next) => {
             const {slug, id} = req.body;
-            const tag = await Tag.updateOne({_id: id || new Types.ObjectId()}, {slug: slug}, {upsert: true}).catch(this.HandleUniqueError('duplicate slug or id'));
+            const tag = await Tag.updateOne({_id: id || new Types.ObjectId()}, {slug: slug}, {upsert: true}).catch(this.handleUniqueError('duplicate slug or id'));
             res.json({msg: 'success', result: tag});
         })
     ];

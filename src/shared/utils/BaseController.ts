@@ -26,7 +26,7 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
     private finalMiddleware: LocalRequestHandler[] = [];
     private router: Router = Router();
 
-    protected HandleUniqueError(message: string): (err: Error) => never {
+    protected handleUniqueError(message: string): (err: Error) => never {
         return (err: Error) => {
             if (err instanceof mongo.MongoError && err.code === 11000)
                 throw new ConflictError(message);

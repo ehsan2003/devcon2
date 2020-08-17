@@ -22,7 +22,7 @@ class ResetPasswordSend extends BaseController<localRequestHandler> {
                 token: await getRandomToken()
                 , data: {for: verificationTypes.resetPassword, email}
             });
-            await verificationDoc.save().catch(this.HandleUniqueError('duplicate verification data'));
+            await verificationDoc.save().catch(this.handleUniqueError('duplicate verification data'));
             console.log(verificationDoc.token);
             res.json({msg: 'success'});
         })
