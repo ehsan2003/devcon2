@@ -1,11 +1,12 @@
 import {Roles} from "@shared/utils";
-import {NextFunction, RequestHandler, Router} from "express";
+import {RequestHandler, Router} from "express";
 
 import passport from "passport";
 import {AccessForbiddenError, ConflictError, UnprocessableEntity} from "@shared/errors";
 import {types as utilTypes} from 'util';
 import {ValidationChain, validationResult} from "express-validator";
 import {mongo} from "mongoose";
+import {Middleware} from "express-validator/src/base";
 
 export abstract class BaseController<LocalRequestHandler extends RequestHandler<any, { msg: string }, any, any>> {
     public abstract readonly method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
@@ -19,7 +20,7 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
      * main Router middleware
      */
     protected abstract middleware: LocalRequestHandler[];
-    protected abstract validator?: ValidationChain[];
+    protected abstract validator?: ValidationChain[] | Middleware;
     /**
      * finally used middleware to handle requests
      */
@@ -35,13 +36,6 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
         }
     }
 
-    private static constructValidator = (validations: ValidationChain[]) => async (req: Request, res: Response, next: NextFunction) => {
-        await Promise.all(validations.map(validation => validation.run(req)));
-        const result = validationResult(req);
-        if (result.isEmpty())
-            return next();
-        next(new UnprocessableEntity('validation failed', result.array()));
-    };
 
     public getRouter() {
         return this.router;
@@ -54,12 +48,21 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
         this.setRouter()
     }
 
+    private handleValidation(options?: { onlyFirstError?: boolean }) {
+        return ((req, res, next) => {
+            const validation = validationResult(req);
+            if (!validation.isEmpty())
+                return next(new UnprocessableEntity('validation failed', validation.array(options)));
+            next()
+        }) as LocalRequestHandler;
+    }
+
     private setMiddleware() {
         this.sanitizeCustomMiddleware()
         this.finalMiddleware = [
-            ...(this.validator ? [BaseController.constructValidator(this.validator)] : []),
             ...(this.access !== null && this.access >= 0 ? [passport.authenticate('jwt', {session: false}), this.constructAccessChecker()] : []),
             ...(this.access === Roles.anonymous ? [passport.authenticate(['jwt', 'anonymous'], {session: false})] : []),
+            ...(this.validator ? [(this.validator), this.handleValidation()] : []),
             ...this.middleware
         ]
     }
