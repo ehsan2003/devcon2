@@ -23,9 +23,11 @@ const ModelSchema = new Schema({
         default: Date.now
     }
     , responseTo: {
-        type: Schema.Types.Mixed,
+        type: Types.ObjectId,
         required: true,
-        default: null
+        default: null,
+        sparse:true,
+        index:true
     }
     , forPost: {
         type: Types.ObjectId
