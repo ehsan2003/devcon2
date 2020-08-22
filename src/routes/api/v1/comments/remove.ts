@@ -1,6 +1,6 @@
 import {BaseController, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
-import {ValidationChain} from "express-validator";
+import {param, ValidationChain} from "express-validator";
 import Comment from "@models/Comment";
 import {NotFoundError} from "@shared/errors";
 
@@ -22,7 +22,11 @@ class Remove extends BaseController<localRequestHandler> {
         })
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        param('comment')
+            .exists().withMessage('required')
+            .isMongoId().withMessage('invalid mongo id')
+    ];
 
     constructor() {
         super();
