@@ -24,7 +24,7 @@ const ModelSchema = new Schema({
     }
     , responseTo: {
         type: Types.ObjectId,
-        required: true,
+        required: false,
         default: null,
         sparse: true,
         index: true
