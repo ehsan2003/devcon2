@@ -1,6 +1,6 @@
 import {BaseController, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
-import {ValidationChain} from "express-validator";
+import {body, param, ValidationChain} from "express-validator";
 import Comment from "@models/Comment";
 
 type localRequestHandler = RequestHandler<{ commentId: string }, { msg: string, result: any }, { visible: boolean }, {}>
@@ -14,12 +14,21 @@ class Visible extends BaseController<localRequestHandler> {
         = [
         (async (req, res, next) => {
             const {commentId} = req.params;
-            const comment = await Comment.findByIdAndUpdate(commentId, {$set: {visible: req.body.visible}});
+            const visible = req.body.visible;
+            const comment = await Comment.findByIdAndUpdate(commentId, {$set: {visible: visible === void 0 ? true : visible}});
             res.json({msg: 'success', result: comment});
         })
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        param('commentId')
+            .exists().withMessage('required')
+            .isMongoId()
+        , body('visible')
+            .optional()
+            .isBoolean()
+            .toBoolean().withMessage('not assignable to boolean')
+    ];
 
     constructor() {
         super();
