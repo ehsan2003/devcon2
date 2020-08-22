@@ -15,7 +15,7 @@ class Visible extends BaseController<localRequestHandler> {
         (async (req, res, next) => {
             const {commentId} = req.params;
             const visible = req.body.visible;
-            const comment = await Comment.findByIdAndUpdate(commentId, {$set: {visible: visible === void 0 ? true : visible}});
+            const comment = await Comment.findByIdAndUpdate(commentId, {$set: {visible: visible === void 0 ? true : visible}},{new:true});
             res.json({msg: 'success', result: comment});
         })
     ];
