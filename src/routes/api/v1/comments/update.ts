@@ -1,6 +1,6 @@
 import {BaseController, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
-import {ValidationChain} from "express-validator";
+import {body, param, ValidationChain} from "express-validator";
 import Comment from "@models/Comment";
 
 type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: any }, { content: string }, {}>
@@ -19,7 +19,14 @@ class Update extends BaseController<localRequestHandler> {
         })
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        param('id')
+            .exists().withMessage('required')
+            .isMongoId().withMessage('invalid mongo id')
+        , body('content')
+            .exists().withMessage('required')
+            .isString().withMessage('required')
+    ];
 
     constructor() {
         super();
