@@ -7,5 +7,6 @@ const router = Router();
 
 router.use('/insert', insertAuthorized.getRouter(), insertUnAuthorized.getRouter());
 router.use('/remove', remove.getRouter());
-
+import visible from './visible';
+router.use('/visible',visible.getRouter());
 export default router;
