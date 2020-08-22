@@ -26,13 +26,17 @@ const ModelSchema = new Schema({
         type: Types.ObjectId,
         required: true,
         default: null,
-        sparse:true,
-        index:true
+        sparse: true,
+        index: true
     }
     , forPost: {
         type: Types.ObjectId
         , required: true
-        , index:true
+        , index: true
+    }, visible: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 });
 
