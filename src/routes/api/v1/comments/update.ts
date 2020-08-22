@@ -14,7 +14,7 @@ class Update extends BaseController<localRequestHandler> {
         = [
         (async (req, res, next) => {
             const id = req.params.id;
-            const result = await Comment.findByIdAndUpdate(id, {$set: {content: req.body.content}});
+            const result = await Comment.findByIdAndUpdate(id, {$set: {content: req.body.content}}, {new: true});
             res.json({msg: 'success', result});
         })
     ];
