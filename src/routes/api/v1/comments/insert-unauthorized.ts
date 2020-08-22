@@ -2,9 +2,10 @@ import {BaseController} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import Comment, {ICommentDoc} from '@models/Comment'
-import {isValidObjectId, Types} from "mongoose";
+import {Types} from "mongoose";
+import {NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, { email: string, name: string, content: string, post: string, responseTo: string | null }, {}>
+type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, { email: string, name: string, content: string, post: Types.ObjectId, responseTo?: Types.ObjectId }, {}>
 
 class InsertUnauthorized extends BaseController<localRequestHandler> {
 
@@ -13,15 +14,17 @@ class InsertUnauthorized extends BaseController<localRequestHandler> {
     readonly path: string = '/unauthorized';
     protected middleware: localRequestHandler[] = [
         (async (req, res, next) => {
+            if ((req.body.responseTo && !await Comment.exists({_id: req.body.responseTo})))
+                throw new NotFoundError('responseTo not found');
+
             console.log(req.body)
             // todo add post exists checker
             const commentDoc = new Comment({
-                responseTo: req.body.responseTo,
                 content: req.body.content,
                 userData: {email: req.body.email, name: req.body.name},
-                forPost: new Types.ObjectId(req.body.post)
+                forPost: req.body.post,
+                responseTo: req.body.responseTo
             })
-            commentDoc.responseTo=req.body.responseTo?new Types.ObjectId(req.body.responseTo):null;
             await commentDoc.save();
             res.json({msg: 'success', result: commentDoc});
 
@@ -43,9 +46,11 @@ class InsertUnauthorized extends BaseController<localRequestHandler> {
         , body('post')
             .exists().withMessage('post required')
             .isMongoId().withMessage('invalid mongo id')
+            .customSanitizer(Types.ObjectId)
         , body('responseTo')
-            .exists().withMessage('responseTo required')
-            .custom(val => val === null || isValidObjectId(val)).withMessage('invalid value')
+            .optional()
+            .isMongoId().withMessage('invalid mongo id')
+            .customSanitizer(Types.ObjectId)
 
     ];
 
