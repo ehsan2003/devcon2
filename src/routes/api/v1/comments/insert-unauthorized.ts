@@ -3,7 +3,7 @@ import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import Comment, {ICommentDoc} from '@models/Comment'
 import {Types} from "mongoose";
-import {NotFoundError} from "@shared/errors";
+import {ConflictError, NotFoundError} from "@shared/errors";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, { email: string, name: string, content: string, post: Types.ObjectId, responseTo?: Types.ObjectId }, {}>
 
@@ -14,9 +14,13 @@ class InsertUnauthorized extends BaseController<localRequestHandler> {
     readonly path: string = '/unauthorized';
     protected middleware: localRequestHandler[] = [
         (async (req, res, next) => {
-            if ((req.body.responseTo && !await Comment.exists({_id: req.body.responseTo})))
-                throw new NotFoundError('responseTo not found');
-
+            if (req.body.responseTo) {
+                const parent = await Comment.findById(req.body.responseTo)
+                if (!parent)
+                    throw new NotFoundError('responseTo not found')
+                if (!req.body.post.equals(parent.forPost))
+                    throw new ConflictError('response post is not equal to parent post')
+            }
             console.log(req.body)
             // todo add post exists checker
             const commentDoc = new Comment({
