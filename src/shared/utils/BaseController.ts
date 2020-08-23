@@ -13,14 +13,14 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
     /**
      * indicates minimum role to access this route
      */
-    public abstract readonly access: Roles | null;
-    public abstract readonly path: string | RegExp | Array<string | RegExp>;
+    public readonly access: Roles | null = null;
+    public readonly path: string | RegExp | Array<string | RegExp> = '';
     protected exactAccess: boolean = false;
     /**
      * main Router middleware
      */
     protected abstract middleware: LocalRequestHandler[];
-    protected abstract validator?: ValidationChain[] | Middleware;
+    protected validator?: ValidationChain[] | Middleware;
     /**
      * finally used middleware to handle requests
      */
