@@ -11,7 +11,7 @@ export interface ICategoryModel extends Model<ICategoryDoc> {
 export interface ICategoryDoc extends Document {
     enName: string;
     slug: string;
-    parent: Types.ObjectId;
+    parent: Types.ObjectId | null;
 }
 
 const CategorySchema = new Schema({
