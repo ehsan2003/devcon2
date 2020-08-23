@@ -2,7 +2,8 @@ import {BaseController, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {param, ValidationChain} from "express-validator";
 import Category, {ICategoryDoc} from "@models/Category";
-import {NotFoundError} from "@shared/errors";
+import {BadRequestError, NotFoundError} from "@shared/errors";
+import {Types} from "mongoose";
 
 type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ICategoryDoc }, {}, {}>;
 
@@ -14,7 +15,10 @@ class Delete extends BaseController<localRequestHandler> {
     protected middleware: localRequestHandler[]
         = [
         (async (req, res, next) => {
-            const deletedCategory = await Category.findOneAndDelete({_id: req.params.id});
+            if (await Category.exists({parent: Types.ObjectId(req.params.id)}))
+                throw new BadRequestError('this category is parent of other categories');
+
+            const deletedCategory = await Category.findOneAndDelete({_id: Types.ObjectId(req.params.id)});
             if (!deletedCategory)
                 throw new NotFoundError('category not found');
             res.json({msg: 'success', result: deletedCategory});
