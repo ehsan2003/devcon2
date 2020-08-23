@@ -1,31 +1,30 @@
 import {BaseController, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
-import {param, ValidationChain} from "express-validator";
+import {query, ValidationChain} from "express-validator";
 import Comment from "@models/Comment";
-import {NotFoundError} from "@shared/errors";
+import {isValidObjectId} from "mongoose";
 
-type localRequestHandler = RequestHandler<{ comment: string }, { msg: string, result: any }, {}, {}>
+type localRequestHandler = RequestHandler<{ comment: string }, { msg: string, result: any }, {}, { comments: string[] }>
 
 class Remove extends BaseController<localRequestHandler> {
 
     readonly access = Roles.editor;
     readonly method = 'delete';
-    readonly path: string = '/:comment';
+    readonly path: string = '/';
     protected middleware: localRequestHandler[]
         = [
         (async (req, res, next) => {
-            const commendId = req.params.comment;
-            const result = await Comment.findByIdAndDelete(commendId);
-            if (!result)
-                throw new NotFoundError('comment not found');
+            const commendIds = req.query.comments;
+            const result = await Comment.deleteMany({_id: {$in: commendIds}});
             res.json({msg: 'success', result})
         })
     ];
 
     protected validator: ValidationChain[] = [
-        param('comment')
+        query('comments')
             .exists().withMessage('required')
-            .isMongoId().withMessage('invalid mongo id')
+            .isArray({min: 1}).withMessage('invalid array')
+            .custom((array: unknown[]) => array.every(isValidObjectId)).withMessage('invalid mongo ids')
     ];
 
     constructor() {
