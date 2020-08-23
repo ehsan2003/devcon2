@@ -4,7 +4,7 @@ import {body, ValidationChain} from "express-validator";
 import {Types} from "mongoose";
 import Category from "@models/Category";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: any }, { source: Types.ObjectId, dest?: Types.ObjectId }, {}>
+type localRequestHandler = RequestHandler<{}, { msg: string, result: any }, { source: Types.ObjectId, dest?: Types.ObjectId }, {}>;
 
 class ChangeParent extends BaseController<localRequestHandler> {
 
