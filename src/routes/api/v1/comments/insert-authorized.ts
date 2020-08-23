@@ -5,7 +5,7 @@ import Comment, {ICommentDoc} from "@models/Comment";
 import {Types} from "mongoose";
 import {Middleware} from "express-validator/src/base";
 import {IUserDoc} from "@models/User";
-import {NotFoundError} from "@shared/errors";
+import {ConflictError, NotFoundError} from "@shared/errors";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, {
     content: string, responseTo?: Types.ObjectId, post: Types.ObjectId
@@ -22,8 +22,13 @@ class InsertAuthorized extends BaseController<localRequestHandler> {
             // todo add post exists checker
             const user = req.user as IUserDoc;
             const body = req.body;
-            if (body.responseTo && !await Comment.exists({_id: req.body.responseTo}))
-                throw new NotFoundError('responseTo not found')
+            if (body.responseTo) {
+                const parent = await Comment.findById(body.responseTo)
+                if (!parent)
+                    throw new NotFoundError('responseTo not found')
+                if (!body.post.equals(parent.forPost))
+                    throw new ConflictError('response post is not equal to parent post')
+            }
 
             const comment = new Comment({
                 content: body.content
