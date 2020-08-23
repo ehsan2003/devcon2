@@ -5,7 +5,7 @@ import Tag, {ITagDoc} from "@models/Tag";
 import {NotFoundError} from "@shared/errors";
 import configurations from "@conf/configurations";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: ITagDoc[] }, {}, { q: string, l: number }>
+type localRequestHandler = RequestHandler<{}, { msg: string, result: ITagDoc[] }, {}, { q: string, l: number }>;
 
 class Search extends BaseController<localRequestHandler> {
 

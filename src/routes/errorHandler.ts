@@ -9,6 +9,6 @@ export default (isDev: boolean) => (err: SiteError, req: Request, res: Response,
         if (err instanceof InternalServerError)
             responseObject.msg = err.mainError.message;
     }
-    console.log(err)
+    console.log(err);
     return res.status(err.status).json(err.sanitizeResponse(responseObject));
 };

@@ -3,7 +3,7 @@ import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import Category, {ICategoryDoc} from "@models/Category";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc }, { slug: string, enName: string, parent?: string }, {}>
+type localRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc }, { slug: string, enName: string, parent?: string }, {}>;
 
 class Insert extends BaseController<localRequestHandler> {
 
@@ -13,12 +13,12 @@ class Insert extends BaseController<localRequestHandler> {
     protected middleware: localRequestHandler[]
         = [
         (async (req, res, next) => {
-            const {body} = req;
+            const {body:reqBody} = req;
             const category = new Category({
-                slug: body.slug,
-                enName: body.enName,
-                parent: body.parent || null
-            })
+                slug: reqBody.slug,
+                enName: reqBody.enName,
+                parent: reqBody.parent || null
+            });
             await category.save().catch(this.handleUniqueError('duplicate slug'));
             res.json({msg: 'success', result: category});
         })

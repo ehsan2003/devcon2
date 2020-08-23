@@ -2,10 +2,10 @@ import {BaseController, extractProps, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import Category, {ICategoryDoc} from "@models/Category";
-import {Query, Types} from "mongoose";
+import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result:ICategoryDoc }, { id: string, parent?: Types.ObjectId, slug?: string, enName?: string }, {}>
+type localRequestHandler = RequestHandler<{}, { msg: string, result:ICategoryDoc }, { id: string, parent?: Types.ObjectId, slug?: string, enName?: string }, {}>;
 
 class Update extends BaseController<localRequestHandler> {
 
@@ -15,11 +15,11 @@ class Update extends BaseController<localRequestHandler> {
     protected middleware: localRequestHandler[]
         = [
         (async (req, res, next) => {
-            const {body} = req;
-            const result = await Category.findOneAndUpdate({_id: body.id}, {$set: extractProps(body, 'enName', 'parent', 'slug')}, {new: true})
+            const {body:reqBody} = req;
+            const result = await Category.findOneAndUpdate({_id: reqBody.id}, {$set: extractProps(reqBody, 'enName', 'parent', 'slug')}, {new: true});
             if (!result)
                 throw new NotFoundError('category not found');
-            res.json({result: result, msg: 'success'});
+            res.json({result, msg: 'success'});
 
         })
     ];

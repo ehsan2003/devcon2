@@ -4,10 +4,10 @@ import logger from "@shared/logger";
 import app from '../app';
 
 console.clear();
-console.log(process.version)
+console.log(process.version);
 dotenv.config();
 if (process.env.NODE_ENV === 'development')
-    process.env.IS_DEV = 'true'
+    process.env.IS_DEV = 'true';
 
 const PORT = process.env.PORT || '3001';
 app.listen(PORT, (err: Error) => {

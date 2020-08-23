@@ -13,6 +13,6 @@ export default (passportInstance: passport.PassportStatic) => {
             else
                 done(new NotFoundError('user notfound'), false);
         }).catch((err) => done(err, false));
-    }))
+    }));
     passport.use(new AnonymousStrategy());
 };

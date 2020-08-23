@@ -2,7 +2,7 @@ import StatusCode from "status-code-enum";
 import {SiteError} from "@shared/errors/site-error";
 
 export class InternalServerError extends SiteError {
-    readonly status = StatusCode.ServerErrorInternal
+    readonly status = StatusCode.ServerErrorInternal;
 
     constructor(public readonly mainError: Error) {
         super('internal server error');

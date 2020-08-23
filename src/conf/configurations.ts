@@ -1,8 +1,8 @@
 import {ExtractJwt, StrategyOptions} from 'passport-jwt';
 import keys from "@conf/keys";
-import {ResizeOptions} from 'sharp'
+import {ResizeOptions} from 'sharp';
 
-interface sizes {
+interface Sizes {
     thumbnail: 'thumbnail';
     large: 'large';
     medium: 'medium';
@@ -17,12 +17,12 @@ export interface IConfigurations {
         defaultByteLength: number
         encoding: BufferEncoding
     };
-    tags: { search: { limitDefault: number } }
-    categories: { search: { limit: number } }
-    posts: { search: { limit: number } }
+    tags: { search: { limitDefault: number } };
+    categories: { search: { limit: number } };
+    posts: { search: { limit: number } };
     image: {
-        fileSizeLimit: number, sizes: { names: Array<keyof sizes>, info: { [p in keyof sizes]: ResizeOptions } }
-    }
+        fileSizeLimit: number, sizes: { names: (keyof Sizes)[], info: { [p in keyof Sizes]: ResizeOptions } }
+    };
 }
 
 const configurations: IConfigurations = {

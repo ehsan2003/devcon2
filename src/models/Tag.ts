@@ -24,8 +24,8 @@ ModelSchema.static('tagsExist', function (this: Model<ITagDoc>, tagsIds: string[
     return new Promise(((resolve, reject) => this.find({_id: {$in: tagsIds}}).select('_id')
         .then(tagsDocs => {
                 console.log(tagsDocs, tagsIds);
-                tagsDocs.length == tagsIds.length ? resolve(true) : resolve(false)
+                tagsDocs.length === tagsIds.length ? resolve(true) : resolve(false);
             }
-        ).catch(reject)))
-})
+        ).catch(reject)));
+});
 export default model<ITagDoc, ITagModel>('tags', ModelSchema);

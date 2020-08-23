@@ -4,7 +4,7 @@ import {body, param, ValidationChain} from "express-validator";
 import {verificationTypes} from "@models/Verification";
 import {BadRequestError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ token: string }, { msg: string }, { newPassword: string }, {}>
+type localRequestHandler = RequestHandler<{ token: string }, { msg: string }, { newPassword: string }, {}>;
 
 class ResetPasswordToken extends BaseController<localRequestHandler> {
 
@@ -19,9 +19,9 @@ class ResetPasswordToken extends BaseController<localRequestHandler> {
             const verificationResult = await verifyByToken(token, verificationTypes.resetPassword);
             if (!verificationResult)
                 throw new BadRequestError('invalid token');
-            verificationResult.password = await hashPassword(newPassword)
-            await verificationResult.save()
-            res.json({msg: 'success'})
+            verificationResult.password = await hashPassword(newPassword);
+            await verificationResult.save();
+            res.json({msg: 'success'});
         })
     ];
 

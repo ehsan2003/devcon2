@@ -9,6 +9,6 @@ export const getRandomToken = (length = configurations.verificationTokens.defaul
     crypto.randomBytes(length, (err, buff) => {
         if (err)
             reject(err);
-        resolve(buff.toString(configurations.verificationTokens.encoding))
-    })
-})
+        resolve(buff.toString(configurations.verificationTokens.encoding));
+    });
+});

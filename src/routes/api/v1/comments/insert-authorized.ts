@@ -9,7 +9,7 @@ import {ConflictError, NotFoundError} from "@shared/errors";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, {
     content: string, responseTo?: Types.ObjectId, post: Types.ObjectId
-}, {}>
+}, {}>;
 
 class InsertAuthorized extends BaseController<localRequestHandler> {
 
@@ -21,22 +21,22 @@ class InsertAuthorized extends BaseController<localRequestHandler> {
         (async (req, res, next) => {
             // todo add post exists checker
             const user = req.user as IUserDoc;
-            const body = req.body;
-            if (body.responseTo) {
-                const parent = await Comment.findById(body.responseTo)
+            const reqBody = req.body;
+            if (reqBody.responseTo) {
+                const parent = await Comment.findById(reqBody.responseTo);
                 if (!parent)
-                    throw new NotFoundError('responseTo not found')
-                if (!body.post.equals(parent.forPost))
-                    throw new ConflictError('response post is not equal to parent post')
+                    throw new NotFoundError('responseTo not found');
+                if (!reqBody.post.equals(parent.forPost))
+                    throw new ConflictError('response post is not equal to parent post');
             }
 
             const comment = new Comment({
-                content: body.content
+                content: reqBody.content
                 , userData: {user: user.id}
-                , responseTo: body.responseTo
-                , forPost: body.post
-            })
-            await comment.save()
+                , responseTo: reqBody.responseTo
+                , forPost: reqBody.post
+            });
+            await comment.save();
             res.json({msg: 'success', result: comment});
 
         })

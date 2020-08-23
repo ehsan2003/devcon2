@@ -12,6 +12,6 @@ export default (isDev: boolean): ErrorRequestHandler => (err: Error, req, res, n
         logger.silly(err.message, {err, req, res});
         return next(new BadRequestError(err.message));
     }
-    logger.error(err.message, {err, req, res})
+    logger.error(err.message, {err, req, res});
     next(new InternalServerError(err));
 };

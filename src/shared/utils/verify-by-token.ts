@@ -7,4 +7,4 @@ export const verifyByToken = async (token: string, verificationType: verificatio
         return false;
     await verificationDoc.remove();
     return User.findOne({email: verificationDoc.data.email});
-}
+};

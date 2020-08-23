@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import insertAuthorized from './insert-authorized';
-import insertUnAuthorized from './insert-unauthorized'
+import insertUnAuthorized from './insert-unauthorized';
 import remove from './remove';
 import visible from './visible';
 import update from './update';

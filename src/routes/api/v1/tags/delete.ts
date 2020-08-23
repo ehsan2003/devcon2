@@ -6,7 +6,7 @@ import {NotFoundError} from "@shared/errors";
 import {isValidObjectId, Query} from "mongoose";
 
 type UnQuery<T> = T extends Query<infer R> ? R : any;
-type localRequestHandler = RequestHandler<{}, { msg: string, result: UnQuery<ReturnType<typeof Tag.deleteMany>> }, {}, { ids: string[] }>
+type localRequestHandler = RequestHandler<{}, { msg: string, result: UnQuery<ReturnType<typeof Tag.deleteMany>> }, {}, { ids: string[] }>;
 
 class Delete extends BaseController<localRequestHandler> {
 
@@ -20,7 +20,7 @@ class Delete extends BaseController<localRequestHandler> {
             if (!await Tag.tagsExist(ids))
                 throw new NotFoundError('at least one of the tags does\'t exist');
             const result = await Tag.deleteMany({_id: {$in: ids}});
-            res.json({msg: 'success', result})
+            res.json({msg: 'success', result});
         })
     ];
 

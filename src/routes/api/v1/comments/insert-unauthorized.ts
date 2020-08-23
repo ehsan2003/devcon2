@@ -1,11 +1,11 @@
 import {BaseController} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
-import Comment, {ICommentDoc} from '@models/Comment'
+import Comment, {ICommentDoc} from '@models/Comment';
 import {Types} from "mongoose";
 import {ConflictError, NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, { email: string, name: string, content: string, post: Types.ObjectId, responseTo?: Types.ObjectId }, {}>
+type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, { email: string, name: string, content: string, post: Types.ObjectId, responseTo?: Types.ObjectId }, {}>;
 
 class InsertUnauthorized extends BaseController<localRequestHandler> {
 
@@ -15,20 +15,20 @@ class InsertUnauthorized extends BaseController<localRequestHandler> {
     protected middleware: localRequestHandler[] = [
         (async (req, res, next) => {
             if (req.body.responseTo) {
-                const parent = await Comment.findById(req.body.responseTo)
+                const parent = await Comment.findById(req.body.responseTo);
                 if (!parent)
-                    throw new NotFoundError('responseTo not found')
+                    throw new NotFoundError('responseTo not found');
                 if (!req.body.post.equals(parent.forPost))
-                    throw new ConflictError('response post is not equal to parent post')
+                    throw new ConflictError('response post is not equal to parent post');
             }
-            console.log(req.body)
+            console.log(req.body);
             // todo add post exists checker
             const commentDoc = new Comment({
                 content: req.body.content,
                 userData: {email: req.body.email, name: req.body.name},
                 forPost: req.body.post,
                 responseTo: req.body.responseTo
-            })
+            });
             await commentDoc.save();
             res.json({msg: 'success', result: commentDoc});
 

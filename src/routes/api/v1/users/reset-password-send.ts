@@ -5,7 +5,7 @@ import Verification, {verificationTypes} from "@models/Verification";
 import User from "@models/User";
 import {NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{}, { msg: string }, { email: string }, {}>
+type localRequestHandler = RequestHandler<{}, { msg: string }, { email: string }, {}>;
 
 class ResetPasswordSend extends BaseController<localRequestHandler> {
 

@@ -5,7 +5,7 @@ import Comment, {ICommentDoc} from "@models/Comment";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ICommentDoc[] }, {}, {}>
+type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ICommentDoc[] }, {}, {}>;
 
 class GetResponses extends BaseController<localRequestHandler> {
 
@@ -40,7 +40,7 @@ class GetResponses extends BaseController<localRequestHandler> {
                 }
             ]);
             if (!result.length)
-                throw new NotFoundError('comments not found')
+                throw new NotFoundError('comments not found');
             res.json({msg: 'success', result});
 
         })

@@ -4,7 +4,7 @@ import {body, ValidationChain} from "express-validator";
 import {IUserDoc} from "@models/User";
 import {BadRequestError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{}, { msg: string }, { password: string, new: string }, {}>
+type localRequestHandler = RequestHandler<{}, { msg: string }, { password: string, new: string }, {}>;
 
 class ChangePassword extends BaseController<localRequestHandler> {
 
@@ -14,11 +14,10 @@ class ChangePassword extends BaseController<localRequestHandler> {
     protected middleware: localRequestHandler[]
         = [
         (async (req, res, next) => {
-            const {body} = req;
             const user = req.user as IUserDoc;
-            if (!await checkPassword(user, body.password))
+            if (!await checkPassword(user, req.body.password))
                 throw new BadRequestError('password is invalid');
-            user.password = await hashPassword(body.new);
+            user.password = await hashPassword(req.body.new);
             await user.save();
             res.json({msg: 'success'});
 

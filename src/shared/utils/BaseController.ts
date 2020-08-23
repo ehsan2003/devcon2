@@ -14,7 +14,7 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
      * indicates minimum role to access this route
      */
     public readonly access: Roles | null = null;
-    public readonly path: string | RegExp | Array<string | RegExp> = '';
+    public readonly path: string | RegExp | (string | RegExp)[] = '';
     protected exactAccess: boolean = false;
     /**
      * main Router middleware
@@ -33,7 +33,7 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
                 throw new ConflictError(message);
             else
                 throw err;
-        }
+        };
     }
 
 
@@ -44,8 +44,8 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
 
     protected initialize() {
         this.router = Router();
-        this.setMiddleware()
-        this.setRouter()
+        this.setMiddleware();
+        this.setRouter();
     }
 
     private handleValidation(options?: { onlyFirstError?: boolean }) {
@@ -53,35 +53,35 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
             const validation = validationResult(req);
             if (!validation.isEmpty())
                 return next(new UnprocessableEntity('validation failed', validation.array(options)));
-            next()
+            next();
         }) as LocalRequestHandler;
     }
 
     private setMiddleware() {
-        this.sanitizeCustomMiddleware()
+        this.sanitizeCustomMiddleware();
         this.finalMiddleware = [
             ...(this.access !== null && this.access >= 0 ? [passport.authenticate('jwt', {session: false}), this.constructAccessChecker()] : []),
             ...(this.access === Roles.anonymous ? [passport.authenticate(['jwt', 'anonymous'], {session: false})] : []),
             ...(this.validator ? [(this.validator), this.handleValidation()] : []),
             ...this.middleware
-        ]
+        ];
     }
 
     private constructAccessChecker(): LocalRequestHandler {
-        return <LocalRequestHandler>((req, res, next) => {
+        return ((req, res, next) => {
             const user = req.user || {role: -1};
-            if (this.exactAccess ? user.role != this.access : (user.role < (this.access as Roles)))
+            if (this.exactAccess ? user.role !== this.access : (user.role < (this.access as Roles)))
                 next(new AccessForbiddenError('access denied'));
             next();
-        })
+        }) as LocalRequestHandler;
     }
 
     private sanitizeCustomMiddleware() {
         this.middleware = this.middleware.map((middleware): LocalRequestHandler => {
             if (utilTypes.isAsyncFunction(middleware))
-                return <LocalRequestHandler>((req, res, next) => middleware(req, res, next).catch(next))
+                return ((req, res, next) => middleware(req, res, next).catch(next)) as LocalRequestHandler;
             return middleware;
-        })
+        });
     }
 
     private setRouter() {

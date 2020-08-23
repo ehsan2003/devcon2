@@ -9,8 +9,8 @@ export const enum verificationTypes {
 
 export interface IVerificationDoc extends Document {
     token: string;
-    data: { for: verificationTypes, email: string },
-    expires: Date,
+    data: { for: verificationTypes, email: string };
+    expires: Date;
 }
 
 const ModelSchema = new Schema({

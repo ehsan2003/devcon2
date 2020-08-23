@@ -4,7 +4,7 @@ import {param, ValidationChain} from "express-validator";
 import Category, {ICategoryDoc} from "@models/Category";
 import {NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ICategoryDoc }, {}, {}>
+type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ICategoryDoc }, {}, {}>;
 
 class Delete extends BaseController<localRequestHandler> {
 
@@ -16,7 +16,7 @@ class Delete extends BaseController<localRequestHandler> {
         (async (req, res, next) => {
             const deletedCategory = await Category.findOneAndDelete({_id: req.params.id});
             if (!deletedCategory)
-                throw new NotFoundError('category not found')
+                throw new NotFoundError('category not found');
             res.json({msg: 'success', result: deletedCategory});
 
         })
