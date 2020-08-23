@@ -70,7 +70,7 @@
     "start:dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "dev": "node -r ts-node/register  ./src/bin/www.ts",
+    "dev": "ts-node ./src/bin/www.ts",
     "debug": "node --inspect -r ts-node/register ./src/bin/www.ts",
     "start": "node ./dist/bin/www.js"
   },
