@@ -25,7 +25,7 @@ class GetPost extends BaseController<localRequestHandler> {
                 foreignField:'responseTo',
                 as:'responses'
             }).addFields({
-                response:{$size:'$responses'}
+                responses:{$size:'$responses'}
             });
             if (!result.length)
                 throw new NotFoundError('comments not found');
