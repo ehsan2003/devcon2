@@ -13,5 +13,7 @@ router.use('/remove', remove.getRouter());
 router.use('/visible', visible.getRouter());
 router.use('/update', update.getRouter());
 router.use('/get-post', getPost.getRouter());
+import getResponse from './get-responses';
+router.use('/get-responses',getResponse.getRouter());
 
 export default router;
