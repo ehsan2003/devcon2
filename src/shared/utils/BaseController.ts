@@ -14,7 +14,7 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
      * indicates minimum role to access this route
      */
     public readonly access: Roles | null = null;
-    public readonly path: string | RegExp | (string | RegExp)[] = '';
+    public readonly path: string | RegExp | (string | RegExp)[] = '/';
     protected exactAccess: boolean = false;
     /**
      * main Router middleware
