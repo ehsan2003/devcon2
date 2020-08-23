@@ -1,6 +1,6 @@
 import {BaseController} from "@shared/utils";
 import {RequestHandler} from "express";
-import {ValidationChain} from "express-validator";
+import {param, ValidationChain} from "express-validator";
 import Comment, {ICommentDoc} from "@models/Comment";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
@@ -46,7 +46,11 @@ class GetResponses extends BaseController<localRequestHandler> {
         })
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        param('id')
+            .exists().withMessage('required')
+            .isMongoId().withMessage('invalid mongo id')
+    ];
 
     constructor() {
         super();
