@@ -5,7 +5,7 @@ import Comment, {ICommentDoc} from "@models/Comment";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ICommentDoc[] }, {}, {}>
+type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: (ICommentDoc & { responses: number })[] }, {}, {}>
 
 class GetPost extends BaseController<localRequestHandler> {
 
@@ -20,12 +20,12 @@ class GetPost extends BaseController<localRequestHandler> {
                 forPost: Types.ObjectId(req.params.id),
                 responseTo: null
             }).lookup({
-                from:'comments',
-                localField:'_id',
-                foreignField:'responseTo',
-                as:'responses'
+                from: 'comments',
+                localField: '_id',
+                foreignField: 'responseTo',
+                as: 'responses'
             }).addFields({
-                responses:{$size:'$responses'}
+                responses: {$size: '$responses'}
             });
             if (!result.length)
                 throw new NotFoundError('comments not found');
