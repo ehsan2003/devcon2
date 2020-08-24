@@ -1,6 +1,6 @@
 import {BaseController} from "@shared/utils";
 import {RequestHandler} from "express";
-import {ValidationChain} from "express-validator";
+import {query, ValidationChain} from "express-validator";
 import configurations from "@conf/configurations";
 import Category, {ICategoryDoc} from "@models/Category";
 import {NotFoundError} from "@shared/errors";
@@ -24,7 +24,14 @@ class Search extends BaseController<localRequestHandler> {
         })
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        query('q')
+            .exists().withMessage('required')
+            .isString().withMessage('is not a string')
+        , query('l')
+            .optional()
+            .isInt().withMessage('is not convertible to integer')
+    ];
 
     constructor() {
         super();
