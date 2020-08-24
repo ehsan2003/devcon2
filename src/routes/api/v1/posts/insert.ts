@@ -19,6 +19,7 @@ class Insert extends BaseController<localRequestHandler> {
                     author: (req.user as IUserDoc)._id
                 }
             );
+            await result.save().catch(this.handleUniqueError('duplicate slug'));
             res.json({msg: 'success', result});
         })
     ];
