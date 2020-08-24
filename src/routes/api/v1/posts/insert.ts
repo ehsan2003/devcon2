@@ -1,8 +1,11 @@
+// todo test the route
 import {BaseController, extractProps, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
-import {ValidationChain} from "express-validator";
+import {body, ValidationChain} from "express-validator";
 import Post, {IPostDoc} from "@models/Post";
 import {IUserDoc} from "@models/User";
+import {isValidObjectId, Types} from "mongoose";
+import Category from "@models/Category";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, result: IPostDoc }, Pick<IPostDoc, 'content' | 'title' | 'slug' | 'featuredImage' | 'category' | 'tags'>, {}>;
 
@@ -24,7 +27,38 @@ class Insert extends BaseController<localRequestHandler> {
         })
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        body('content')
+            .exists().withMessage('required')
+            .isString().withMessage('is not a string')
+            .isLength({min: 20})
+        , body('title')
+            .exists().withMessage('required')
+            .isString().withMessage('is not a string')
+            .isLength({min: 3, max: 30})
+        , body('slug')
+            .exists().withMessage('required')
+            .isSlug().withMessage('invalid slug')
+        , body('featuredImage')
+            .optional()
+            .isMongoId().withMessage('invalid mongo id')
+        , body('category')
+            .exists().withMessage('required')
+            .isMongoId().withMessage('invalid mongo id')
+            .customSanitizer(Types.ObjectId)
+            .custom((category: Types.ObjectId) => Category.exists({_id: category})).withMessage('category not found')
+        , body('tags')
+            .optional()
+            .isArray().withMessage('invalid array')
+            .custom((arr: unknown[]) => arr.every(isValidObjectId)).withMessage('invalid object ids')
+            .customSanitizer((tags: string[]) => tags.map(Types.ObjectId))
+            .custom(async (tags) => {
+                const tagsDocs = await tags.find({_id: {$in: tags}});
+                if (tagsDocs.length < tags)
+                    throw new Error('at least one of tags doesn\'t exist');
+                return true;
+            })
+    ];
 
     constructor() {
         super();
