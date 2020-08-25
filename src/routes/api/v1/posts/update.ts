@@ -23,7 +23,7 @@ class Update extends BaseController<localRequestHandler> {
             const post = await Post.findById(postId);
             if (!post)
                 throw new NotFoundError('post not found');
-            if (user.role < Roles.editor && user.id.wpost.author)
+            if (user.role < Roles.editor && !post.author.equals(user._id))
                 throw new AccessForbiddenError('access denied');
             req.data = post;
             next();
