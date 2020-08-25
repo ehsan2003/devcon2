@@ -42,6 +42,7 @@ class Insert extends BaseController<localRequestHandler> {
         , body('featuredImage')
             .optional()
             .isMongoId().withMessage('invalid mongo id')
+            .customSanitizer(Types.ObjectId)
         , body('category')
             .exists().withMessage('required')
             .isMongoId().withMessage('invalid mongo id')
