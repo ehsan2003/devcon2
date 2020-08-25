@@ -8,7 +8,7 @@ export interface IPostDoc extends Document {
     visible: boolean;
     tags: Types.ObjectId[];
     likes: Types.ObjectId[];
-    featuredImage: string;
+    featuredImage: Types.ObjectId;
     category: Types.ObjectId;
     slug: string;
     title: string;
@@ -44,7 +44,7 @@ const ModelSchema = new Schema({
         required: true,
         unique: true
     }, featuredImage: {
-        type: String,
+        type: Types.ObjectId,
         required: false,
         default: null
     }
