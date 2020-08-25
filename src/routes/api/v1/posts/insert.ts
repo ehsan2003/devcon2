@@ -1,4 +1,3 @@
-// todo test the route
 import {BaseController, extractProps, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
