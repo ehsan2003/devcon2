@@ -1,6 +1,6 @@
 import {BaseController, extractProps, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
-import {body, ValidationChain} from "express-validator";
+import {body, param, ValidationChain} from "express-validator";
 import Post, {IPostDoc} from "@models/Post";
 import {IUserDoc} from "@models/User";
 import {AccessForbiddenError, NotFoundError} from "@shared/errors";
@@ -41,7 +41,10 @@ class Update extends BaseController<localRequestHandler> {
     ];
 
     protected validator: ValidationChain[] = [
-        body('content')
+        param('id')
+            .exists().withMessage('required')
+            .isMongoId().withMessage('invalid mongo id')
+        , body('content')
             .optional()
             .isString().withMessage('is not a string')
             .isLength({min: 20})
