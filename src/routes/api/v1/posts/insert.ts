@@ -6,6 +6,7 @@ import Post, {IPostDoc} from "@models/Post";
 import {IUserDoc} from "@models/User";
 import {isValidObjectId, Types} from "mongoose";
 import Category from "@models/Category";
+import Tag from "@models/Tag";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, result: IPostDoc }, Pick<IPostDoc, 'content' | 'title' | 'slug' | 'featuredImage' | 'category' | 'tags'>, {}>;
 
@@ -53,7 +54,7 @@ class Insert extends BaseController<localRequestHandler> {
             .custom((arr: unknown[]) => arr.every(isValidObjectId)).withMessage('invalid object ids')
             .customSanitizer((tags: string[]) => tags.map(Types.ObjectId))
             .custom(async (tags) => {
-                const tagsDocs = await tags.find({_id: {$in: tags}});
+                const tagsDocs = await Tag.find({_id: {$in: tags}});
                 if (tagsDocs.length < tags)
                     throw new Error('at least one of tags doesn\'t exist');
                 return true;
