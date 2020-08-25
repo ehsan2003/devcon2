@@ -17,7 +17,8 @@ export interface IPostDoc extends Document {
 const ModelSchema = new Schema({
     tags: {
         type: [Schema.Types.ObjectId],
-        default: []
+        default: [],
+        index:true
     }, likes: {
         type: [Schema.Types.ObjectId],
         default: []
@@ -38,7 +39,8 @@ const ModelSchema = new Schema({
         default: false,
     }, category: {
         type: Schema.Types.ObjectId,
-        ref: 'categories'
+        ref: 'categories',
+        index:true
     }, slug: {
         type: String,
         required: true,
