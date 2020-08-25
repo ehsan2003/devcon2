@@ -26,6 +26,7 @@ class Update extends BaseController<localRequestHandler> {
             if (user.role < Roles.editor && user.id.wpost.author)
                 throw new AccessForbiddenError('access denied');
             req.data = post;
+            next();
         }
         ,
         async (req, res, next) => {
