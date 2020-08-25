@@ -1,8 +1,10 @@
 import {Router} from 'express';
+import insert from './insert';
+import update from './update';
 
 const router = Router();
 
-import insert from './insert';
-router.use('/insert',insert.getRouter());
+router.use('/insert', insert.getRouter());
+router.use('/update', update.getRouter());
 
 export default router;
