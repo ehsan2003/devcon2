@@ -15,9 +15,10 @@ export interface IPostDoc extends Document {
 }
 
 export interface IPostModel extends Model<IPostDoc> {
-    mapLikesToNumber: (query: FilterQuery<IPostDoc>) => IPostDoc & { likes: number };
+    mapLikesToNumber: (query: FilterQuery<IPostDoc>) => IPostDocSharable[];
 }
 
+export type IPostDocSharable = IPostDoc & { likes: number };
 const ModelSchema = new Schema({
     tags: {
         type: [Schema.Types.ObjectId],
