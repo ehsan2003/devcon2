@@ -5,6 +5,7 @@ import Delete from './delete';
 import visible from './visible';
 import get from './get';
 import like from './like';
+import dislike from './dislike';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use('/delete', Delete.getRouter());
 router.use('/visible', visible.getRouter());
 router.use('/get', get.getRouter());
 router.use('/like', like.getRouter());
+router.use('/dislike', dislike.getRouter());
 
 export default router;
