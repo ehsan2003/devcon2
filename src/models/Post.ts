@@ -1,4 +1,4 @@
-import {Document, model, Schema, Types} from 'mongoose';
+import {Document, FilterQuery, Model, model, Schema, Types} from 'mongoose';
 import {IUserDoc} from "@models/User";
 
 export interface IPostDoc extends Document {
@@ -14,11 +14,15 @@ export interface IPostDoc extends Document {
     title: string;
 }
 
+export interface IPostModel extends Model<IPostDoc> {
+    mapLikesToNumber: (query: FilterQuery<IPostDoc>) => IPostDoc & { likes: number };
+}
+
 const ModelSchema = new Schema({
     tags: {
         type: [Schema.Types.ObjectId],
         default: [],
-        index:true
+        index: true
     }, likes: {
         type: [Schema.Types.ObjectId],
         default: []
@@ -40,7 +44,7 @@ const ModelSchema = new Schema({
     }, category: {
         type: Schema.Types.ObjectId,
         ref: 'categories',
-        index:true
+        index: true
     }, slug: {
         type: String,
         required: true,
@@ -52,4 +56,10 @@ const ModelSchema = new Schema({
     }
 });
 
-export default model<IPostDoc>('posts', ModelSchema);
+ModelSchema.static('mapLikesToNumber', function (this: Model<IPostDoc, IPostModel>, query: FilterQuery<IPostDoc>) {
+    return this.aggregate()
+        .match(query)
+        .addFields({likes: {$size: '$likes'}});
+});
+
+export default model<IPostDoc, IPostModel>('posts', ModelSchema);
