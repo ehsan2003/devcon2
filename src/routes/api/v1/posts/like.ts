@@ -1,13 +1,12 @@
 import {BaseController, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {param, ValidationChain} from "express-validator";
-import Post from "@models/Post";
+import Post, {IPostDocSharable} from "@models/Post";
 import {IUserDoc} from "@models/User";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: any }, {}, {}>;
-
+type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
 class Like extends BaseController<localRequestHandler> {
 
     readonly access = Roles.subscriber;
@@ -23,7 +22,7 @@ class Like extends BaseController<localRequestHandler> {
 
             const updatedPost = await Post.mapLikesToNumber({_id: id});
 
-            res.json({msg: 'success', result: updatedPost});
+            res.json({msg: 'success', result: updatedPost[0]});
         }
     ];
 

@@ -1,13 +1,12 @@
 import {BaseController, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {param, ValidationChain} from "express-validator";
-import Post, {IPostModel} from "@models/Post";
+import Post, {IPostDocSharable} from "@models/Post";
 import {Types} from "mongoose";
 import {IUserDoc} from "@models/User";
 import {ConflictError, NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ReturnType<IPostModel['mapLikesToNumber']> }, {}, {}>;
-
+type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
 class Dislike extends BaseController<localRequestHandler> {
 
     readonly access = Roles.subscriber;
@@ -23,7 +22,7 @@ class Dislike extends BaseController<localRequestHandler> {
             if (result.nModified === 0)
                 throw new ConflictError('disliking when like is absent');
             const updatedPost = await Post.mapLikesToNumber({_id: id});
-            res.json({msg: 'success', result: updatedPost});
+            res.json({msg: 'success', result: updatedPost[0]});
         }
     ];
 
