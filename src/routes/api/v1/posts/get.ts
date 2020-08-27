@@ -1,10 +1,11 @@
 import {BaseController} from "@shared/utils";
 import {RequestHandler} from "express";
 import {param, ValidationChain} from "express-validator";
-import Post, {IPostDoc} from "@models/Post";
+import Post, {IPostDocSharable} from "@models/Post";
 import {NotFoundError} from "@shared/errors";
+import {Types} from "mongoose";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, {}, {}>;
+type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
 
 class Get extends BaseController<localRequestHandler> {
     readonly access = null;
@@ -13,7 +14,7 @@ class Get extends BaseController<localRequestHandler> {
     protected middleware: localRequestHandler[]
         = [
         async (req, res, next) => {
-            const post = await Post.findById(req.params.id);
+            const post = (await Post.mapLikesToNumber({_id: Types.ObjectId(req.params.id)}))[0];
             if (!post) {
                 throw new NotFoundError('post not found');
             }
