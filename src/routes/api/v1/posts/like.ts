@@ -4,7 +4,7 @@ import {param, ValidationChain} from "express-validator";
 import Post, {IPostDocSharable} from "@models/Post";
 import {IUserDoc} from "@models/User";
 import {Types} from "mongoose";
-import {NotFoundError} from "@shared/errors";
+import {ConflictError, NotFoundError} from "@shared/errors";
 
 type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
 class Like extends BaseController<localRequestHandler> {
@@ -19,7 +19,8 @@ class Like extends BaseController<localRequestHandler> {
             const result = await Post.updateOne({_id: id}, {$addToSet: {likes: (req.user as IUserDoc).id}});
             if (result.nMatched === 0)
                 throw new NotFoundError('post not found');
-
+            if (result.nModified === 0)
+                throw new ConflictError('already liked');
             const updatedPost = await Post.mapLikesToNumber({_id: id});
 
             res.json({msg: 'success', result: updatedPost[0]});
