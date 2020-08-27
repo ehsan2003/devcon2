@@ -6,6 +6,7 @@ import {Types} from "mongoose";
 import {Middleware} from "express-validator/src/base";
 import {IUserDoc} from "@models/User";
 import {ConflictError, NotFoundError} from "@shared/errors";
+import Post from "@models/Post";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, {
     content: string, responseTo?: Types.ObjectId, post: Types.ObjectId
@@ -19,7 +20,6 @@ class InsertAuthorized extends BaseController<localRequestHandler> {
     protected middleware: localRequestHandler[]
         = [
         (async (req, res, next) => {
-            // todo add post exists checker
             const user = req.user as IUserDoc;
             const reqBody = req.body;
             if (reqBody.responseTo) {
@@ -51,6 +51,7 @@ class InsertAuthorized extends BaseController<localRequestHandler> {
             .exists().withMessage('required')
             .isMongoId().withMessage('invalid mongo id')
             .customSanitizer(Types.ObjectId)
+            .custom((postId:Types.ObjectId)=>Post.exists({_id:postId})).withMessage('post not found')
         , body('responseTo')
             .optional()
             .isMongoId().withMessage('invalid mongoId')
