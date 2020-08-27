@@ -4,6 +4,7 @@ import {body, ValidationChain} from "express-validator";
 import Comment, {ICommentDoc} from '@models/Comment';
 import {Types} from "mongoose";
 import {ConflictError, NotFoundError} from "@shared/errors";
+import Post from "@models/Post";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, { email: string, name: string, content: string, post: Types.ObjectId, responseTo?: Types.ObjectId }, {}>;
 
@@ -22,7 +23,6 @@ class InsertUnauthorized extends BaseController<localRequestHandler> {
                     throw new ConflictError('response post is not equal to parent post');
             }
             console.log(req.body);
-            // todo add post exists checker
             const commentDoc = new Comment({
                 content: req.body.content,
                 userData: {email: req.body.email, name: req.body.name},
@@ -51,6 +51,7 @@ class InsertUnauthorized extends BaseController<localRequestHandler> {
             .exists().withMessage('post required')
             .isMongoId().withMessage('invalid mongo id')
             .customSanitizer(Types.ObjectId)
+            .custom((postId: Types.ObjectId) => Post.exists({_id: postId})).withMessage('post not found')
         , body('responseTo')
             .optional()
             .isMongoId().withMessage('invalid mongo id')
