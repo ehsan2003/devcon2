@@ -1,4 +1,4 @@
-import {Document, FilterQuery, Model, model, Schema, Types} from 'mongoose';
+import {Aggregate, Document, FilterQuery, Model, model, Schema, Types} from 'mongoose';
 import {IUserDoc} from "@models/User";
 
 export interface IPostDoc extends Document {
@@ -15,7 +15,7 @@ export interface IPostDoc extends Document {
 }
 
 export interface IPostModel extends Model<IPostDoc> {
-    mapLikesToNumber: (query: FilterQuery<IPostDoc>) => IPostDocSharable[];
+    mapLikesToNumber: (query: FilterQuery<IPostDoc>) => Aggregate<IPostDocSharable[]>;
 }
 
 export type IPostDocSharable = IPostDoc & { likes: number };
