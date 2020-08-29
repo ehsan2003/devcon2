@@ -26,21 +26,30 @@ export interface Stages {
     };
     unwind: {
         $unwind: {
+            // path to the field to unwind ( start with $ )
             path: string;
+            // adds array index to specific field for each array element
             includeArrayIndex?: string;
+            //
             preserveNullAndEmptyArrays?: boolean;
         }
     };
     replaceRoot: {
+        // replaces root of the document
         $replaceRoot: {
+            // new root ( starting with $ )
             newRoot: expression;
         }
     };
     lookup: {
         $lookup: {
+            // collection for lookup
             from: string;
+            // local field ( from input )
             localField: string;
+            // foreign field from specified collection
             foreignField: string;
+            // field name to attach
             as: string;
         } | {
             from: string;
@@ -51,13 +60,21 @@ export interface Stages {
     };
     graphLookup: {
         $graphLookup: {
+            // collection for graph lookup
             from: string;
+            // expression based on input to start lookup
             startWith: expression;
+            // field from specified collection
             connectFromField: string;
+            // field from specified collection
             connectToField: string;
+            // field name in output for matches
             as: string;
+            // specifies max depth of graph
             maxDepth?: number;
+            // if exists a field will add to each output field ( each array element ) which indicates depth of graph
             depthField?: string;
+            // a filter query to filter elements
             restrictSearchWithMatch?: FilterQuery<any>
         }
     };
