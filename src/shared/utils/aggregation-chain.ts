@@ -1,4 +1,4 @@
-import type {FilterQuery, Types} from 'mongoose';
+import type {FilterQuery, Model, Types} from 'mongoose';
 
 type ValueOf<T> = T[keyof T];
 type mongoTypes =
@@ -100,12 +100,14 @@ export interface Stages {
 export class AggregationChain {
     private pipeline: any[] = [];
 
+    public run(model: Model<any>) {
+        return model.aggregate(this.getPipelineInstance());
+    }
+
     replaceUnwind(root: string, appear = true) {
-        if (!appear)
-            return this;
-        this.unwind({path: root});
-        this.replaceRoot({newRoot: root});
-        return this;
+        return this
+            .unwind({path: root}, appear)
+            .replaceRoot({newRoot: root}, appear);
     }
 
     unwind(options: Stages['unwind']['$unwind'], appear = true) {
