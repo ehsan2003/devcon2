@@ -112,61 +112,61 @@ export class AggregationChain {
 
     unwind(options: Stages['unwind']['$unwind'], appear = true) {
         if (appear)
-            this.pipeline.concat({$unwind: options});
+            this.pipeline.push({$unwind: options});
         return this;
     }
 
     replaceRoot(options: Stages['replaceRoot']['$replaceRoot'], appear = true) {
         if (appear)
-            this.pipeline.concat({$replaceRoot: options});
+            this.pipeline.push({$replaceRoot: options});
         return this;
     }
 
     addFields(options: Stages['addFields']['$addFields'], appear = true) {
         if (appear)
-            this.pipeline.concat({$addFields: options});
+            this.pipeline.push({$addFields: options});
         return this;
     }
 
     lookup(options: Stages['lookup']['$lookup'], appear = true) {
         if (appear)
-            this.pipeline.concat({$lookup: options});
+            this.pipeline.push({$lookup: options});
         return this;
     }
 
     graphLookup(options: Stages['graphLookup']['$graphLookup'], appear = true) {
         if (appear)
-            this.pipeline.concat({$graphLookup: options});
+            this.pipeline.push({$graphLookup: options});
         return this;
     }
 
     project(options: Stages['project']['$project'], appear = true) {
         if (appear)
-            this.pipeline.concat({$project: options});
+            this.pipeline.push({$project: options});
         return this;
     }
 
     sort(options: Stages['sort']['$sort'], appear = true) {
         if (appear)
-            this.pipeline.concat({$sort: options});
+            this.pipeline.push({$sort: options});
         return this;
     }
 
     limit(options: Stages['limit']['$limit'], appear = true) {
         if (appear)
-            this.pipeline.concat({$limit: options});
+            this.pipeline.push({$limit: options});
         return this;
     }
 
     match(options: Stages['match']['$match'], appear = true) {
         if (appear)
-            this.pipeline.concat({$match: options});
+            this.pipeline.push({$match: options});
         return this;
     }
 
     skip(options: Stages['skip']['$skip'], appear = true) {
         if (appear)
-            this.pipeline.concat({$skip: options});
+            this.pipeline.push({$skip: options});
         return this;
     }
 
