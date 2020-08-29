@@ -1,6 +1,6 @@
 import {AggregationChain, BaseController, isValidRegexP, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
-import {query, ValidationChain} from "express-validator";
+import {param, query, ValidationChain} from "express-validator";
 import Category from "@models/Category";
 import configurations from "@conf/configurations";
 import {NotFoundError} from "@shared/errors";
@@ -80,7 +80,10 @@ class SearchByCategory extends BaseController<localRequestHandler> {
     ];
 
     protected validator: ValidationChain[] = [
-        query('q')
+        param('category')
+            .exists().withMessage('required')
+            .isString().withMessage('invalid string')
+        , query('q')
             .optional()
             .isString().withMessage('invalid string')
             .custom(isValidRegexP)
