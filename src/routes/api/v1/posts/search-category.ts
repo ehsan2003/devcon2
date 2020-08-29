@@ -1,6 +1,6 @@
-import {AggregationChain, BaseController, Roles} from "@shared/utils";
+import {AggregationChain, BaseController, isValidRegexP, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
-import {ValidationChain} from "express-validator";
+import {query, ValidationChain} from "express-validator";
 import Category from "@models/Category";
 import configurations from "@conf/configurations";
 import {NotFoundError} from "@shared/errors";
@@ -79,7 +79,31 @@ class SearchByCategory extends BaseController<localRequestHandler> {
         }
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        query('q')
+            .optional()
+            .isString().withMessage('invalid string')
+            .custom(isValidRegexP)
+        , query('l')
+            .optional()
+            .isString().withMessage('invalid string')
+            .isInt().withMessage('not convertible to integer')
+            .custom(limit => {
+                const num = parseInt(limit, 10);
+                return !(num < 1 || num > 100);
+            }).withMessage('invalid range')
+        , query('s')
+            .optional()
+            .isIn(['l', 'd'])
+        , query('o')
+            .optional()
+            .isIn(['a', 'd'])
+        , query('k')
+            .optional()
+            .isString().withMessage('invalid string')
+            .isInt().withMessage('not convertible to integer')
+            .custom(limit => parseInt(limit, 10) > 0).withMessage('positive required')
+    ];
 
     constructor() {
         super();
