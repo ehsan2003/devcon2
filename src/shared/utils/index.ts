@@ -8,3 +8,4 @@ export * from './secureUserInfo';
 export * from './check-password';
 export * from './verify-by-token';
 export * from './custom-validators';
+export * from './aggregation-chain';
