@@ -6,6 +6,7 @@ import visible from './visible';
 import get from './get';
 import like from './like';
 import dislike from './dislike';
+import search from './search-category';
 
 const router = Router();
 
@@ -16,5 +17,5 @@ router.use('/visible', visible.getRouter());
 router.use('/get', get.getRouter());
 router.use('/like', like.getRouter());
 router.use('/dislike', dislike.getRouter());
-
+router.use('/search', search.getRouter());
 export default router;
