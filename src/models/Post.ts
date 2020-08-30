@@ -1,5 +1,6 @@
 import {Aggregate, Document, FilterQuery, Model, model, Schema, Types} from 'mongoose';
 import {IUserDoc} from "@models/User";
+import {AggregationChain} from "@shared/utils";
 
 export interface IPostDoc extends Document {
     content: string;
@@ -58,9 +59,10 @@ const ModelSchema = new Schema({
 });
 
 ModelSchema.static('mapLikesToNumber', function (this: Model<IPostDoc, IPostModel>, query: FilterQuery<IPostDoc>) {
-    return this.aggregate()
+    return new AggregationChain()
         .match(query)
-        .addFields({likes: {$size: '$likes'}});
+        .addFields({likes: {$size: '$likes'}})
+        .run(this);
 });
 
 export default model<IPostDoc, IPostModel>('posts', ModelSchema);
