@@ -50,7 +50,7 @@ const ModelSchema = new Schema({
         default: Date.now
     },
     mimetype: {
-        String,
+        type: String,
         required: true
     }
 });
