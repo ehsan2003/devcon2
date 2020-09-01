@@ -1,6 +1,7 @@
 import {ExtractJwt, StrategyOptions} from 'passport-jwt';
 import keys from "@conf/keys";
-import {ResizeOptions} from 'sharp';
+import multer, {Options} from 'multer';
+import {ResizeOptions} from "sharp";
 
 interface Sizes {
     thumbnail: 'thumbnail';
@@ -19,34 +20,40 @@ export interface IConfigurations {
     };
     tags: { search: { limitDefault: number } };
     categories: { search: { limit: number } };
-    posts: { search: { limit: number } };
-    image: {
-        fileSizeLimit: number, sizes: { names: (keyof Sizes)[], info: { [p in keyof Sizes]: ResizeOptions } }
+    posts: {
+        search: { limit: number }, image: {
+            uploadLimit: Options['limits'], allowedMimeTypes: string[], sizes: { names: (keyof Sizes)[], info: { [p in keyof Sizes]: ResizeOptions } }
+
+        }
     };
+
 }
 
 const configurations: IConfigurations = {
-    image: {
-        fileSizeLimit: 1024 * 1024 * 3
-        , sizes: {
-            names: ['thumbnail', 'medium', 'large', 'full'],
-            info: {
-                thumbnail: {
-                    width: 150,
-                    height: 150,
-                    fit: 'cover'
+    posts: {
+        search: {limit: 100}
+        , image: {
+            uploadLimit: {}
+            , allowedMimeTypes: ['image/jpg', 'image/jpeg', 'image/png']
+            , sizes: {
+                names: ['thumbnail', 'medium', 'large', 'full'],
+                info: {
+                    thumbnail: {
+                        width: 150,
+                        height: 150,
+                        fit: 'cover'
+                    }
+                    , medium: {
+                        width: 300
+                    }
+                    , large: {
+                        width: 1024,
+                    }
+                    , full: {}
                 }
-                , medium: {
-                    width: 300
-                }
-                , large: {
-                    width: 1024,
-                }
-                , full: {}
             }
         }
     },
-    posts: {search: {limit: 100}},
     categories: {search: {limit: 10}},
     tags: {search: {limitDefault: 10}},
     jwtTokenSingOptions: {
