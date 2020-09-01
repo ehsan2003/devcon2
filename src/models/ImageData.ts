@@ -6,10 +6,10 @@ import {extension} from "mime-types";
 interface IInfo {
     prefixPath: string;
     description?: string;
-    details?: string;
-    uploader?: Types.ObjectId;
-    alt?: string;
-    title?: string;
+    details: string;
+    uploader: Types.ObjectId;
+    alt: string;
+    title: string;
 }
 
 export interface IImageDataDoc extends Document {
