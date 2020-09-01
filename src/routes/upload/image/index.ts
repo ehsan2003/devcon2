@@ -5,8 +5,19 @@ import configurations from "@conf/configurations";
 import sharp from "sharp";
 import {info} from "winston";
 import fs from 'fs-extra';
+import * as path from "path";
 
 const router = Router();
+const roleToPath = {
+    [-1]: 'public'
+    , 0: 'protected/unverified'
+    , 1: 'protected/subscriber'
+    , 2: 'protected/contributor'
+    , 3: 'protected/author'
+    , 4: 'protected/editor'
+    , 5: 'protected/administrator'
+    , 6: 'protected/superAdmin'
+};
 
 export abstract class ImageUploader<T extends RequestHandler<any, { msg: string }, any, any>> extends BaseController<T> {
     protected saveImage(options: {
@@ -31,7 +42,7 @@ export abstract class ImageUploader<T extends RequestHandler<any, { msg: string 
                             , ...extractProps(meta, 'width', 'height')
                             , fileSize: meta.size
                         };
-                        return fs.writeFile(imageDataDoc.getPath(name), buff);
+                        return fs.writeFile(path.join('upload', roleToPath[options.access], imageDataDoc.getPath(name)), buff);
                     });
             })).then(_ => imageDataDoc.save());
     }
