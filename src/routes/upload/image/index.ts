@@ -6,8 +6,10 @@ import sharp from "sharp";
 import {info} from "winston";
 import fs from 'fs-extra';
 import * as path from "path";
+import post from './post';
 
 const router = Router();
+router.use('/post', post.getRouter());
 const roleToPath = {
     [-1]: 'public'
     , 0: 'protected/unverified'
