@@ -14,6 +14,7 @@ interface IInfo {
 
 export interface IImageDataDoc extends Document {
     info: IInfo;
+    access: number;
     sizes: {
         [p: string]: ResizeOptions & { width: number, height: number, fileSize: number };
     };
@@ -25,7 +26,11 @@ export interface IImageDataDoc extends Document {
 }
 
 const ModelSchema = new Schema({
-    info: {
+    access: {
+        required: true,
+        type: Number
+    }
+    , info: {
         required: true,
         type: {
             description: String,
