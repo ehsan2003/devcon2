@@ -29,9 +29,9 @@ class Post extends ImageUploader<localRequestHandler> {
     readonly access = Roles.author;
     readonly method = 'post';
     readonly path = '/';
+    middlewareBeforeValidate = [this.upload.single('image')];
     protected middleware: localRequestHandler[]
         = [
-        this.upload.single('image'),
         async (req, res, next) => {
             const user = req.user as IUserDoc;
             const result = await this.saveImage({
