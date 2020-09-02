@@ -30,8 +30,6 @@ class Insert extends BaseController<localRequestHandler> {
     protected validator: ValidationChain[] = [
         body('content')
             .exists().withMessage('required')
-            .isString().withMessage('is not a string')
-            .isLength({min: 20})
         , body('title')
             .exists().withMessage('required')
             .isString().withMessage('is not a string')
