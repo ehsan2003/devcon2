@@ -3,7 +3,7 @@ import {IUserDoc} from "@models/User";
 import {AggregationChain} from "@shared/utils";
 
 export interface IPostDoc extends Document {
-    content: string;
+    content: KeyValuePair;
     lastModified: Date;
     author: IUserDoc | Types.ObjectId;
     visible: boolean;
@@ -30,7 +30,7 @@ const ModelSchema = new Schema({
         default: []
     }
     , content: {
-        type: String,
+        type: Schema.Types.Mixed,
         required: true,
     }, lastModified: {
         type: Date,
