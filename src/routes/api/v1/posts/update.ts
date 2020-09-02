@@ -46,8 +46,6 @@ class Update extends BaseController<localRequestHandler> {
             .isMongoId().withMessage('invalid mongo id')
         , body('content')
             .optional()
-            .isString().withMessage('is not a string')
-            .isLength({min: 20})
         , body('title')
             .optional()
             .isString().withMessage('is not a string')
