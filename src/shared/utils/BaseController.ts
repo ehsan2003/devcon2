@@ -10,6 +10,7 @@ import {Middleware} from "express-validator/src/base";
 
 export abstract class BaseController<LocalRequestHandler extends RequestHandler<any, { msg: string }, any, any>> {
     public abstract readonly method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
+    protected readonly middlewareBeforeValidate: LocalRequestHandler[] = [];
     /**
      * indicates minimum role to access this route
      */
@@ -62,6 +63,7 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
         this.finalMiddleware = [
             ...(this.access !== null && this.access >= 0 ? [passport.authenticate('jwt', {session: false}), this.constructAccessChecker()] : []),
             ...(this.access === Roles.anonymous ? [passport.authenticate(['jwt', 'anonymous'], {session: false})] : []),
+            ...this.middlewareBeforeValidate,
             ...(this.validator ? [(this.validator), this.handleValidation()] : []),
             ...this.middleware
         ];
