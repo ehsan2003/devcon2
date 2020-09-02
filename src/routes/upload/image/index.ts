@@ -1,5 +1,5 @@
 import {RequestHandler, Router} from 'express';
-import {BaseController, extractProps, Roles} from "@shared/utils";
+import {BaseController, extractProps, Roles, roleToPath} from "@shared/utils";
 import ImageData, {IImageDataDoc} from '@models/ImageData';
 import configurations from "@conf/configurations";
 import sharp from "sharp";
@@ -10,16 +10,6 @@ import post from './post';
 
 const router = Router();
 router.use('/post', post.getRouter());
-const roleToPath = {
-    [-1]: 'public'
-    , 0: 'protected/unverified'
-    , 1: 'protected/subscriber'
-    , 2: 'protected/contributor'
-    , 3: 'protected/author'
-    , 4: 'protected/editor'
-    , 5: 'protected/administrator'
-    , 6: 'protected/superAdmin'
-};
 
 export abstract class ImageUploader<T extends RequestHandler<any, { msg: string }, any, any>> extends BaseController<T> {
     protected saveImage(options: {
