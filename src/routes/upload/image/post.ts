@@ -1,6 +1,6 @@
 import {extractProps, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
-import {ValidationChain} from "express-validator";
+import {body, ValidationChain} from "express-validator";
 import {IImageDataDoc} from "@models/ImageData";
 import multer from "multer";
 import configurations from "@conf/configurations";
@@ -49,7 +49,30 @@ class Post extends ImageUploader<localRequestHandler> {
         }
     ];
 
-    protected validator: ValidationChain[] = [];
+    protected validator: ValidationChain[] = [
+        body('description')
+            .exists().withMessage('required')
+            .isString().withMessage('invalid string')
+            .isLength({max: 100}).withMessage('invalid length')
+        , body('alt')
+            .exists().withMessage('required')
+            .isString().withMessage('invalid string')
+            .isLength({max: 30}).withMessage('invalid length')
+        , body('title')
+            .exists().withMessage('required')
+            .isString().withMessage('invalid string')
+            .isLength({max: 30}).withMessage('invalid length')
+        , body('details')
+            .exists().withMessage('required')
+            .isString().withMessage('invalid string')
+            .isLength({max: 500})
+        , body('slugPrefix')
+            .exists().withMessage('required')
+            .isSlug().withMessage('invalid slug')
+            .isLength({max: 40})
+        , body('access')
+            .isIn([-1, 0, 1, 2, 3, 4, 5, 6]).withMessage('invalid value')
+    ];
 
     constructor() {
         super();
