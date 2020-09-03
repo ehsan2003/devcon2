@@ -4,7 +4,7 @@ import {body, ValidationChain} from "express-validator";
 import {IImageDataDoc} from "@models/ImageData";
 import multer from "multer";
 import configurations from "@conf/configurations";
-import {ImageUploader} from "./index";
+import {ImageUploader} from "./controller-base";
 import {IUserDoc} from "@models/User";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc }, {
@@ -41,7 +41,7 @@ class Post extends ImageUploader<localRequestHandler> {
                 info: {
                     ...extractProps(req.body, 'description', 'alt', 'title', 'details'),
                     uploader: user._id,
-                    prefixPath: `${req.body.slugPrefix}-${Date.now()}`
+                    slugPrefix: `${req.body.slugPrefix}-${Date.now()}`
                 },
                 mimetype: req.file.mimetype
             });
@@ -71,6 +71,8 @@ class Post extends ImageUploader<localRequestHandler> {
             .isSlug().withMessage('invalid slug')
             .isLength({max: 40})
         , body('access')
+            .isInt()
+            .toInt()
             .isIn([-1, 0, 1, 2, 3, 4, 5, 6]).withMessage('invalid value')
     ];
 
