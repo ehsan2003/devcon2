@@ -1,10 +1,12 @@
 import {Document, model, Schema, Types} from 'mongoose';
 import {ResizeOptions} from "sharp";
 import fs from 'fs-extra';
-import {extension} from "mime-types";
+import {Roles, roleToPath} from "@shared/utils";
+import * as path from "path";
+import {getFileNameBySlugAndSize} from "@shared/utils/get-file-name-by-slug-prefix-and-sizes";
 
 interface IInfo {
-    prefixPath: string;
+    slugPrefix: string;
     description?: string;
     details: string;
     uploader: Types.ObjectId;
@@ -14,15 +16,24 @@ interface IInfo {
 
 export interface IImageDataDoc extends Document {
     info: IInfo;
-    access: number;
+    access: Roles;
     sizes: {
         [p: string]: ResizeOptions & { width: number, height: number, fileSize: number };
     };
     dateModified: Date;
     mimetype: string;
-    removeAll: () => Promise<void>;
-    changePath: (newPath: string) => Promise<IImageDataDoc>;
-    getPath: (sizeName: string) => string;
+
+    changePath(newPath: string): Promise<IImageDataDoc>;
+
+    getPath(sizeName: string): string;
+
+    getDir(): string;
+
+    getFileName(sizeName: string): string;
+
+    setAccess(newAccess: Roles): Promise<Roles>;
+
+    removeAll(): Promise<void>;
 }
 
 const ModelSchema = new Schema({
@@ -54,9 +65,21 @@ const ModelSchema = new Schema({
         required: true
     }
 });
+ModelSchema.method('setAccess', function (this: IImageDataDoc, newAccess: Roles) {
+    return Promise.all(Object.keys(this.sizes)
+        .map((sizeName) => {
+                return fs.rename(this.getPath(sizeName), path.join(roleToPath[newAccess], this.getFileName(sizeName)));
+            }
+        )).then(() => this.access = newAccess);
+});
+ModelSchema.method('getDir', function (this: IImageDataDoc) {
+    return roleToPath[this.access];
+});
+ModelSchema.method('getFileName', function (this: IImageDataDoc, sizeName: string) {
+    return getFileNameBySlugAndSize(this.info.slugPrefix, this.sizes[sizeName], this.mimetype);
+});
 ModelSchema.method('getPath', function (this: IImageDataDoc, sizeName: string) {
-    const sizeInfo = this.sizes[sizeName];
-    return this.info.prefixPath = `${this.info.prefixPath}-${sizeInfo.width}x${sizeInfo.height}.${extension(this.mimetype)}`;
+    return path.join(this.getDir(), this.getFileName(sizeName));
 });
 ModelSchema.method('removeAll', function (this: IImageDataDoc) {
     return Promise.all([
@@ -67,14 +90,14 @@ ModelSchema.method('removeAll', function (this: IImageDataDoc) {
             ))
     ]);
 });
-ModelSchema.method('changePath', function (this: IImageDataDoc, newPrefixPath: string) {
+ModelSchema.method('changePath', function (this: IImageDataDoc, newSlugPrefix: string) {
     return Promise.all(
         Object
             .entries(this.sizes)
             .map(([sizeName, size]) =>
-                fs.rename(this.getPath(sizeName), `${newPrefixPath}-${size.width}x${size.height}.${extension(this.mimetype)}`))
+                fs.rename(this.getPath(sizeName), path.join(this.getDir(), getFileNameBySlugAndSize(newSlugPrefix, size, this.mimetype))))
     ).then(() => {
-        this.info.prefixPath = newPrefixPath;
+        this.info.slugPrefix = newSlugPrefix;
         return this.save();
     });
 });
