@@ -23,7 +23,7 @@ export interface IImageDataDoc extends Document {
     dateModified: Date;
     mimetype: string;
 
-    changePath(newPath: string): Promise<IImageDataDoc>;
+    changeSlug(newPath: string): Promise<IImageDataDoc>;
 
     getPath(sizeName: string): string;
 
@@ -90,7 +90,7 @@ ModelSchema.method('removeAll', function (this: IImageDataDoc) {
             ))
     ]);
 });
-ModelSchema.method('changePath', function (this: IImageDataDoc, newSlugPrefix: string) {
+ModelSchema.method('changeSlug', function (this: IImageDataDoc, newSlugPrefix: string) {
     return Promise.all(
         Object
             .entries(this.sizes)
@@ -98,7 +98,7 @@ ModelSchema.method('changePath', function (this: IImageDataDoc, newSlugPrefix: s
                 fs.rename(this.getPath(sizeName), path.join(this.getDir(), getFileNameBySlugAndSize(newSlugPrefix, size, this.mimetype))))
     ).then(() => {
         this.info.slugPrefix = newSlugPrefix;
-        return this.save();
+        return   this.save();
     });
 });
 export default model<IImageDataDoc>('images', ModelSchema);
