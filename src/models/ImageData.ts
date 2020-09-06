@@ -3,7 +3,7 @@ import {ResizeOptions} from "sharp";
 import fs from 'fs-extra';
 import {Roles, roleToPath} from "@shared/utils";
 import * as path from "path";
-import {getFileNameBySlugAndSize} from "@shared/utils/get-file-name-by-slug-prefix-and-sizes";
+import {extension} from "mime-types";
 
 interface IInfo {
     slugPrefix: string;
@@ -23,17 +23,13 @@ export interface IImageDataDoc extends Document {
     dateModified: Date;
     mimetype: string;
 
-    changeSlug(newPath: string): Promise<IImageDataDoc>;
-
     getPath(sizeName: string): string;
 
-    getDir(): string;
-
-    getFileName(sizeName: string): string;
-
-    setAccess(newAccess: Roles): Promise<Roles>;
-
     removeAll(): Promise<void>;
+
+    getPathData(sizeName: string): Parameters<typeof generatePath>[0];
+
+    changeData(newData: Partial<Omit<Parameters<typeof generatePath>[0], 'size' | 'mimetype'>>): Promise<IImageDataDoc>;
 }
 
 const ModelSchema = new Schema({
@@ -48,7 +44,8 @@ const ModelSchema = new Schema({
             details: String,
             uploader: Types.ObjectId,
             alt: String,
-            title: String
+            title: String,
+            slugPrefix: String
         }
     },
     sizes: {
@@ -65,21 +62,26 @@ const ModelSchema = new Schema({
         required: true
     }
 });
-ModelSchema.method('setAccess', function (this: IImageDataDoc, newAccess: Roles) {
-    return Promise.all(Object.keys(this.sizes)
-        .map((sizeName) => {
-                return fs.rename(this.getPath(sizeName), path.join(roleToPath[newAccess], this.getFileName(sizeName)));
-            }
-        )).then(() => this.access = newAccess);
-});
-ModelSchema.method('getDir', function (this: IImageDataDoc) {
-    return roleToPath[this.access];
-});
-ModelSchema.method('getFileName', function (this: IImageDataDoc, sizeName: string) {
-    return getFileNameBySlugAndSize(this.info.slugPrefix, this.sizes[sizeName], this.mimetype);
+
+function generatePath(options: {
+    access: Roles,
+    slugPrefix: string,
+    size: { width: number, height: number },
+    mimetype: string
+}) {
+    return path.join('upload', roleToPath[options.access], `${options.slugPrefix}-${options.size.width}x${options.size.height}.${extension(options.mimetype)}`);
+}
+
+ModelSchema.method('getPathData', function (this: IImageDataDoc, sizeName: string) {
+    return {
+        access: this.access,
+        slugPrefix: this.info.slugPrefix,
+        mimetype: this.mimetype,
+        size: this.sizes[sizeName]
+    };
 });
 ModelSchema.method('getPath', function (this: IImageDataDoc, sizeName: string) {
-    return path.join(this.getDir(), this.getFileName(sizeName));
+    return generatePath(this.getPathData(sizeName));
 });
 ModelSchema.method('removeAll', function (this: IImageDataDoc) {
     return Promise.all([
@@ -90,15 +92,17 @@ ModelSchema.method('removeAll', function (this: IImageDataDoc) {
             ))
     ]);
 });
-ModelSchema.method('changeSlug', function (this: IImageDataDoc, newSlugPrefix: string) {
+ModelSchema.method('changeData', function (this: IImageDataDoc, newData: Partial<Omit<Parameters<typeof generatePath>[0], 'size' | 'mimetype'>>) {
     return Promise.all(
-        Object
-            .entries(this.sizes)
-            .map(([sizeName, size]) =>
-                fs.rename(this.getPath(sizeName), path.join(this.getDir(), getFileNameBySlugAndSize(newSlugPrefix, size, this.mimetype))))
+        Object.keys(this.sizes)
+            .map(sizeName => fs.rename(this.getPath(sizeName), generatePath({
+                ...this.getPathData(sizeName), ...newData,
+            })))
     ).then(() => {
-        this.info.slugPrefix = newSlugPrefix;
-        return   this.save();
-    });
+        if (newData.slugPrefix) this.info.slugPrefix = newData.slugPrefix;
+        if (newData.access) this.access = newData.access;
+        return this.save();
+    })
+        ;
 });
 export default model<IImageDataDoc>('images', ModelSchema);
