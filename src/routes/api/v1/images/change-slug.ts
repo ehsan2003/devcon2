@@ -19,7 +19,7 @@ class ChangeSlug extends BaseController<localRequestHandler> {
             const imageDataDoc = await ImageData.findOne({_id: id});
             if (!imageDataDoc)
                 throw new NotFoundError('image not found');
-            const result = await imageDataDoc.changeSlug(req.body.newSlug);
+            const result = await imageDataDoc.changeData({slugPrefix: req.body.newSlug});
             res.json({msg: 'success', result});
         }
     ];
