@@ -28,6 +28,7 @@ class ChangeSlug extends BaseController<localRequestHandler> {
         body('newSlug')
             .exists().withMessage('required')
             .isSlug().withMessage('invalid slug')
+            .customSanitizer(slug => `${slug}-${Date.now()}`)
         , param('id')
             .exists().withMessage('required')
             .isMongoId().withMessage('invalid mongo id')
