@@ -25,7 +25,7 @@ export interface IImageDataDoc extends Document {
 
     getPath(sizeName: string): string;
 
-    removeAll(): Promise<void>;
+    removeAll(): Promise<IImageDataDoc>;
 
     changeData(newData: Partial<Omit<Parameters<typeof generatePath>[0], 'size' | 'mimetype'>>): Promise<IImageDataDoc>;
 }
