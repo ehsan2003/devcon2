@@ -1,5 +1,5 @@
 import {RequestHandler} from "express";
-import {BaseController, extractProps, Roles, roleToPath} from "@shared/utils";
+import {BaseController, extractProps, Roles} from "@shared/utils";
 import configurations from "@conf/configurations";
 import ImageData, {IImageDataDoc} from "@models/ImageData";
 import sharp from "sharp";
@@ -10,13 +10,15 @@ export abstract class ImageUploader<T extends RequestHandler<any, { msg: string 
         buff: Buffer;
         sizes: typeof configurations.posts.image.sizes;
         info: IImageDataDoc['info'];
+        slugPrefix: string;
         mimetype: string;
         access: Roles
     }) {
         const sharper = sharp(options.buff);
         console.log(options.info);
-        const imageDataDoc = new ImageData(extractProps(options, 'info', 'access', 'mimetype'));
+        const imageDataDoc = new ImageData(extractProps(options, 'info', 'access', 'mimetype', 'slugPrefix'));
         imageDataDoc.sizes = {};
+        console.log(imageDataDoc);
         return Promise.all(
             options.sizes.names.map(name => {
                 const size = options.sizes.info[name];
