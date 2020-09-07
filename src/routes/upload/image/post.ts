@@ -41,8 +41,8 @@ class Post extends ImageUploader<localRequestHandler> {
                 info: {
                     ...extractProps(req.body, 'description', 'alt', 'title', 'details'),
                     uploader: user._id,
-                    slugPrefix: `${req.body.slugPrefix}-${Date.now()}`
                 },
+                slugPrefix: `${req.body.slugPrefix}-${Date.now()}`,
                 mimetype: req.file.mimetype
             });
             res.json({msg: 'success', result});
