@@ -16,7 +16,7 @@ export interface IPostDoc extends Document {
 }
 
 export interface IPostModel extends Model<IPostDoc> {
-    mapLikesToNumber: (query: FilterQuery<IPostDoc>) => Aggregate<IPostDocSharable[]>;
+    preparePostForClient: (query: FilterQuery<IPostDoc>) => Aggregate<IPostDocSharable[]>;
 }
 
 export type IPostDocSharable = IPostDoc & { likes: number };
@@ -58,7 +58,7 @@ const ModelSchema = new Schema({
     }
 });
 
-ModelSchema.static('mapLikesToNumber', function (this: Model<IPostDoc, IPostModel>, query: FilterQuery<IPostDoc>) {
+ModelSchema.static('preparePostForClient', function (this: Model<IPostDoc, IPostModel>, query: FilterQuery<IPostDoc>) {
     return new AggregationChain()
         .match(query)
         .addFields({likes: {$size: '$likes'}})

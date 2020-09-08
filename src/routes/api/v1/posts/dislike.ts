@@ -21,7 +21,7 @@ class Dislike extends BaseController<localRequestHandler> {
                 throw new NotFoundError('post not found');
             if (result.nModified === 0)
                 throw new ConflictError('disliking when like is absent');
-            const updatedPost = await Post.mapLikesToNumber({_id: id});
+            const updatedPost = await Post.preparePostForClient({_id: id});
             res.json({msg: 'success', result: updatedPost[0]});
         }
     ];

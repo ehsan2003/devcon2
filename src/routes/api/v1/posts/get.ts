@@ -14,7 +14,7 @@ class Get extends BaseController<localRequestHandler> {
     protected middleware: localRequestHandler[]
         = [
         async (req, res, next) => {
-            const post = (await Post.mapLikesToNumber({_id: Types.ObjectId(req.params.id)}))[0];
+            const post = (await Post.preparePostForClient({_id: Types.ObjectId(req.params.id)}))[0];
             if (!post) {
                 throw new NotFoundError('post not found');
             }
