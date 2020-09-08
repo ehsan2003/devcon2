@@ -68,8 +68,10 @@ ModelSchema.static('preparePostForClient', function (this: Model<IPostDoc, IPost
         .addFields({likes: {$size: '$likes'}})
         .lookup({
             from: 'images',
-            localField: 'content.blocks.data.file.url',
-            foreignField: '_id',
+            let: {images: '$content.blocks.data.file.url', featuredImage: '$featuredImage'},
+            pipeline: [
+                {$match: {$expr: {$or: [{$in: ['$_id', '$$images']}, {$eq: ['$_id', '$$featuredImage']}]}}},
+            ],
             as: 'images'
         })
         .run(this);
