@@ -21,6 +21,10 @@ export interface IPostModel extends Model<IPostDoc> {
 
 export type IPostDocSharable = IPostDoc & { likes: number };
 const ModelSchema = new Schema({
+    title: {
+        type: String,
+        required: true
+    },
     tags: {
         type: [Schema.Types.ObjectId],
         default: [],
