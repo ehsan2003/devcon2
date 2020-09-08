@@ -1,13 +1,19 @@
 import {ExtractJwt, StrategyOptions} from 'passport-jwt';
 import keys from "@conf/keys";
-import multer, {Options} from 'multer';
+import {Options} from 'multer';
 import {ResizeOptions} from "sharp";
 
-interface Sizes {
+interface PostSizes {
     thumbnail: 'thumbnail';
     large: 'large';
     medium: 'medium';
     full: 'full';
+}
+
+interface AvatarSizes {
+    thumbnail: 'thumbnail';
+    large: 'large';
+    medium: 'medium';
 }
 
 export interface IConfigurations {
@@ -22,8 +28,14 @@ export interface IConfigurations {
     categories: { search: { limit: number } };
     posts: {
         search: { limit: number }, image: {
-            uploadLimit: Options['limits'], allowedMimeTypes: string[], sizes: { names: (keyof Sizes)[], info: { [p in keyof Sizes]: ResizeOptions } }
+            uploadLimit: Options['limits'], allowedMimeTypes: string[], sizes: { names: string[], info: { [p: string]: ResizeOptions } }
 
+        }
+    };
+    profile: {
+        avatar: {
+            uploadLimit:
+                Options['limits'], allowedMimeTypes: string[], sizes: { names: string[], info: { [p: string]: ResizeOptions } }
         }
     };
 
@@ -33,7 +45,9 @@ const configurations: IConfigurations = {
     posts: {
         search: {limit: 100}
         , image: {
-            uploadLimit: {}
+            uploadLimit: {
+                fileSize: 1024 * 1024 * 3
+            }
             , allowedMimeTypes: ['image/jpg', 'image/jpeg', 'image/png']
             , sizes: {
                 names: ['thumbnail', 'medium', 'large', 'full'],
@@ -52,6 +66,29 @@ const configurations: IConfigurations = {
                     , full: {}
                 }
             }
+        }
+    },
+    profile: {
+        avatar: {
+            allowedMimeTypes: ['image/jpeg', 'image/jpg']
+            , sizes: {
+                names: ['thumbnail', 'large', 'medium'],
+                info: {
+                    thumbnail: {
+                        fit: 'contain'
+                        , width: 60
+                        , height: 60
+                    }, large: {
+                        fit: "contain"
+                        , width: 200
+                        , height: 200
+                    }, medium: {
+                        fit: "contain"
+                        , width: 400
+                        , height: 400
+                    }
+                }
+            }, uploadLimit: {fileSize: 1024 * 1024 * 3}
         }
     },
     categories: {search: {limit: 10}},
