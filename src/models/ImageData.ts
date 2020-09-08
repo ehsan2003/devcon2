@@ -7,7 +7,7 @@ import {extension} from "mime-types";
 
 interface IInfo {
     description?: string;
-    details: string;
+    details?: string;
     uploader: Types.ObjectId;
     alt: string;
     title: string;
