@@ -67,14 +67,24 @@ class SearchByCategory extends BaseController<localRequestHandler> {
                 })
                 .replaceUnwind('$posts')
                 .match(postQuery)
-                .addFields({score: {$meta: 'textScore'}})
+                .addFields({score: {$meta: 'textScore'}}, !!queryString)
                 .addFields({isLiked: {$in: [req.user && req.user._id, '$likes']}}, !!req.user)
                 .addFields({likes: {$size: '$likes'}})
                 .sort({
                     [this.sortOrders[sortBy]]: sortOrder !== 'a' ? -1 : 1
                 })
                 .skip(searchSkip)
-                .limit(searchLimit);
+                .limit(searchLimit)
+                .addFields({
+                    featuredImage: {$ifNull: ['$featuredImage', {$arrayElemAt: ['$content.blocks.data.file.url', 0]}]}
+                })
+                .project({content: 0})
+                .lookup({
+                    foreignField: '_id',
+                    as: 'image',
+                    localField: 'featuredImage',
+                    from: 'images'
+                });
 
             const result = await Category.aggregate(chain.getPipelineInstance());
             if (!result.length)
