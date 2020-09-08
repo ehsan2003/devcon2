@@ -62,6 +62,12 @@ ModelSchema.static('preparePostForClient', function (this: Model<IPostDoc, IPost
     return new AggregationChain()
         .match(query)
         .addFields({likes: {$size: '$likes'}})
+        .lookup({
+            from: 'images',
+            localField: 'content.blocks.data.file.url',
+            foreignField: '_id',
+            as: 'images'
+        })
         .run(this);
 });
 
