@@ -74,5 +74,5 @@ ModelSchema.static('preparePostForClient', function (this: Model<IPostDoc, IPost
         })
         .run(this);
 });
-
+ModelSchema.index({'$**': 'text'}, {default_language: 'none'});
 export default model<IPostDoc, IPostModel>('posts', ModelSchema);
