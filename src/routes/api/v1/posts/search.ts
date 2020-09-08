@@ -1,4 +1,4 @@
-import {AggregationChain, BaseController, isValidRegexP, Roles} from "@shared/utils";
+import {AggregationChain, BaseController, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {query, ValidationChain} from "express-validator";
 import Post, {IPostDocSharable} from "@models/Post";
@@ -6,7 +6,7 @@ import configurations from "@conf/configurations";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, result: (IPostDocSharable & { isLiked?: boolean })[] }, {}, {
     q?: string;
-    s?: 'd' | 'l';
+    s?: 'd' | 'l' | 'r';
     o?: 'a' | 'd';
     k?: string;
     l?: string;
@@ -18,24 +18,30 @@ class Search extends BaseController<localRequestHandler> {
     readonly access = Roles.anonymous;
     readonly method = 'get';
     readonly path = '/';
+    readonly sortOrders = {
+        'l': 'likes',
+        'r': 'score',
+        'd': 'lastModified'
+    };
     protected middleware: localRequestHandler[]
         = [
         async (req, res, next) => {
             const queryString = req.query.q;
-            const sortBy = req.query.s;
-            const sortOrder = req.query.o;
+            const sortBy = req.query.s || 'r';
+            const sortOrder = req.query.o || 'a';
             const searchLimit = parseInt(req.query.l || configurations.posts.search.limit.toString(), 10);
             const searchSkip = parseInt(req.query.k || '0', 10);
             const postQuery = {
                 visible: true,
-                ...queryString ? {$or: [{title: {$regex: queryString}}, {content: {$regex: queryString}}]} : []
+                ...queryString ? {$text: {$search: queryString}} : {}
             };
             const aggregationChain = new AggregationChain()
                 .match(postQuery)
+                .addFields({score: {$meta: 'textScore'}})
                 .addFields({isLiked: {$in: [req.user && req.user._id, '$likes']}}, !!req.user)
                 .addFields({likes: {$size: '$likes'}})
                 .sort({
-                    [sortBy === 'd' ? 'lastModified' : 'likes']: sortOrder === 'a' ? 1 : -1
+                    [this.sortOrders[sortBy]]: sortOrder !== 'a' ? -1 : 1
                 })
                 .skip(searchSkip)
                 .limit(searchLimit);
@@ -46,7 +52,6 @@ class Search extends BaseController<localRequestHandler> {
     protected validator: ValidationChain[] = [query('q')
         .optional()
         .isString().withMessage('invalid string')
-        .custom(isValidRegexP)
         , query('l')
             .optional()
             .isString().withMessage('invalid string')
@@ -57,7 +62,7 @@ class Search extends BaseController<localRequestHandler> {
             }).withMessage('invalid range')
         , query('s')
             .optional()
-            .isIn(['l', 'd'])
+            .isIn(['l', 'd', 'r'])
         , query('o')
             .optional()
             .isIn(['a', 'd'])
