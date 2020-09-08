@@ -8,7 +8,7 @@ import {IPostDocSharable} from "@models/Post";
 
 type localRequestHandler = RequestHandler<{ category: string }, { msg: string, result: (IPostDocSharable & { isLiked?: boolean })[] }, {}, {
     q?: string;
-    s?: 'd' | 'l';
+    s?: 'd' | 'l' | 'r';
     o?: 'a' | 'd';
     k?: string;
     l?: string;
@@ -19,19 +19,23 @@ class SearchByCategory extends BaseController<localRequestHandler> {
     readonly access = Roles.anonymous;
     readonly method = 'get';
     readonly path = '/:category';
-
+    readonly sortOrders = {
+        'l': 'likes',
+        'r': 'score',
+        'd': 'lastModified'
+    };
     protected middleware: localRequestHandler[]
         = [
         async (req, res, next) => {
             const queryString = req.query.q;
-            const sortBy = req.query.s;
-            const sortOrder = req.query.o;
+            const sortBy = req.query.s || 'r';
+            const sortOrder = req.query.o || 'a';
             const category = req.params.category;
             const searchLimit = parseInt(req.query.l || configurations.posts.search.limit.toString(), 10);
             const searchSkip = parseInt(req.query.k || '0', 10);
             const postQuery = {
                 visible: true,
-                ...queryString ? {$or: [{title: {$regex: queryString}}, {content: {$regex: queryString}}]} : []
+                ...queryString ? {$text: {$search: queryString}} : {}
             };
             const chain = new AggregationChain()
                 .match({slug: category})
@@ -63,14 +67,14 @@ class SearchByCategory extends BaseController<localRequestHandler> {
                 })
                 .replaceUnwind('$posts')
                 .match(postQuery)
+                .addFields({score: {$meta: 'textScore'}})
                 .addFields({isLiked: {$in: [req.user && req.user._id, '$likes']}}, !!req.user)
                 .addFields({likes: {$size: '$likes'}})
                 .sort({
-                    [sortBy === 'd' ? 'lastModified' : 'likes']: sortOrder === 'a' ? 1 : -1
+                    [this.sortOrders[sortBy]]: sortOrder !== 'a' ? -1 : 1
                 })
                 .skip(searchSkip)
                 .limit(searchLimit);
-            console.log(JSON.stringify(chain.getPipelineInstance(), null, 10));
 
             const result = await Category.aggregate(chain.getPipelineInstance());
             if (!result.length)
@@ -97,7 +101,7 @@ class SearchByCategory extends BaseController<localRequestHandler> {
             }).withMessage('invalid range')
         , query('s')
             .optional()
-            .isIn(['l', 'd'])
+            .isIn(['l', 'd', 'r'])
         , query('o')
             .optional()
             .isIn(['a', 'd'])
