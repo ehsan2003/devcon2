@@ -99,4 +99,14 @@ ModelSchema.method('removeAll', function (this: IImageDataDoc) {
             fs.unlink(this.getPath(sizeName))
         )).then(() => this.remove());
 });
+
+ModelSchema.index({info: 'text', slugPrefix: 'text'}, {
+    default_language: 'none', weights: {
+        'info.slugPrefix': 10,
+        'info.title': 10,
+        'info.alt': 8,
+        'info.description': 4,
+        'info.details': 1
+    }
+});
 export default model<IImageDataDoc>('images', ModelSchema);
