@@ -14,14 +14,23 @@ export abstract class ImageUploader<T extends RequestHandler<any, { msg: string 
         mimetype: string;
         access: Roles
     }) {
-        const sharper = sharp(options.buff);
+
         console.log(options.info);
         const imageDataDoc = new ImageData(extractProps(options, 'info', 'access', 'mimetype', 'slugPrefix'));
+        return this.saveImageFiles({
+            imageDataDoc,
+            sizes: options.sizes,
+            buffer: options.buff
+        }).then(_ => imageDataDoc.save());
+    }
+
+    protected async saveImageFiles({imageDataDoc, sizes, buffer}: { imageDataDoc: IImageDataDoc, sizes: typeof configurations.posts.image.sizes, buffer: Buffer }) {
+        const sharper = sharp(buffer);
+        await imageDataDoc.removeFiles();
         imageDataDoc.sizes = {};
-        console.log(imageDataDoc);
         return Promise.all(
-            options.sizes.names.map(name => {
-                const size = options.sizes.info[name];
+            sizes.names.map(name => {
+                const size = sizes.info[name];
                 return sharper
                     .clone()
                     .resize(size)
@@ -34,6 +43,6 @@ export abstract class ImageUploader<T extends RequestHandler<any, { msg: string 
                         };
                         return fs.writeFile(imageDataDoc.getPath(name), buff);
                     });
-            })).then(_ => imageDataDoc.save());
+            }));
     }
 }
