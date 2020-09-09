@@ -6,6 +6,7 @@ import multer from "multer";
 import configurations from "@conf/configurations";
 import {ImageUploader} from "./controller-base";
 import {IUserDoc} from "@models/User";
+import {BadRequestError} from "@shared/errors";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc }, {
     description: string;
@@ -32,6 +33,11 @@ class Post extends ImageUploader<localRequestHandler> {
     middlewareBeforeValidate = [this.upload.single('image')];
     protected middleware: localRequestHandler[]
         = [
+        (req, res, next) => {
+            if (!req.file)
+                throw new BadRequestError('no file');
+            next();
+        },
         async (req, res, next) => {
             const user = req.user as IUserDoc;
             const result = await this.saveImage({
