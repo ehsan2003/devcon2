@@ -64,6 +64,7 @@ class Avatar extends ImageUploader<localRequestHandler> {
                     sizes: configurations.profile.avatar.sizes
                 });
                 profile.avatar = result._id;
+                await profile.save();
                 res.json({msg: 'success', result});
             }
         }
