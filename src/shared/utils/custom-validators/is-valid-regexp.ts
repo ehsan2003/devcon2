@@ -1,4 +1,4 @@
-import logger from "../../../../../devcon/src/shared/logger";
+import logger from "@shared/logger";
 
 export function isValidRegexP(pattern: string) {
     try {
