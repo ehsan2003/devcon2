@@ -3,11 +3,11 @@ import {Document, model, Schema, Types} from 'mongoose';
 export interface IProfileDoc extends Document {
     firstName: string;
     lastName?: string;
-    social: KeyValuePair<string>;
-    bio?: string;
+    social: string[];
+    bio: string;
     slug: string;
     user: Types.ObjectId;
-    avatar?: Types.ObjectId;
+    avatar: Types.ObjectId | null;
 }
 
 const ModelSchema = new Schema({
@@ -25,7 +25,7 @@ const ModelSchema = new Schema({
     },
     bio: {
         type: String,
-        required: false,
+        required: true,
     },
     slug: {
         type: String,
@@ -33,6 +33,7 @@ const ModelSchema = new Schema({
         unique: true
     }, user: {
         type: Schema.Types.ObjectId,
+        unique: true,
         required: true,
     }, avatar: {
         type: Types.ObjectId,
