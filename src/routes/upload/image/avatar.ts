@@ -43,15 +43,28 @@ class Avatar extends ImageUploader<localRequestHandler> {
         async (req, res, next) => {
             const user = req.user as IUserDoc;
             const profile = req.data as IProfileDoc;
-            const result = await this.saveImage({
-                buff: req.file.buffer,
-                access: Roles.anonymous,
-                mimetype: req.file.mimetype,
-                slugPrefix: path.join('avatar', profile.slug),
-                info: {uploader: user._id, alt: profile.firstName, title: profile.firstName},
-                sizes: configurations.profile.avatar.sizes
-            });
-            res.json({msg: 'success', result});
+            if (profile.avatar) {
+                const imageDataDoc = await ImageData.findOne({_id: profile.avatar});
+                if (!imageDataDoc)
+                    throw new InternalServerError(new Error('the data in db is conflict with some thing'));
+                await this.saveImageFiles({
+                    imageDataDoc,
+                    buffer: req.file.buffer,
+                    sizes: configurations.profile.avatar.sizes
+                });
+                res.json({msg: 'success', result: imageDataDoc});
+            } else {
+                const result = await this.saveImage({
+                    buff: req.file.buffer,
+                    access: Roles.anonymous,
+                    mimetype: req.file.mimetype,
+                    slugPrefix: path.join('avatars', profile.slug),
+                    info: {uploader: user._id, alt: profile.firstName, title: profile.firstName},
+                    sizes: configurations.profile.avatar.sizes
+                });
+                profile.avatar = result._id;
+                res.json({msg: 'success', result});
+            }
         }
     ];
 
