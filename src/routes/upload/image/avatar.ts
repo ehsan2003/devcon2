@@ -1,13 +1,13 @@
 import {Roles} from "@shared/utils";
 import {RequestHandler} from "express";
-import {IImageDataDoc} from "@models/ImageData";
+import ImageData, {IImageDataDoc} from "@models/ImageData";
 import {ImageUploader} from './controller-base';
 import multer from "multer";
 import configurations from "@conf/configurations";
 import {IUserDoc} from "@models/User";
 import Profile, {IProfileDoc} from "@models/Profile";
-import {NotFoundError} from "@shared/errors";
-import path from 'path';
+import {BadRequestError, InternalServerError, NotFoundError} from "@shared/errors";
+import path from "path";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc }, {}, {}>;
 
@@ -26,6 +26,11 @@ class Avatar extends ImageUploader<localRequestHandler> {
     });
     protected middleware: localRequestHandler[]
         = [this.upload.single('avatar'),
+        (req, res, next) => {
+            if (!req.file)
+                throw new BadRequestError('no file');
+            next();
+        },
         async (req, res, next) => {
             const user = req.user as IUserDoc;
             const profile = await Profile.findOne({user: user._id});
