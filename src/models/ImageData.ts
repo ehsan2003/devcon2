@@ -28,6 +28,8 @@ export interface IImageDataDoc extends Document {
     removeAll(): Promise<IImageDataDoc>;
 
     changeData(newData: Partial<Omit<Parameters<typeof generatePath>[0], 'size' | 'mimetype'>>): Promise<IImageDataDoc>;
+
+    removeFiles(): Promise<void[]>;
 }
 
 const ModelSchema = new Schema({
@@ -94,12 +96,14 @@ ModelSchema.method('changeData', function (this: IImageDataDoc, newData: Partial
     });
 });
 ModelSchema.method('removeAll', function (this: IImageDataDoc) {
+    return this.removeFiles().then(() => this.remove());
+});
+ModelSchema.method('removeFiles', function (this: IImageDataDoc) {
     return Promise.all(Object.keys(this.sizes)
         .map(sizeName =>
             fs.unlink(this.getPath(sizeName))
-        )).then(() => this.remove());
+        ));
 });
-
 ModelSchema.index({info: 'text', slugPrefix: 'text'}, {
     default_language: 'none', weights: {
         'info.slugPrefix': 10,
