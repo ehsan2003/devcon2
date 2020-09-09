@@ -7,6 +7,7 @@ import fs from "fs-extra";
 
 export abstract class ImageUploader<T extends RequestHandler<any, { msg: string }, any, any>> extends BaseController<T> {
     protected saveImage(options: {
+        type: 'post' | 'avatar'
         buff: Buffer;
         sizes: typeof configurations.posts.image.sizes;
         info: IImageDataDoc['info'];
@@ -16,7 +17,7 @@ export abstract class ImageUploader<T extends RequestHandler<any, { msg: string 
     }) {
 
         console.log(options.info);
-        const imageDataDoc = new ImageData(extractProps(options, 'info', 'access', 'mimetype', 'slugPrefix'));
+        const imageDataDoc = new ImageData(extractProps(options, 'info', 'access', 'mimetype', 'slugPrefix', 'type'));
         return this.saveImageFiles({
             imageDataDoc,
             sizes: options.sizes,

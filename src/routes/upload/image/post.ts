@@ -41,6 +41,7 @@ class Post extends ImageUploader<localRequestHandler> {
         async (req, res, next) => {
             const user = req.user as IUserDoc;
             const result = await this.saveImage({
+                type: 'post',
                 buff: req.file.buffer
                 , sizes: configurations.posts.image.sizes,
                 access: req.body.access,

@@ -55,6 +55,7 @@ class Avatar extends ImageUploader<localRequestHandler> {
                 res.json({msg: 'success', result: imageDataDoc});
             } else {
                 const result = await this.saveImage({
+                    type: 'avatar',
                     buff: req.file.buffer,
                     access: Roles.anonymous,
                     mimetype: req.file.mimetype,
