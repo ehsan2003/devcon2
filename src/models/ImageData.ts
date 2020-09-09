@@ -22,6 +22,7 @@ export interface IImageDataDoc extends Document {
     };
     dateModified: Date;
     mimetype: string;
+    type: 'post' | 'avatar';
 
     getPath(sizeName: string): string;
 
@@ -33,6 +34,12 @@ export interface IImageDataDoc extends Document {
 }
 
 const ModelSchema = new Schema({
+    type: {
+        type: String,
+        required: false,
+        enum: ['post', 'avatar'],
+        default: 'post'
+    },
     access: {
         required: true,
         type: Number
