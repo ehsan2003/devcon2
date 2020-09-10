@@ -3,6 +3,7 @@ import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import Profile, {IProfileDoc} from "@models/Profile";
 import {IUserDoc} from "@models/User";
+import {ConflictError} from "@shared/errors";
 
 type localRequestHandler = RequestHandler<{}, { msg: string, result: IProfileDoc }, Pick<IProfileDoc, 'firstName' | 'lastName' | 'social' | 'bio' | 'slug'>, {}>;
 
@@ -15,13 +16,14 @@ class Create extends BaseController<localRequestHandler> {
         = [
         async (req, res, next) => {
             const user = req.user as IUserDoc;
-            let profile = await Profile.findOne({user: user._id});
-            if (!profile) {
-                profile = new Profile(extractProps(req.body, 'firstName', 'lastName', 'social', 'bio', 'slug'));
-            } else {
-                Object.assign(profile, extractProps(req.body, 'firstName', 'lastName', 'social', 'bio'));
-            }
-            await profile.save();
+            const profileExists = await Profile.findOne({user: user._id});
+            if (profileExists)
+                throw new ConflictError('profile already exists you can edit it');
+            const profile = new Profile({
+                ...extractProps(req.body, 'firstName', 'lastName', 'social', 'bio', 'slug'),
+                user: user._id
+            });
+            await profile.save().catch(this.handleUniqueError('handle already exists'));
             res.json({msg: 'success', result: profile});
         }
     ];
