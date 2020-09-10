@@ -29,7 +29,7 @@ export abstract class ImageUploader<T extends RequestHandler<any, { msg: string 
     protected async saveImageFiles({imageDataDoc, sizes, buffer, mimetype}: { imageDataDoc: IImageDataDoc, sizes: typeof configurations.posts.image.sizes, buffer: Buffer, mimetype: string }) {
         const sharper = sharp(buffer);
         await imageDataDoc.removeFiles();
-
+        imageDataDoc.mimetype = mimetype;
         imageDataDoc.sizes = {};
         return Promise.all(
             sizes.names.map(name => {
