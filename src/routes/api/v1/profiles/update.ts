@@ -16,7 +16,9 @@ class Update extends BaseController<localRequestHandler> {
         = [
         async (req, res, next) => {
             const user = req.user as IUserDoc;
-            const profile = await Profile.findOneAndUpdate({user: user._id}, {$set: extractProps(req.body, 'firstName', 'lastName', 'social', 'bio')});
+            const profile = await Profile.findOneAndUpdate({user: user._id}
+                , {$set: extractProps(req.body, 'firstName', 'lastName', 'social', 'bio')}
+                , {new: true});
             if (!profile)
                 throw new NotFoundError('profile not found');
             res.json({msg: 'success', result: profile});
