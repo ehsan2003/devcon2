@@ -34,7 +34,12 @@ class PostUpdate extends ImageUploader<localRequestHandler> {
             const imageDataDoc = await ImageData.findById(req.params.id);
             if (!imageDataDoc)
                 throw new NotFoundError('imageData not found');
-            await this.saveImageFiles({imageDataDoc, sizes: configurations.posts.image.sizes, buffer: req.file.buffer});
+            await this.saveImageFiles({
+                imageDataDoc,
+                sizes: configurations.posts.image.sizes,
+                buffer: req.file.buffer,
+                mimetype: req.file.mimetype
+            });
             res.json({msg: 'success', result: imageDataDoc});
         }
     ];

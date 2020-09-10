@@ -21,13 +21,15 @@ export abstract class ImageUploader<T extends RequestHandler<any, { msg: string 
         return this.saveImageFiles({
             imageDataDoc,
             sizes: options.sizes,
-            buffer: options.buff
+            buffer: options.buff,
+            mimetype: options.mimetype
         }).then(_ => imageDataDoc.save());
     }
 
-    protected async saveImageFiles({imageDataDoc, sizes, buffer}: { imageDataDoc: IImageDataDoc, sizes: typeof configurations.posts.image.sizes, buffer: Buffer }) {
+    protected async saveImageFiles({imageDataDoc, sizes, buffer, mimetype}: { imageDataDoc: IImageDataDoc, sizes: typeof configurations.posts.image.sizes, buffer: Buffer, mimetype: string }) {
         const sharper = sharp(buffer);
         await imageDataDoc.removeFiles();
+
         imageDataDoc.sizes = {};
         return Promise.all(
             sizes.names.map(name => {

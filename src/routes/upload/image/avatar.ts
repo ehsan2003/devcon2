@@ -50,7 +50,8 @@ class Avatar extends ImageUploader<localRequestHandler> {
                 await this.saveImageFiles({
                     imageDataDoc,
                     buffer: req.file.buffer,
-                    sizes: configurations.profile.avatar.sizes
+                    sizes: configurations.profile.avatar.sizes,
+                    mimetype: req.file.mimetype
                 });
                 res.json({msg: 'success', result: imageDataDoc});
             } else {
