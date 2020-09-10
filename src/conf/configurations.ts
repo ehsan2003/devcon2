@@ -70,22 +70,25 @@ const configurations: IConfigurations = {
     },
     profile: {
         avatar: {
-            allowedMimeTypes: ['image/jpeg', 'image/jpg']
+            allowedMimeTypes: ['image/png']
             , sizes: {
                 names: ['thumbnail', 'large', 'medium'],
                 info: {
                     thumbnail: {
+                        background: {alpha: 0, r: 0, b: 0, g: 0},
                         fit: 'contain'
                         , width: 60
                         , height: 60
                     }, large: {
-                        fit: "contain"
-                        , width: 200
-                        , height: 200
-                    }, medium: {
+                        background: {alpha: 0, r: 0, b: 0, g: 0},
                         fit: "contain"
                         , width: 400
                         , height: 400
+                    }, medium: {
+                        background: {alpha: 0, r: 0, b: 0, g: 0},
+                        fit: "contain"
+                        , width: 200
+                        , height: 200
                     }
                 }
             }, uploadLimit: {fileSize: 1024 * 1024 * 3}
