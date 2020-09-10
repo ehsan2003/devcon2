@@ -106,7 +106,7 @@ ModelSchema.method('removeAll', function (this: IImageDataDoc) {
     return this.removeFiles().then(() => this.remove());
 });
 ModelSchema.method('removeFiles', function (this: IImageDataDoc) {
-    return Promise.all(Object.keys(this.sizes)
+    return Promise.all(Object.keys(this.sizes || {})
         .map(sizeName =>
             fs.unlink(this.getPath(sizeName))
         ));
