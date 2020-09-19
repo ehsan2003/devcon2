@@ -5,10 +5,10 @@ import {Roles, roleToPath} from "@shared/utils";
 import * as path from "path";
 import {extension} from "mime-types";
 
-interface IInfo {
+interface IInfo<OId = Types.ObjectId> {
     description?: string;
     details?: string;
-    uploader: Types.ObjectId;
+    uploader: OId;
     alt: string;
     title: string;
 }

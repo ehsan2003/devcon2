@@ -8,10 +8,10 @@ export interface ICategoryModel extends Model<ICategoryDoc> {
     getParent: (query: MongooseFilterQuery<ICategoryDoc>) => Aggregate<IGetParentDoc[]>;
 }
 
-export interface ICategory {
+export interface ICategory<OId = Types.ObjectId> {
     enName: string;
     slug: string;
-    parent: Types.ObjectId | null;
+    parent: OId | null;
 
 }
 

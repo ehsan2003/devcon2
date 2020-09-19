@@ -6,7 +6,6 @@ export interface IUser {
     email: string;
     password: string;
     role: Roles;
-
 }
 
 export interface IUserDoc extends Document, IUser {

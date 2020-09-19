@@ -1,13 +1,13 @@
 import {Document, model, Schema, Types} from 'mongoose';
 
-export interface IProfile {
+export interface IProfile<OId = Types.ObjectId> {
     firstName: string;
     lastName?: string;
     social: string[];
     bio: string;
     slug: string;
-    user: Types.ObjectId;
-    avatar: Types.ObjectId | null;
+    user: OId;
+    avatar: OId | null;
 
 }
 

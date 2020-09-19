@@ -2,15 +2,15 @@ import {Aggregate, Document, FilterQuery, Model, model, Schema, Types} from 'mon
 import {IUserDoc} from "@models/User";
 import {AggregationChain} from "@shared/utils";
 
-export interface IPost {
+export interface IPost<OId = Types.ObjectId> {
     content: KeyValuePair;
     lastModified: Date;
-    author: IUserDoc | Types.ObjectId;
+    author: IUserDoc | OId;
     visible: boolean;
-    tags: Types.ObjectId[];
-    likes: Types.ObjectId[];
-    featuredImage: Types.ObjectId;
-    category: Types.ObjectId;
+    tags: OId[];
+    likes: OId[];
+    featuredImage: OId;
+    category: OId;
     slug: string;
     title: string;
 

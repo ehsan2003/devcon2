@@ -1,11 +1,11 @@
 import {Document, model, Schema, Types} from 'mongoose';
 
-export interface IComment {
+export interface IComment<OId = Types.ObjectId> {
     content: string;
-    userData: { email: string, name: string } | { user: Types.ObjectId };
+    userData: { email: string, name: string } | { user: OId };
     date: Date;
-    responseTo: Types.ObjectId | null;
-    forPost: Types.ObjectId;
+    responseTo: OId | null;
+    forPost: OId;
 
 }
 
