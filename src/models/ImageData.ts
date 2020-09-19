@@ -13,7 +13,7 @@ interface IInfo {
     title: string;
 }
 
-export interface IImageDataDoc extends Document {
+export interface IImageData {
     slugPrefix: string;
     info: IInfo;
     access: Roles;
@@ -31,6 +31,9 @@ export interface IImageDataDoc extends Document {
     changeData(newData: Partial<Omit<Parameters<typeof generatePath>[0], 'size' | 'mimetype'>>): Promise<IImageDataDoc>;
 
     removeFiles(): Promise<void[]>;
+}
+
+export interface IImageDataDoc extends Document, IImageData {
 }
 
 const ModelSchema = new Schema({

@@ -7,10 +7,14 @@ export const enum verificationTypes {
     resetPassword = 'resetPassword'
 }
 
-export interface IVerificationDoc extends Document {
+export interface IVerification {
     token: string;
     data: { for: verificationTypes, email: string };
     expires: Date;
+
+}
+
+export interface IVerificationDoc extends Document, IVerification {
 }
 
 const ModelSchema = new Schema({

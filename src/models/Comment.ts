@@ -1,11 +1,15 @@
 import {Document, model, Schema, Types} from 'mongoose';
 
-export interface ICommentDoc extends Document {
+export interface IComment {
     content: string;
     userData: { email: string, name: string } | { user: Types.ObjectId };
     date: Date;
     responseTo: Types.ObjectId | null;
     forPost: Types.ObjectId;
+
+}
+
+export interface ICommentDoc extends Document, IComment {
 }
 
 const ModelSchema = new Schema({

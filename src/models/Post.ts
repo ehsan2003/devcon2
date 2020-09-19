@@ -2,7 +2,7 @@ import {Aggregate, Document, FilterQuery, Model, model, Schema, Types} from 'mon
 import {IUserDoc} from "@models/User";
 import {AggregationChain} from "@shared/utils";
 
-export interface IPostDoc extends Document {
+export interface IPost {
     content: KeyValuePair;
     lastModified: Date;
     author: IUserDoc | Types.ObjectId;
@@ -13,6 +13,10 @@ export interface IPostDoc extends Document {
     category: Types.ObjectId;
     slug: string;
     title: string;
+
+}
+
+export interface IPostDoc extends Document, IPost {
 }
 
 export interface IPostModel extends Model<IPostDoc> {

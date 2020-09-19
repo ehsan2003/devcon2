@@ -1,7 +1,11 @@
 import {Document, model, Model, Schema} from 'mongoose';
 
-export interface ITagDoc extends Document {
+export interface ITag {
     slug: string;
+
+}
+
+export interface ITagDoc extends Document, ITag {
 }
 
 export interface ITagModel extends Model<ITagDoc> {

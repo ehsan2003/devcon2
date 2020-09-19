@@ -1,6 +1,6 @@
 import {Document, model, Schema, Types} from 'mongoose';
 
-export interface IProfileDoc extends Document {
+export interface IProfile {
     firstName: string;
     lastName?: string;
     social: string[];
@@ -8,6 +8,10 @@ export interface IProfileDoc extends Document {
     slug: string;
     user: Types.ObjectId;
     avatar: Types.ObjectId | null;
+
+}
+
+export interface IProfileDoc extends Document, IProfile {
 }
 
 const ModelSchema = new Schema({
