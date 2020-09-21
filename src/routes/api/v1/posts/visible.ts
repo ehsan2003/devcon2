@@ -46,4 +46,3 @@ class Visible extends BaseController<localRequestHandler> {
 }
 
 export default new Visible();
-10;
