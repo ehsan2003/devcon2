@@ -4,17 +4,17 @@ import {body, ValidationChain} from "express-validator";
 import User from "@models/User";
 import {BadRequestError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, token: string }, { password: string, username: string, email: string }>;
+export type UsersLoginRequestHandler = RequestHandler<{}, { msg: string, token: string }, { password: string, username: string, email: string }>;
 
-class Login extends BaseController<localRequestHandler> {
+class Login extends BaseController<UsersLoginRequestHandler> {
 
     readonly access = null;
     readonly method = 'post';
     readonly path: string = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: UsersLoginRequestHandler[]
         = [
         (async (req, res, next) => {
-            const {body:reqBody} = req;
+            const {body: reqBody} = req;
             const user = await User.findOne({email: reqBody.email});
             if (!user)
                 throw new BadRequestError(`user doesn't exists`);

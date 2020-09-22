@@ -4,19 +4,19 @@ import {body, ValidationChain} from "express-validator";
 import ImageData, {IImageDataDoc} from "@models/ImageData";
 import {NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, {
+export type ImagesChangeInfoRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, {
     details?: string;
     description?: string;
     alt?: string;
     title?: string;
 }, {}>;
 
-class ChangeInfo extends BaseController<localRequestHandler> {
+class ChangeInfo extends BaseController<ImagesChangeInfoRequestHandler> {
 
     readonly access = Roles.editor;
     readonly method = 'put';
     readonly path = '/:id';
-    protected middleware: localRequestHandler[]
+    protected middleware: ImagesChangeInfoRequestHandler[]
         = [
         async (req, res, next) => {
             const imageData = await ImageData.findByIdAndUpdate(req.params.id, {

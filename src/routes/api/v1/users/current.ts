@@ -3,14 +3,14 @@ import {RequestHandler} from "express";
 import {ValidationChain} from "express-validator";
 import {IUserDoc} from "@models/User";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: ReturnType<typeof secureUserInfo> }, {}, {}>;
+export type UsersCurrentRequestHandler = RequestHandler<{}, { msg: string, result: ReturnType<typeof secureUserInfo> }, {}, {}>;
 
-class Current extends BaseController<localRequestHandler> {
+class Current extends BaseController<UsersCurrentRequestHandler> {
 
     readonly access = Roles.unverified;
     readonly method = 'get';
     readonly path: string = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: UsersCurrentRequestHandler[]
         = [
         (async (req, res, next) => {
             res.json({msg: 'success', result: secureUserInfo(req.user as IUserDoc)});

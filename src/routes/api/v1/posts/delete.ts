@@ -5,14 +5,14 @@ import Post, {IPostDoc} from "@models/Post";
 import {IUserDoc} from "@models/User";
 import {AccessForbiddenError, NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, {}, {}>;
+export type PostsDeleteRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, {}, {}>;
 
-class Delete extends BaseController<localRequestHandler> {
+class Delete extends BaseController<PostsDeleteRequestHandler> {
 
     readonly access = Roles.contributor;
     readonly method = 'delete';
     readonly path = '/:id';
-    protected middleware: localRequestHandler[]
+    protected middleware: PostsDeleteRequestHandler[]
         = [async (req, res, next) => {
         const user = req.user as IUserDoc;
         const post = await Post.findById(req.params.id);

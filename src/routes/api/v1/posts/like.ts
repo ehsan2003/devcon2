@@ -6,13 +6,14 @@ import {IUserDoc} from "@models/User";
 import {Types} from "mongoose";
 import {ConflictError, NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
-class Like extends BaseController<localRequestHandler> {
+export type PostsLikeRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
+
+class Like extends BaseController<PostsLikeRequestHandler> {
 
     readonly access = Roles.subscriber;
     readonly method = 'put';
     readonly path = '/:id';
-    protected middleware: localRequestHandler[]
+    protected middleware: PostsLikeRequestHandler[]
         = [
         async (req, res, next) => {
             const id = Types.ObjectId(req.params.id);

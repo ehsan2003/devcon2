@@ -6,14 +6,14 @@ import {Types} from "mongoose";
 import {ConflictError, NotFoundError} from "@shared/errors";
 import Post from "@models/Post";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, { email: string, name: string, content: string, post: Types.ObjectId, responseTo?: Types.ObjectId }, {}>;
+export type CommentsInsertUnauthorizedRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, { email: string, name: string, content: string, post: Types.ObjectId, responseTo?: Types.ObjectId }, {}>;
 
-class InsertUnauthorized extends BaseController<localRequestHandler> {
+class InsertUnauthorized extends BaseController<CommentsInsertUnauthorizedRequestHandler> {
 
     readonly access = null;
     readonly method = 'post';
     readonly path: string = '/unauthorized';
-    protected middleware: localRequestHandler[] = [
+    protected middleware: CommentsInsertUnauthorizedRequestHandler[] = [
         (async (req, res, next) => {
             if (req.body.responseTo) {
                 const parent = await Comment.findById(req.body.responseTo);

@@ -8,16 +8,16 @@ import {IUserDoc} from "@models/User";
 import {ConflictError, NotFoundError} from "@shared/errors";
 import Post from "@models/Post";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, {
+export type CommentsInsertAuthorizedRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, {
     content: string, responseTo?: Types.ObjectId, post: Types.ObjectId
 }, {}>;
 
-class InsertAuthorized extends BaseController<localRequestHandler> {
+class InsertAuthorized extends BaseController<CommentsInsertAuthorizedRequestHandler> {
 
     readonly access = Roles.unverified;
     readonly method = 'post';
     readonly path: string = '/authorized';
-    protected middleware: localRequestHandler[]
+    protected middleware: CommentsInsertAuthorizedRequestHandler[]
         = [
         (async (req, res, next) => {
             const user = req.user as IUserDoc;

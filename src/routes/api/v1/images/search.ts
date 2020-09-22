@@ -4,12 +4,12 @@ import {query, ValidationChain} from "express-validator";
 import ImageData, {IImageDataDoc} from "@models/ImageData";
 import configurations from "@conf/configurations";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc[] }, {},
+export type ImagesSearchRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc[] }, {},
     {
         search?: string, access?: Roles, mimetype?: string, sortOrder: 'a' | 'd', sortBy: 'd' | 's' | 'm' | 'r'
     }>;
 
-class Search extends BaseController<localRequestHandler> {
+class Search extends BaseController<ImagesSearchRequestHandler> {
 
     readonly access = Roles.contributor;
     readonly method = 'get';
@@ -20,7 +20,7 @@ class Search extends BaseController<localRequestHandler> {
         m: 'mimetype',
         r: 'score'
     };
-    protected middleware: localRequestHandler[]
+    protected middleware: ImagesSearchRequestHandler[]
         = [
         async (req, res, next) => {
             const reqQuery = req.query;

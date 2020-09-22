@@ -5,14 +5,14 @@ import ImageData, {IImageDataDoc} from "@models/ImageData";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, { newAccess: Roles }, {}>;
+export type ImagesChangeAccessRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, { newAccess: Roles }, {}>;
 
-class ChangeAccess extends BaseController<localRequestHandler> {
+class ChangeAccess extends BaseController<ImagesChangeAccessRequestHandler> {
 
     readonly access = Roles.editor;
     readonly method = 'put';
     readonly path = '/:id';
-    protected middleware: localRequestHandler[]
+    protected middleware: ImagesChangeAccessRequestHandler[]
         = [
         async (req, res, next) => {
             const id = Types.ObjectId(req.params.id);

@@ -4,14 +4,14 @@ import {param, ValidationChain} from "express-validator";
 import Profile, {IProfileDoc} from "@models/Profile";
 import {NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{ slug: string }, { msg: string, result: IProfileDoc }, {}, {}>;
+export type ProfilesGetSlugRequestHandler = RequestHandler<{ slug: string }, { msg: string, result: IProfileDoc }, {}, {}>;
 
-class GetSlug extends BaseController<localRequestHandler> {
+class GetSlug extends BaseController<ProfilesGetSlugRequestHandler> {
 
     readonly access = null;
     readonly method = 'get';
     readonly path = '/:slug';
-    protected middleware: localRequestHandler[]
+    protected middleware: ProfilesGetSlugRequestHandler[]
         = [
         async (req, res, next) => {
             const profile = await Profile.findOne({slug: req.params.slug});

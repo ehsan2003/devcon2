@@ -4,14 +4,14 @@ import {body, ValidationChain} from "express-validator";
 import Tag, {ITagDoc} from "@models/Tag";
 import {Types} from "mongoose";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: ITagDoc }, { slug: string, id?: string }, {}>;
+export type TagsInsertRequestHandler = RequestHandler<{}, { msg: string, result: ITagDoc }, { slug: string, id?: string }, {}>;
 
-class Insert extends BaseController<localRequestHandler> {
+class Insert extends BaseController<TagsInsertRequestHandler> {
 
     readonly access = Roles.contributor;
     readonly method = 'post';
     readonly path: string = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: TagsInsertRequestHandler[]
         = [
         (async (req, res, next) => {
             const {slug, id} = req.body;

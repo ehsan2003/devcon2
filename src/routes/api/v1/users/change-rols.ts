@@ -4,11 +4,11 @@ import {body, param, ValidationChain} from "express-validator";
 import User, {IUserDoc} from "@models/User";
 import {AccessForbiddenError, NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ReturnType<typeof secureUserInfo> }, {
+export type UsersChangeRolsRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ReturnType<typeof secureUserInfo> }, {
     newRole: Roles;
 }, {}>;
 
-class ChangeRoles extends BaseController<localRequestHandler> {
+class ChangeRoles extends BaseController<UsersChangeRolsRequestHandler> {
 
     readonly access = Roles.editor;
     readonly method = 'put';
@@ -23,7 +23,7 @@ class ChangeRoles extends BaseController<localRequestHandler> {
         [Roles.administrator]: Roles.editor,
         [Roles.superAdmin]: Roles.administrator
     };
-    protected middleware: localRequestHandler[]
+    protected middleware: UsersChangeRolsRequestHandler[]
         = [
         async (req, res, next) => {
             const user = req.user as IUserDoc;

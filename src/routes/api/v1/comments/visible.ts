@@ -3,19 +3,19 @@ import {RequestHandler} from "express";
 import {body, param, ValidationChain} from "express-validator";
 import Comment from "@models/Comment";
 
-export type localRequestHandler = RequestHandler<{ commentId: string }, { msg: string, result: any }, { visible: boolean }, {}>;
+export type CommentsVisibleRequestHandler = RequestHandler<{ commentId: string }, { msg: string, result: any }, { visible: boolean }, {}>;
 
-class Visible extends BaseController<localRequestHandler> {
+class Visible extends BaseController<CommentsVisibleRequestHandler> {
 
     readonly access = Roles.editor;
     readonly method = 'put';
     readonly path: string = '/:commentId';
-    protected middleware: localRequestHandler[]
+    protected middleware: CommentsVisibleRequestHandler[]
         = [
         (async (req, res, next) => {
             const {commentId} = req.params;
             const visible = req.body.visible;
-            const comment = await Comment.findByIdAndUpdate(commentId, {$set: {visible: visible === void 0 ? true : visible}},{new:true});
+            const comment = await Comment.findByIdAndUpdate(commentId, {$set: {visible: visible === void 0 ? true : visible}}, {new: true});
             res.json({msg: 'success', result: comment});
         })
     ];

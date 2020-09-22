@@ -4,14 +4,14 @@ import {param, ValidationChain} from "express-validator";
 import ImageData, {IImageDataDoc} from "@models/ImageData";
 import {NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, {}, {}>;
+export type ImagesRemoveRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, {}, {}>;
 
-class Remove extends BaseController<localRequestHandler> {
+class Remove extends BaseController<ImagesRemoveRequestHandler> {
 
     readonly access = Roles.editor;
     readonly method = 'delete';
     readonly path = '/:id';
-    protected middleware: localRequestHandler[]
+    protected middleware: ImagesRemoveRequestHandler[]
         = [
         async (req, res, next) => {
             const imageData = await ImageData.findById(req.params.id);

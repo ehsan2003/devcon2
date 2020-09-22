@@ -3,17 +3,17 @@ import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import Category, {ICategoryDoc} from "@models/Category";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc }, { slug: string, enName: string, parent?: string }, {}>;
+export type CategoriesInsertRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc }, { slug: string, enName: string, parent?: string }, {}>;
 
-class Insert extends BaseController<localRequestHandler> {
+class Insert extends BaseController<CategoriesInsertRequestHandler> {
 
     readonly access = Roles.editor;
     readonly method = 'post';
     readonly path: string = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: CategoriesInsertRequestHandler[]
         = [
         (async (req, res, next) => {
-            const {body:reqBody} = req;
+            const {body: reqBody} = req;
             const category = new Category({
                 slug: reqBody.slug,
                 enName: reqBody.enName,

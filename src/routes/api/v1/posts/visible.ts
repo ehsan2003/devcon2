@@ -5,14 +5,14 @@ import Post, {IPostDoc} from "@models/Post";
 import {AccessForbiddenError, NotFoundError} from "@shared/errors";
 import {IUserDoc} from "@models/User";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, { visible?: boolean }, {}>;
+export type PostsVisibleRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, { visible?: boolean }, {}>;
 
-class Visible extends BaseController<localRequestHandler> {
+class Visible extends BaseController<PostsVisibleRequestHandler> {
 
     readonly access = Roles.author;
     readonly method = 'put';
     readonly path = '/:id';
-    protected middleware: localRequestHandler[]
+    protected middleware: PostsVisibleRequestHandler[]
         = [
         async (req, res, next) => {
             const user = req.user as IUserDoc;

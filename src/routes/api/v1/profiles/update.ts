@@ -5,14 +5,14 @@ import Profile, {IProfileDoc} from "@models/Profile";
 import {IUserDoc} from "@models/User";
 import {NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: IProfileDoc }, Partial<Pick<IProfileDoc, 'firstName' | 'lastName' | 'social' | 'bio'>>, {}>;
+export type ProfilesUpdateRequestHandler = RequestHandler<{}, { msg: string, result: IProfileDoc }, Partial<Pick<IProfileDoc, 'firstName' | 'lastName' | 'social' | 'bio'>>, {}>;
 
-class Update extends BaseController<localRequestHandler> {
+class Update extends BaseController<ProfilesUpdateRequestHandler> {
 
     readonly access = Roles.subscriber;
     readonly method = 'put';
     readonly path = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: ProfilesUpdateRequestHandler[]
         = [
         async (req, res, next) => {
             const user = req.user as IUserDoc;

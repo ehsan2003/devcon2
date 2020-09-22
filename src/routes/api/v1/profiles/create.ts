@@ -5,14 +5,14 @@ import Profile, {IProfileDoc} from "@models/Profile";
 import {IUserDoc} from "@models/User";
 import {ConflictError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: IProfileDoc }, Pick<IProfileDoc, 'firstName' | 'lastName' | 'social' | 'bio' | 'slug'>, {}>;
+export type ProfilesCreateRequestHandler = RequestHandler<{}, { msg: string, result: IProfileDoc }, Pick<IProfileDoc, 'firstName' | 'lastName' | 'social' | 'bio' | 'slug'>, {}>;
 
-class Create extends BaseController<localRequestHandler> {
+class Create extends BaseController<ProfilesCreateRequestHandler> {
 
     readonly access = Roles.subscriber;
     readonly method = 'post';
     readonly path = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: ProfilesCreateRequestHandler[]
         = [
         async (req, res, next) => {
             const user = req.user as IUserDoc;

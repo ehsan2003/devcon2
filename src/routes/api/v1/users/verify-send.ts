@@ -4,14 +4,14 @@ import {ValidationChain} from "express-validator";
 import {IUserDoc} from "@models/User";
 import Verification, {verificationTypes} from "@models/Verification";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string }, {}, {}>;
+export type UsersVerifySendRequestHandler = RequestHandler<{}, { msg: string }, {}, {}>;
 
-class VerifySend extends BaseController<localRequestHandler> {
+class VerifySend extends BaseController<UsersVerifySendRequestHandler> {
     exactAccess = true;
     readonly access = Roles.unverified;
     readonly method = 'get';
     readonly path: string = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: UsersVerifySendRequestHandler[]
         = [
         async (req, res, next) => {
             const user = req.user as IUserDoc;

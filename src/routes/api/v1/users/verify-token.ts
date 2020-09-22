@@ -4,14 +4,14 @@ import {param, ValidationChain} from "express-validator";
 import {verificationTypes} from "@models/Verification";
 import {BadRequestError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{ token: string }, { msg: string, result: ReturnType<typeof secureUserInfo> }, {}, {}>;
+export type UsersVerifyTokenRequestHandler = RequestHandler<{ token: string }, { msg: string, result: ReturnType<typeof secureUserInfo> }, {}, {}>;
 
-class VerifyToken extends BaseController<localRequestHandler> {
+class VerifyToken extends BaseController<UsersVerifyTokenRequestHandler> {
 
     readonly access = null;
     readonly method = 'get';
     readonly path: string = '/:token';
-    protected middleware: localRequestHandler[]
+    protected middleware: UsersVerifyTokenRequestHandler[]
         = [
         (async (req, res, next) => {
             const {token} = req.params;

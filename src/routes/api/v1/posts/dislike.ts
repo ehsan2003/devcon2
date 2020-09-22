@@ -6,13 +6,14 @@ import {Types} from "mongoose";
 import {IUserDoc} from "@models/User";
 import {ConflictError, NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
-class Dislike extends BaseController<localRequestHandler> {
+export type PostsDislikeRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
+
+class Dislike extends BaseController<PostsDislikeRequestHandler> {
 
     readonly access = Roles.subscriber;
     readonly method = 'put';
     readonly path = '/:id';
-    protected middleware: localRequestHandler[]
+    protected middleware: PostsDislikeRequestHandler[]
         = [
         async (req, res, next) => {
             const id = Types.ObjectId(req.params.id);

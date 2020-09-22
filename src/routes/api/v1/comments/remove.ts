@@ -4,14 +4,14 @@ import {query, ValidationChain} from "express-validator";
 import Comment from "@models/Comment";
 import {isValidObjectId} from "mongoose";
 
-export type localRequestHandler = RequestHandler<{ comment: string }, { msg: string, result: any }, {}, { comments: string[] }>;
+export type CommentsRemoveRequestHandler = RequestHandler<{ comment: string }, { msg: string, result: any }, {}, { comments: string[] }>;
 
-class Remove extends BaseController<localRequestHandler> {
+class Remove extends BaseController<CommentsRemoveRequestHandler> {
 
     readonly access = Roles.editor;
     readonly method = 'delete';
     readonly path: string = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: CommentsRemoveRequestHandler[]
         = [
         (async (req, res, next) => {
             const commendIds = req.query.comments;

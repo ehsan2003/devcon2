@@ -4,7 +4,7 @@ import {query, ValidationChain} from "express-validator";
 import Post, {IPostDocSharable} from "@models/Post";
 import configurations from "@conf/configurations";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: (IPostDocSharable & { isLiked?: boolean })[] }, {}, {
+export type PostsSearchRequestHandler = RequestHandler<{}, { msg: string, result: (IPostDocSharable & { isLiked?: boolean })[] }, {}, {
     q?: string;
     s?: 'd' | 'l' | 'r';
     o?: 'a' | 'd';
@@ -13,7 +13,7 @@ export type localRequestHandler = RequestHandler<{}, { msg: string, result: (IPo
 
 }>;
 
-class Search extends BaseController<localRequestHandler> {
+class Search extends BaseController<PostsSearchRequestHandler> {
 
     readonly access = Roles.anonymous;
     readonly method = 'get';
@@ -23,7 +23,7 @@ class Search extends BaseController<localRequestHandler> {
         'r': 'score',
         'd': 'lastModified'
     };
-    protected middleware: localRequestHandler[]
+    protected middleware: PostsSearchRequestHandler[]
         = [
         async (req, res, next) => {
             const queryString = req.query.q;

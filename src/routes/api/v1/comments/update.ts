@@ -3,14 +3,14 @@ import {RequestHandler} from "express";
 import {body, param, ValidationChain} from "express-validator";
 import Comment from "@models/Comment";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: any }, { content: string }, {}>;
+export type CommentsUpdateRequestHandler = RequestHandler<{ id: string }, { msg: string, result: any }, { content: string }, {}>;
 
-class Update extends BaseController<localRequestHandler> {
+class Update extends BaseController<CommentsUpdateRequestHandler> {
 
     readonly access = Roles.editor;
     readonly method = 'put';
     readonly path: string = '/:id';
-    protected middleware: localRequestHandler[]
+    protected middleware: CommentsUpdateRequestHandler[]
         = [
         (async (req, res, next) => {
             const id = req.params.id;

@@ -4,14 +4,14 @@ import {body, ValidationChain} from "express-validator";
 import {Types} from "mongoose";
 import Category from "@models/Category";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: any }, { source: Types.ObjectId, dest?: Types.ObjectId }, {}>;
+export type CategoriesChangeParentRequestHandler = RequestHandler<{}, { msg: string, result: any }, { source: Types.ObjectId, dest?: Types.ObjectId }, {}>;
 
-class ChangeParent extends BaseController<localRequestHandler> {
+class ChangeParent extends BaseController<CategoriesChangeParentRequestHandler> {
 
     readonly access = Roles.editor;
     readonly method = 'put';
     readonly path: string = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: CategoriesChangeParentRequestHandler[]
         = [
         (async (req, res, next) => {
             const result = await Category.updateMany({parent: req.body.source}, {$set: {parent: req.body.dest || null}});

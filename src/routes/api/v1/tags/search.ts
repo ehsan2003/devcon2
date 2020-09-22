@@ -5,14 +5,14 @@ import Tag, {ITagDoc} from "@models/Tag";
 import {NotFoundError} from "@shared/errors";
 import configurations from "@conf/configurations";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: ITagDoc[] }, {}, { q: string, l: number }>;
+export type TagsSearchRequestHandler = RequestHandler<{}, { msg: string, result: ITagDoc[] }, {}, { q: string, l: number }>;
 
-class Search extends BaseController<localRequestHandler> {
+class Search extends BaseController<TagsSearchRequestHandler> {
 
     readonly access = null;
     readonly method = 'get';
     readonly path: string = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: TagsSearchRequestHandler[]
         = [
         (async (req, res, next) => {
             const pattern = req.query.q;

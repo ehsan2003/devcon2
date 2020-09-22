@@ -6,7 +6,7 @@ import configurations from "@conf/configurations";
 import {NotFoundError} from "@shared/errors";
 import {IPostDocSharable} from "@models/Post";
 
-export type localRequestHandler = RequestHandler<{ category: string }, { msg: string, result: (IPostDocSharable & { isLiked?: boolean })[] }, {}, {
+export type PostsSearchCategoryRequestHandler = RequestHandler<{ category: string }, { msg: string, result: (IPostDocSharable & { isLiked?: boolean })[] }, {}, {
     q?: string;
     s?: 'd' | 'l' | 'r';
     o?: 'a' | 'd';
@@ -14,7 +14,7 @@ export type localRequestHandler = RequestHandler<{ category: string }, { msg: st
     l?: string;
 }>;
 
-class SearchByCategory extends BaseController<localRequestHandler> {
+class SearchByCategory extends BaseController<PostsSearchCategoryRequestHandler> {
 
     readonly access = Roles.anonymous;
     readonly method = 'get';
@@ -24,7 +24,7 @@ class SearchByCategory extends BaseController<localRequestHandler> {
         'r': 'score',
         'd': 'lastModified'
     };
-    protected middleware: localRequestHandler[]
+    protected middleware: PostsSearchCategoryRequestHandler[]
         = [
         async (req, res, next) => {
             const queryString = req.query.q;

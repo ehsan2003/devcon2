@@ -4,14 +4,14 @@ import {body, ValidationChain} from "express-validator";
 import {IUserDoc} from "@models/User";
 import {BadRequestError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string }, { password: string, new: string }, {}>;
+export type UsersChangePasswordRequestHandler = RequestHandler<{}, { msg: string }, { password: string, new: string }, {}>;
 
-class ChangePassword extends BaseController<localRequestHandler> {
+class ChangePassword extends BaseController<UsersChangePasswordRequestHandler> {
 
     readonly access = Roles.unverified;
     readonly method = 'post';
     readonly path: string = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: UsersChangePasswordRequestHandler[]
         = [
         (async (req, res, next) => {
             const user = req.user as IUserDoc;

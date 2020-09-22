@@ -7,14 +7,14 @@ import {isValidObjectId, Types} from "mongoose";
 import Category from "@models/Category";
 import Tag from "@models/Tag";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: IPostDoc }, Pick<IPostDoc, 'content' | 'title' | 'slug' | 'featuredImage' | 'category' | 'tags'>, {}>;
+export type PostsInsertRequestHandler = RequestHandler<{}, { msg: string, result: IPostDoc }, Pick<IPostDoc, 'content' | 'title' | 'slug' | 'featuredImage' | 'category' | 'tags'>, {}>;
 
-class Insert extends BaseController<localRequestHandler> {
+class Insert extends BaseController<PostsInsertRequestHandler> {
 
     readonly access = Roles.contributor;
     readonly method = 'post';
     readonly path: string = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: PostsInsertRequestHandler[]
         = [
         (async (req, res, next) => {
             const result = new Post({

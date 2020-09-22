@@ -8,14 +8,14 @@ import {isValidObjectId, Types} from "mongoose";
 import Category from "@models/Category";
 import Tag from "@models/Tag";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, Partial<Pick<IPostDoc, 'content' | 'title' | 'slug' | 'featuredImage' | 'category' | 'tags'>>, {}>;
+export type PostsUpdateRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, Partial<Pick<IPostDoc, 'content' | 'title' | 'slug' | 'featuredImage' | 'category' | 'tags'>>, {}>;
 
-class Update extends BaseController<localRequestHandler> {
+class Update extends BaseController<PostsUpdateRequestHandler> {
 
     readonly access = Roles.contributor;
     readonly method = 'put';
     readonly path: string = '/:id';
-    protected middleware: localRequestHandler[]
+    protected middleware: PostsUpdateRequestHandler[]
         = [
         async (req, res, next) => {
             const user = req.user as IUserDoc;

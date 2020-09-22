@@ -5,13 +5,13 @@ import Post, {IPostDocSharable} from "@models/Post";
 import {NotFoundError} from "@shared/errors";
 import {Types} from "mongoose";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
+export type PostsGetRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
 
-class Get extends BaseController<localRequestHandler> {
+class Get extends BaseController<PostsGetRequestHandler> {
     readonly access = null;
     readonly method = 'get';
     readonly path = '/:id';
-    protected middleware: localRequestHandler[]
+    protected middleware: PostsGetRequestHandler[]
         = [
         async (req, res, next) => {
             const post = (await Post.preparePostForClient({_id: Types.ObjectId(req.params.id)}))[0];

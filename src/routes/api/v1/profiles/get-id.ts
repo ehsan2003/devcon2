@@ -4,14 +4,14 @@ import {param, ValidationChain} from "express-validator";
 import Profile, {IProfileDoc} from "@models/Profile";
 import {NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IProfileDoc }, {}, {}>;
+export type ProfilesGetIdRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IProfileDoc }, {}, {}>;
 
-class GetId extends BaseController<localRequestHandler> {
+class GetId extends BaseController<ProfilesGetIdRequestHandler> {
 
     readonly access = null;
     readonly method = 'get';
     readonly path = '/:id';
-    protected middleware: localRequestHandler[]
+    protected middleware: ProfilesGetIdRequestHandler[]
         = [
         async (req, res, next) => {
             const profile = await Profile.findById(req.params.id);

@@ -3,13 +3,13 @@ import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import User from "@models/User";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, token: string, result: ReturnType<typeof secureUserInfo> }, { password: string, username: string, email: string }>;
+export type UsersRegisterRequestHandler = RequestHandler<{}, { msg: string, token: string, result: ReturnType<typeof secureUserInfo> }, { password: string, username: string, email: string }>;
 
-class Register extends BaseController<localRequestHandler> {
+class Register extends BaseController<UsersRegisterRequestHandler> {
     readonly access = null;
     readonly method: "all" | "get" | "post" | "put" | "delete" | "patch" | "options" | "head" = 'post';
     readonly path: string = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: UsersRegisterRequestHandler[]
         = [
         async (req, res, next) => {
             const extracted = extractProps(req.body, 'email', 'username');

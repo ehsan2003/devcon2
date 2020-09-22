@@ -5,17 +5,17 @@ import Category, {ICategoryDoc} from "@models/Category";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc }, { id: string, parent?: Types.ObjectId, slug?: string, enName?: string }, {}>;
+export type CategoriesUpdateRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc }, { id: string, parent?: Types.ObjectId, slug?: string, enName?: string }, {}>;
 
-class Update extends BaseController<localRequestHandler> {
+class Update extends BaseController<CategoriesUpdateRequestHandler> {
 
     readonly access = Roles.editor;
     readonly method = 'put';
     readonly path: string = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: CategoriesUpdateRequestHandler[]
         = [
         (async (req, res, next) => {
-            const {body:reqBody} = req;
+            const {body: reqBody} = req;
             const result = await Category.findOneAndUpdate({_id: reqBody.id}, {$set: extractProps(reqBody, 'enName', 'parent', 'slug')}, {new: true});
             if (!result)
                 throw new NotFoundError('category not found');

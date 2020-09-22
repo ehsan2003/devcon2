@@ -5,14 +5,14 @@ import Comment, {ICommentDoc} from "@models/Comment";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ICommentDoc[] }, {}, {}>;
+export type CommentsGetResponsesRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ICommentDoc[] }, {}, {}>;
 
-class GetResponses extends BaseController<localRequestHandler> {
+class GetResponses extends BaseController<CommentsGetResponsesRequestHandler> {
 
     readonly access = null;
     readonly method = 'get';
     readonly path: string = '/:id';
-    protected middleware: localRequestHandler[]
+    protected middleware: CommentsGetResponsesRequestHandler[]
         = [
         (async (req, res, next) => {
             const result = await Comment.aggregate([

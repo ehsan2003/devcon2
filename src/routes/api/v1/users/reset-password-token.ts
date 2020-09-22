@@ -4,14 +4,14 @@ import {body, param, ValidationChain} from "express-validator";
 import {verificationTypes} from "@models/Verification";
 import {BadRequestError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{ token: string }, { msg: string }, { newPassword: string }, {}>;
+export type UsersResetPasswordTokenRequestHandler = RequestHandler<{ token: string }, { msg: string }, { newPassword: string }, {}>;
 
-class ResetPasswordToken extends BaseController<localRequestHandler> {
+class ResetPasswordToken extends BaseController<UsersResetPasswordTokenRequestHandler> {
 
     readonly access = null;
     readonly method = 'post';
     readonly path: string = '/:token';
-    protected middleware: localRequestHandler[]
+    protected middleware: UsersResetPasswordTokenRequestHandler[]
         = [
         (async (req, res, next) => {
             const {token} = req.params;

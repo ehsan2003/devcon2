@@ -5,14 +5,14 @@ import Verification, {verificationTypes} from "@models/Verification";
 import User from "@models/User";
 import {NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string }, { email: string }, {}>;
+export type UsersResetPasswordSendRequestHandler = RequestHandler<{}, { msg: string }, { email: string }, {}>;
 
-class ResetPasswordSend extends BaseController<localRequestHandler> {
+class ResetPasswordSend extends BaseController<UsersResetPasswordSendRequestHandler> {
 
     readonly access = null;
     readonly method = 'post';
     readonly path: string = '/';
-    protected middleware: localRequestHandler[]
+    protected middleware: UsersResetPasswordSendRequestHandler[]
         = [
         (async (req, res, next) => {
             const {email} = req.body;
