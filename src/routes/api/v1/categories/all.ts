@@ -2,7 +2,7 @@ import {BaseController} from "@shared/utils";
 import {RequestHandler} from "express";
 import Category, {ICategoryDoc} from "@models/Category";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc[] }, {}, {}>;
+export type localRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc[] }, {}, {}>;
 
 class All extends BaseController<localRequestHandler> {
 

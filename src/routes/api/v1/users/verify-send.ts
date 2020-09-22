@@ -1,10 +1,10 @@
-import {BaseController, getRandomToken,  Roles} from "@shared/utils";
+import {BaseController, getRandomToken, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {ValidationChain} from "express-validator";
 import {IUserDoc} from "@models/User";
 import Verification, {verificationTypes} from "@models/Verification";
 
-type localRequestHandler = RequestHandler<{}, { msg: string }, {}, {}>;
+export type localRequestHandler = RequestHandler<{}, { msg: string }, {}, {}>;
 
 class VerifySend extends BaseController<localRequestHandler> {
     exactAccess = true;

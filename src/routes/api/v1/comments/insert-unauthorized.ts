@@ -6,7 +6,7 @@ import {Types} from "mongoose";
 import {ConflictError, NotFoundError} from "@shared/errors";
 import Post from "@models/Post";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, { email: string, name: string, content: string, post: Types.ObjectId, responseTo?: Types.ObjectId }, {}>;
+export type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, { email: string, name: string, content: string, post: Types.ObjectId, responseTo?: Types.ObjectId }, {}>;
 
 class InsertUnauthorized extends BaseController<localRequestHandler> {
 

@@ -4,7 +4,7 @@ import {body, ValidationChain} from "express-validator";
 import User from "@models/User";
 import {BadRequestError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, token: string }, { password: string, username: string, email: string }>;
+export type localRequestHandler = RequestHandler<{}, { msg: string, token: string }, { password: string, username: string, email: string }>;
 
 class Login extends BaseController<localRequestHandler> {
 

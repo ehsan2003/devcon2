@@ -5,7 +5,7 @@ import ImageData, {IImageDataDoc} from "@models/ImageData";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, { newSlug: string }, {}>;
+export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, { newSlug: string }, {}>;
 
 class ChangeSlug extends BaseController<localRequestHandler> {
 

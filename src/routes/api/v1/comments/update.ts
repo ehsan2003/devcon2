@@ -3,7 +3,7 @@ import {RequestHandler} from "express";
 import {body, param, ValidationChain} from "express-validator";
 import Comment from "@models/Comment";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: any }, { content: string }, {}>;
+export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: any }, { content: string }, {}>;
 
 class Update extends BaseController<localRequestHandler> {
 

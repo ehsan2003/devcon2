@@ -5,7 +5,7 @@ import Post, {IPostDoc} from "@models/Post";
 import {AccessForbiddenError, NotFoundError} from "@shared/errors";
 import {IUserDoc} from "@models/User";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, { visible?: boolean }, {}>;
+export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, { visible?: boolean }, {}>;
 
 class Visible extends BaseController<localRequestHandler> {
 

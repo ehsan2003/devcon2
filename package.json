@@ -7,10 +7,12 @@
   "description": "developer connector social media",
   "main": "index.js",
   "dependencies": {
+    "@types/pascalcase": "^1.0.0",
     "@types/passport-anonymous": "^1.0.3",
     "app-root-path": "^3.0.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "camelcase": "^6.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.4.1",
@@ -22,6 +24,7 @@
     "mongoose": "^5.9.11",
     "multer": "^1.4.2",
     "nodemailer": "^6.4.11",
+    "pascalcase": "^1.0.0",
     "passport": "^0.4.1",
     "passport-anonymous": "^1.0.1",
     "passport-jwt": "^4.0.0",
@@ -57,7 +60,6 @@
     "@shared": "dist/shared",
     "@conf": "dist/conf",
     "@models": "dist/models"
-
   },
   "keywords": [
     "social-media",

@@ -7,7 +7,7 @@ import multer from "multer";
 import configurations from "@conf/configurations";
 import {BadRequestError, NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, {}, {}>;
+export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, {}, {}>;
 
 class PostUpdate extends ImageUploader<localRequestHandler> {
 

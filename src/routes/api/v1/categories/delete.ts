@@ -5,7 +5,7 @@ import Category, {ICategoryDoc} from "@models/Category";
 import {BadRequestError, NotFoundError} from "@shared/errors";
 import {Types} from "mongoose";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ICategoryDoc }, {}, {}>;
+export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ICategoryDoc }, {}, {}>;
 
 class Delete extends BaseController<localRequestHandler> {
 

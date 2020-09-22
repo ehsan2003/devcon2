@@ -5,7 +5,7 @@ import {IUserDoc} from "@models/User";
 import {AccessForbiddenError} from "@shared/errors";
 
 type roleStrings = 'subscriber' | 'administrator' | 'contributor' | 'editor' | 'superAdmin' | 'unverified';
-type localRequestHandler = RequestHandler<{ role: roleStrings }, { msg: string }, {}, {}>;
+export type localRequestHandler = RequestHandler<{ role: roleStrings }, { msg: string }, {}, {}>;
 
 class FileProtection extends BaseController<localRequestHandler> {
 

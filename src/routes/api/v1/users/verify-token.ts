@@ -4,7 +4,7 @@ import {param, ValidationChain} from "express-validator";
 import {verificationTypes} from "@models/Verification";
 import {BadRequestError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ token: string }, { msg: string, result: ReturnType<typeof secureUserInfo> }, {}, {}>;
+export type localRequestHandler = RequestHandler<{ token: string }, { msg: string, result: ReturnType<typeof secureUserInfo> }, {}, {}>;
 
 class VerifyToken extends BaseController<localRequestHandler> {
 

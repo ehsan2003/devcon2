@@ -4,7 +4,7 @@ import {query, ValidationChain} from "express-validator";
 import ImageData, {IImageDataDoc} from "@models/ImageData";
 import configurations from "@conf/configurations";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc[] }, {},
+export type localRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc[] }, {},
     {
         search?: string, access?: Roles, mimetype?: string, sortOrder: 'a' | 'd', sortBy: 'd' | 's' | 'm' | 'r'
     }>;

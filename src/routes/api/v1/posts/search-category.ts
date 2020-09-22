@@ -6,7 +6,7 @@ import configurations from "@conf/configurations";
 import {NotFoundError} from "@shared/errors";
 import {IPostDocSharable} from "@models/Post";
 
-type localRequestHandler = RequestHandler<{ category: string }, { msg: string, result: (IPostDocSharable & { isLiked?: boolean })[] }, {}, {
+export type localRequestHandler = RequestHandler<{ category: string }, { msg: string, result: (IPostDocSharable & { isLiked?: boolean })[] }, {}, {
     q?: string;
     s?: 'd' | 'l' | 'r';
     o?: 'a' | 'd';

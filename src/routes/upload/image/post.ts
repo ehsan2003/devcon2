@@ -8,7 +8,7 @@ import {ImageUploader} from "./controller-base";
 import {IUserDoc} from "@models/User";
 import {BadRequestError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc }, {
+export type localRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc }, {
     description: string;
     alt: string;
     title: string;

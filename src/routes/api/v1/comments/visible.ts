@@ -3,7 +3,7 @@ import {RequestHandler} from "express";
 import {body, param, ValidationChain} from "express-validator";
 import Comment from "@models/Comment";
 
-type localRequestHandler = RequestHandler<{ commentId: string }, { msg: string, result: any }, { visible: boolean }, {}>;
+export type localRequestHandler = RequestHandler<{ commentId: string }, { msg: string, result: any }, { visible: boolean }, {}>;
 
 class Visible extends BaseController<localRequestHandler> {
 

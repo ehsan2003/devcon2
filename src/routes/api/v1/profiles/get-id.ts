@@ -4,7 +4,7 @@ import {param, ValidationChain} from "express-validator";
 import Profile, {IProfileDoc} from "@models/Profile";
 import {NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IProfileDoc }, {}, {}>;
+export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IProfileDoc }, {}, {}>;
 
 class GetId extends BaseController<localRequestHandler> {
 

@@ -1,10 +1,10 @@
-import {BaseController,  Roles} from "@shared/utils";
+import {BaseController, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import Tag, {ITagDoc} from "@models/Tag";
 import {Types} from "mongoose";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: ITagDoc }, { slug: string, id?: string }, {}>;
+export type localRequestHandler = RequestHandler<{}, { msg: string, result: ITagDoc }, { slug: string, id?: string }, {}>;
 
 class Insert extends BaseController<localRequestHandler> {
 

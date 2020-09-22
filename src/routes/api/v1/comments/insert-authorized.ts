@@ -8,7 +8,7 @@ import {IUserDoc} from "@models/User";
 import {ConflictError, NotFoundError} from "@shared/errors";
 import Post from "@models/Post";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, {
+export type localRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, {
     content: string, responseTo?: Types.ObjectId, post: Types.ObjectId
 }, {}>;
 

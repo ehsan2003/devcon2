@@ -6,7 +6,7 @@ import {IUserDoc} from "@models/User";
 import {Types} from "mongoose";
 import {ConflictError, NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
+export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
 class Like extends BaseController<localRequestHandler> {
 
     readonly access = Roles.subscriber;

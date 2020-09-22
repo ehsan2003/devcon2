@@ -5,7 +5,7 @@ import configurations from "@conf/configurations";
 import Category, {ICategoryDoc} from "@models/Category";
 import {NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc[] }, {}, { q: string, l?: string }>;
+export type localRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc[] }, {}, { q: string, l?: string }>;
 
 class Search extends BaseController<localRequestHandler> {
 

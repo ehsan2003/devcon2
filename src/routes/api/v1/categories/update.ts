@@ -5,7 +5,7 @@ import Category, {ICategoryDoc} from "@models/Category";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result:ICategoryDoc }, { id: string, parent?: Types.ObjectId, slug?: string, enName?: string }, {}>;
+export type localRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc }, { id: string, parent?: Types.ObjectId, slug?: string, enName?: string }, {}>;
 
 class Update extends BaseController<localRequestHandler> {
 

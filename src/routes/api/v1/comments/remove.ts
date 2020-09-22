@@ -4,7 +4,7 @@ import {query, ValidationChain} from "express-validator";
 import Comment from "@models/Comment";
 import {isValidObjectId} from "mongoose";
 
-type localRequestHandler = RequestHandler<{ comment: string }, { msg: string, result: any }, {}, { comments: string[] }>;
+export type localRequestHandler = RequestHandler<{ comment: string }, { msg: string, result: any }, {}, { comments: string[] }>;
 
 class Remove extends BaseController<localRequestHandler> {
 

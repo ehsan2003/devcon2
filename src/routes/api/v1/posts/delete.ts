@@ -5,7 +5,7 @@ import Post, {IPostDoc} from "@models/Post";
 import {IUserDoc} from "@models/User";
 import {AccessForbiddenError, NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, {}, {}>;
+export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, {}, {}>;
 
 class Delete extends BaseController<localRequestHandler> {
 

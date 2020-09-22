@@ -4,7 +4,7 @@ import {body, param, ValidationChain} from "express-validator";
 import User, {IUserDoc} from "@models/User";
 import {AccessForbiddenError, NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ReturnType<typeof secureUserInfo> }, {
+export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ReturnType<typeof secureUserInfo> }, {
     newRole: Roles;
 }, {}>;
 

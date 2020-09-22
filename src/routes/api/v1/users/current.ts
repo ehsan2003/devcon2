@@ -3,7 +3,7 @@ import {RequestHandler} from "express";
 import {ValidationChain} from "express-validator";
 import {IUserDoc} from "@models/User";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: ReturnType<typeof secureUserInfo> }, {}, {}>;
+export type localRequestHandler = RequestHandler<{}, { msg: string, result: ReturnType<typeof secureUserInfo> }, {}, {}>;
 
 class Current extends BaseController<localRequestHandler> {
 

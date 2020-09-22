@@ -8,7 +8,7 @@ import {isValidObjectId, Types} from "mongoose";
 import Category from "@models/Category";
 import Tag from "@models/Tag";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, Partial<Pick<IPostDoc, 'content' | 'title' | 'slug' | 'featuredImage' | 'category' | 'tags'>>, {}>;
+export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, Partial<Pick<IPostDoc, 'content' | 'title' | 'slug' | 'featuredImage' | 'category' | 'tags'>>, {}>;
 
 class Update extends BaseController<localRequestHandler> {
 

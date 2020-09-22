@@ -6,7 +6,7 @@ import {NotFoundError} from "@shared/errors";
 import {isValidObjectId, Query} from "mongoose";
 
 type UnQuery<T> = T extends Query<infer R> ? R : any;
-type localRequestHandler = RequestHandler<{}, { msg: string, result: UnQuery<ReturnType<typeof Tag.deleteMany>> }, {}, { ids: string[] }>;
+export type localRequestHandler = RequestHandler<{}, { msg: string, result: UnQuery<ReturnType<typeof Tag.deleteMany>> }, {}, { ids: string[] }>;
 
 class Delete extends BaseController<localRequestHandler> {
 

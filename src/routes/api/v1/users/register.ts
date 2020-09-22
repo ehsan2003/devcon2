@@ -1,9 +1,9 @@
-import {BaseController, extractProps,  hashPassword, secureUserInfo, signJwt} from "@shared/utils";
+import {BaseController, extractProps, hashPassword, secureUserInfo, signJwt} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import User from "@models/User";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, token: string, result: ReturnType<typeof secureUserInfo> }, { password: string, username: string, email: string }>;
+export type localRequestHandler = RequestHandler<{}, { msg: string, token: string, result: ReturnType<typeof secureUserInfo> }, { password: string, username: string, email: string }>;
 
 class Register extends BaseController<localRequestHandler> {
     readonly access = null;

@@ -5,7 +5,7 @@ import ImageData, {IImageDataDoc} from "@models/ImageData";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, { newAccess: Roles }, {}>;
+export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, { newAccess: Roles }, {}>;
 
 class ChangeAccess extends BaseController<localRequestHandler> {
 

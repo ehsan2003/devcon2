@@ -5,7 +5,7 @@ import Post, {IPostDocSharable} from "@models/Post";
 import {NotFoundError} from "@shared/errors";
 import {Types} from "mongoose";
 
-type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
+export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
 
 class Get extends BaseController<localRequestHandler> {
     readonly access = null;

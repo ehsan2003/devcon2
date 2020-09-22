@@ -9,7 +9,7 @@ import Profile, {IProfileDoc} from "@models/Profile";
 import {BadRequestError, InternalServerError, NotFoundError} from "@shared/errors";
 import path from "path";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc }, {}, {}>;
+export type localRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc }, {}, {}>;
 
 class Avatar extends ImageUploader<localRequestHandler> {
     readonly access = Roles.subscriber;

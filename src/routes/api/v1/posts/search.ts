@@ -4,7 +4,7 @@ import {query, ValidationChain} from "express-validator";
 import Post, {IPostDocSharable} from "@models/Post";
 import configurations from "@conf/configurations";
 
-type localRequestHandler = RequestHandler<{}, { msg: string, result: (IPostDocSharable & { isLiked?: boolean })[] }, {}, {
+export type localRequestHandler = RequestHandler<{}, { msg: string, result: (IPostDocSharable & { isLiked?: boolean })[] }, {}, {
     q?: string;
     s?: 'd' | 'l' | 'r';
     o?: 'a' | 'd';

@@ -4,7 +4,7 @@ import {body, ValidationChain} from "express-validator";
 import {IUserDoc} from "@models/User";
 import {BadRequestError} from "@shared/errors";
 
-type localRequestHandler = RequestHandler<{}, { msg: string }, { password: string, new: string }, {}>;
+export type localRequestHandler = RequestHandler<{}, { msg: string }, { password: string, new: string }, {}>;
 
 class ChangePassword extends BaseController<localRequestHandler> {
 
