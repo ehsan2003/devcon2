@@ -9,9 +9,9 @@ import Profile, {IProfileDoc} from "@models/Profile";
 import {BadRequestError, InternalServerError, NotFoundError} from "@shared/errors";
 import path from "path";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc }, {}, {}>;
+export type UploadImageAvatarRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc }, {}, {}>;
 
-class Avatar extends ImageUploader<localRequestHandler> {
+class Avatar extends ImageUploader<UploadImageAvatarRequestHandler> {
     readonly access = Roles.subscriber;
     readonly method = 'post';
     readonly path = '/';
@@ -24,7 +24,7 @@ class Avatar extends ImageUploader<localRequestHandler> {
         limits: configurations.profile.avatar.uploadLimit,
         storage: multer.memoryStorage()
     });
-    protected middleware: localRequestHandler[]
+    protected middleware: UploadImageAvatarRequestHandler[]
         = [this.upload.single('avatar'),
         (req, res, next) => {
             if (!req.file)

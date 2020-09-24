@@ -7,9 +7,9 @@ import multer from "multer";
 import configurations from "@conf/configurations";
 import {BadRequestError, NotFoundError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, {}, {}>;
+export type UploadImagePostUpdateRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, {}, {}>;
 
-class PostUpdate extends ImageUploader<localRequestHandler> {
+class PostUpdate extends ImageUploader<UploadImagePostUpdateRequestHandler> {
 
     readonly access = Roles.editor;
     readonly method = 'put';
@@ -23,7 +23,7 @@ class PostUpdate extends ImageUploader<localRequestHandler> {
         limits: configurations.posts.image.uploadLimit,
         storage: multer.memoryStorage()
     });
-    protected middleware: localRequestHandler[]
+    protected middleware: UploadImagePostUpdateRequestHandler[]
         = [this.upload.single('image'),
         (req, res, next) => {
             if (!req.file)

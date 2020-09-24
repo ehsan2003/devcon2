@@ -8,7 +8,7 @@ import {ImageUploader} from "./controller-base";
 import {IUserDoc} from "@models/User";
 import {BadRequestError} from "@shared/errors";
 
-export type localRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc }, {
+export type UploadImagePostRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc }, {
     description: string;
     alt: string;
     title: string;
@@ -17,7 +17,7 @@ export type localRequestHandler = RequestHandler<{}, { msg: string, result: IIma
     access: Roles;
 }, {}>;
 
-class Post extends ImageUploader<localRequestHandler> {
+class Post extends ImageUploader<UploadImagePostRequestHandler> {
     protected upload = multer({
         fileFilter(req, file: Express.Multer.File, callback: multer.FileFilterCallback): void {
             if (!configurations.posts.image.allowedMimeTypes.includes(file.mimetype))
@@ -31,7 +31,7 @@ class Post extends ImageUploader<localRequestHandler> {
     readonly method = 'post';
     readonly path = '/';
     middlewareBeforeValidate = [this.upload.single('image')];
-    protected middleware: localRequestHandler[]
+    protected middleware: UploadImagePostRequestHandler[]
         = [
         (req, res, next) => {
             if (!req.file)
