@@ -1,16 +1,17 @@
 import {Reducer} from "redux";
 import {AllActionTypes} from "../actions/base-action";
 import {secureUserInfo} from "../../../src/shared/utils";
-import {FETCH_USER_FULFILLED} from "../actions/creator-fetch-user-fulfilled";
 
-const reducer: Reducer<ReturnType<typeof secureUserInfo>, AllActionTypes> =
+export type StateUser = ReturnType<typeof secureUserInfo>;
+
+const user: Reducer<StateUser, AllActionTypes> =
     (state, action) => {
         switch (action.type) {
-            case FETCH_USER_FULFILLED:
+            case "FETCH_USER_FULFILLED":
                 return action.payload;
             default:
                 return state;
         }
     };
 
-export default reducer;
+export default user;
