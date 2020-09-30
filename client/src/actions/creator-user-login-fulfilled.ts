@@ -1,4 +1,4 @@
-import {BaseAction} from "./base-action";
+import {BaseAction} from "@actions/base-action";
 import type {ActionCreator} from 'redux';
 
 export const USER_LOGIN_FULFILLED = 'USER_LOGIN_FULFILLED';
