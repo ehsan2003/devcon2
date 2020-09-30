@@ -13,7 +13,7 @@ class Insert extends BaseController<TagsInsertRequestHandler> {
     readonly path: string = '/';
     protected middleware: TagsInsertRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const {slug, id} = req.body;
             const tag = await Tag.updateOne({_id: id || new Types.ObjectId()}, {slug}, {upsert: true}).catch(this.handleUniqueError('duplicate slug or id'));
             res.json({msg: 'success', result: tag});

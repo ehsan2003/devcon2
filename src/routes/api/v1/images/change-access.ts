@@ -14,7 +14,7 @@ class ChangeAccess extends BaseController<ImagesChangeAccessRequestHandler> {
     readonly path = '/:id';
     protected middleware: ImagesChangeAccessRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const id = Types.ObjectId(req.params.id);
             const imageDataDoc = await ImageData.findById(id);
             if (!imageDataDoc)

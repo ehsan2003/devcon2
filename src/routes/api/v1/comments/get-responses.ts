@@ -14,7 +14,7 @@ class GetResponses extends BaseController<CommentsGetResponsesRequestHandler> {
     readonly path: string = '/:id';
     protected middleware: CommentsGetResponsesRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const result = await Comment.aggregate([
                 {
                     $match: {

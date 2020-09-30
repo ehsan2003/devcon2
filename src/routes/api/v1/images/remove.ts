@@ -13,7 +13,7 @@ class Remove extends BaseController<ImagesRemoveRequestHandler> {
     readonly path = '/:id';
     protected middleware: ImagesRemoveRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const imageData = await ImageData.findById(req.params.id);
             if (!imageData)
                 throw new NotFoundError('image not found');

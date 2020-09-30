@@ -38,7 +38,7 @@ class Post extends ImageUploader<UploadImagePostRequestHandler> {
                 throw new BadRequestError('no file');
             next();
         },
-        async (req, res, next) => {
+        async (req, res) => {
             const user = req.user as IUserDoc;
             const result = await this.saveImage({
                 type: 'post',

@@ -18,7 +18,7 @@ class ChangeInfo extends BaseController<ImagesChangeInfoRequestHandler> {
     readonly path = '/:id';
     protected middleware: ImagesChangeInfoRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const imageData = await ImageData.findByIdAndUpdate(req.params.id, {
                 $set: Object.fromEntries(Object.entries({
                     'info.details': req.body.details,

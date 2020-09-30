@@ -15,7 +15,7 @@ class Like extends BaseController<PostsLikeRequestHandler> {
     readonly path = '/:id';
     protected middleware: PostsLikeRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const id = Types.ObjectId(req.params.id);
             const result = await Post.updateOne({_id: id}, {$addToSet: {likes: (req.user as IUserDoc).id}});
             if (result.nMatched === 0)

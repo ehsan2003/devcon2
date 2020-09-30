@@ -23,7 +23,7 @@ class Delete extends BaseController<PostsDeleteRequestHandler> {
         req.data = post;
         next();
     }
-        , async (req, res, next) => {
+        , async (req, res) => {
             const post = req.data as IPostDoc;
             await post.remove();
             res.json({msg: 'success', result: post});

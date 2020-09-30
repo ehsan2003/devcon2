@@ -13,7 +13,7 @@ class VerifySend extends BaseController<UsersVerifySendRequestHandler> {
     readonly path: string = '/';
     protected middleware: UsersVerifySendRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const user = req.user as IUserDoc;
             const verificationDoc = new Verification({
                 token: await getRandomToken(),

@@ -15,7 +15,7 @@ class Dislike extends BaseController<PostsDislikeRequestHandler> {
     readonly path = '/:id';
     protected middleware: PostsDislikeRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const id = Types.ObjectId(req.params.id);
             const result = await Post.updateOne({_id: id}, {$pull: {likes: (req.user as IUserDoc)._id}});
             if (result.nMatched === 0)

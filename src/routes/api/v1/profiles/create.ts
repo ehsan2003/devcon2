@@ -14,7 +14,7 @@ class Create extends BaseController<ProfilesCreateRequestHandler> {
     readonly path = '/';
     protected middleware: ProfilesCreateRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const user = req.user as IUserDoc;
             const profileExists = await Profile.findOne({user: user._id});
             if (profileExists)

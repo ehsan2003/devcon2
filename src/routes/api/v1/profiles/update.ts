@@ -14,7 +14,7 @@ class Update extends BaseController<ProfilesUpdateRequestHandler> {
     readonly path = '/';
     protected middleware: ProfilesUpdateRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const user = req.user as IUserDoc;
             const profile = await Profile.findOneAndUpdate({user: user._id}
                 , {$set: extractProps(req.body, 'firstName', 'lastName', 'social', 'bio')}

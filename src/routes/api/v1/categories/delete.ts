@@ -14,7 +14,7 @@ class Delete extends BaseController<localRequestHandler> {
     readonly path: string = '/:id';
     protected middleware: localRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             if (await Category.exists({parent: Types.ObjectId(req.params.id)}))
                 throw new BadRequestError('this category is parent of other categories');
 

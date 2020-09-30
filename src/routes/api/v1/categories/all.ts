@@ -11,7 +11,7 @@ class All extends BaseController<CategoriesAllRequestHandler> {
     readonly path: string = '/';
     protected middleware: CategoriesAllRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             res.json({msg: 'success', result: await Category.find({})});
         })
     ];

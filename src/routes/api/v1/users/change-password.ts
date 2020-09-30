@@ -13,7 +13,7 @@ class ChangePassword extends BaseController<UsersChangePasswordRequestHandler> {
     readonly path: string = '/';
     protected middleware: UsersChangePasswordRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const user = req.user as IUserDoc;
             if (!await checkPassword(user, req.body.password))
                 throw new BadRequestError('password is invalid');

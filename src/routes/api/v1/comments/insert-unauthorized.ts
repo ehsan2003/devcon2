@@ -14,7 +14,7 @@ class InsertUnauthorized extends BaseController<CommentsInsertUnauthorizedReques
     readonly method = 'post';
     readonly path: string = '/unauthorized';
     protected middleware: CommentsInsertUnauthorizedRequestHandler[] = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             if (req.body.responseTo) {
                 const parent = await Comment.findById(req.body.responseTo);
                 if (!parent)

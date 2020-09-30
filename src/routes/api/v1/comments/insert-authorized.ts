@@ -19,7 +19,7 @@ class InsertAuthorized extends BaseController<CommentsInsertAuthorizedRequestHan
     readonly path: string = '/authorized';
     protected middleware: CommentsInsertAuthorizedRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const user = req.user as IUserDoc;
             const reqBody = req.body;
             if (reqBody.responseTo) {

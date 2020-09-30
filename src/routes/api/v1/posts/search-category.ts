@@ -26,7 +26,7 @@ class SearchByCategory extends BaseController<PostsSearchCategoryRequestHandler>
     };
     protected middleware: PostsSearchCategoryRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const queryString = req.query.q;
             const sortBy = req.query.s || 'r';
             const sortOrder = req.query.o || 'a';

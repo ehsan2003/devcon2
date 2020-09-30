@@ -13,7 +13,7 @@ class Get extends BaseController<PostsGetRequestHandler> {
     readonly path = '/:id';
     protected middleware: PostsGetRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const post = (await Post.preparePostForClient({_id: Types.ObjectId(req.params.id)}))[0];
             if (!post) {
                 throw new NotFoundError('post not found');

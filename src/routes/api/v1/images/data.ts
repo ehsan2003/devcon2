@@ -13,7 +13,7 @@ class Data extends BaseController<ImagesDataRequestHandler> {
     readonly path = '/:id';
     protected middleware: ImagesDataRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const imageData = await ImageData.findById(req.params.id);
             if (!imageData)
                 throw new NotFoundError('imageData not found');

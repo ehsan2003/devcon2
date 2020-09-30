@@ -12,7 +12,7 @@ class Insert extends BaseController<CategoriesInsertRequestHandler> {
     readonly path: string = '/';
     protected middleware: CategoriesInsertRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const {body: reqBody} = req;
             const category = new Category({
                 slug: reqBody.slug,

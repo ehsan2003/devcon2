@@ -14,7 +14,7 @@ class ChangeSlug extends BaseController<ImagesChangeSlugRequestHandler> {
     readonly path = '/:id';
     protected middleware: ImagesChangeSlugRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const id = Types.ObjectId(req.params.id);
             const imageDataDoc = await ImageData.findOne({_id: id});
             if (!imageDataDoc)

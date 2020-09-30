@@ -40,7 +40,7 @@ class Avatar extends ImageUploader<UploadImageAvatarRequestHandler> {
             next();
 
         },
-        async (req, res, next) => {
+        async (req, res) => {
             const user = req.user as IUserDoc;
             const profile = req.data as IProfileDoc;
             if (profile.avatar) {

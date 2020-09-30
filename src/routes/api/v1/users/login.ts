@@ -13,7 +13,7 @@ class Login extends BaseController<UsersLoginRequestHandler> {
     readonly path: string = '/';
     protected middleware: UsersLoginRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const {body: reqBody} = req;
             const user = await User.findOne({email: reqBody.email});
             if (!user)

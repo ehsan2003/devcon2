@@ -14,7 +14,7 @@ class Search extends BaseController<localRequestHandler> {
     readonly path: string = '/';
     protected middleware: localRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const defaultLimit = configurations.categories.search.limit;
             const result = await Category.find({$or: [{slug: {$regex: req.query.q}}, {enName: {$regex: req.query.q}}]}).limit(parseInt(req.query.l || '0', 10) || defaultLimit);
             if (!result)

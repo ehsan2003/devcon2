@@ -13,7 +13,7 @@ class Remove extends BaseController<CommentsRemoveRequestHandler> {
     readonly path: string = '/';
     protected middleware: CommentsRemoveRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const commendIds = req.query.comments;
             const result = await Comment.deleteMany({_id: {$in: commendIds}});
             res.json({msg: 'success', result});

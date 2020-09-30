@@ -14,7 +14,7 @@ class Update extends BaseController<CategoriesUpdateRequestHandler> {
     readonly path: string = '/';
     protected middleware: CategoriesUpdateRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const {body: reqBody} = req;
             const result = await Category.findOneAndUpdate({_id: reqBody.id}, {$set: extractProps(reqBody, 'enName', 'parent', 'slug')}, {new: true});
             if (!result)

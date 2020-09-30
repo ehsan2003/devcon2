@@ -13,7 +13,7 @@ class ResetPasswordToken extends BaseController<UsersResetPasswordTokenRequestHa
     readonly path: string = '/:token';
     protected middleware: UsersResetPasswordTokenRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const {token} = req.params;
             const {newPassword} = req.body;
             const verificationResult = await verifyByToken(token, verificationTypes.resetPassword);

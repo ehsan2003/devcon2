@@ -14,7 +14,7 @@ class ResetPasswordSend extends BaseController<UsersResetPasswordSendRequestHand
     readonly path: string = '/';
     protected middleware: UsersResetPasswordSendRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const {email} = req.body;
             if (!await User.exists({email}))
                 throw new NotFoundError('user not found');

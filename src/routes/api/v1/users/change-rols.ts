@@ -25,7 +25,7 @@ class ChangeRoles extends BaseController<UsersChangeRolsRequestHandler> {
     };
     protected middleware: UsersChangeRolsRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const user = req.user as IUserDoc;
             if (this.allowedChanges[user.role] < req.body.newRole)
                 throw new AccessForbiddenError('access forbidden');

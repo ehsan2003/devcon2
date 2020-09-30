@@ -11,7 +11,7 @@ class Register extends BaseController<UsersRegisterRequestHandler> {
     readonly path: string = '/';
     protected middleware: UsersRegisterRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const extracted = extractProps(req.body, 'email', 'username');
             const user = new User({...extracted, password: await hashPassword(req.body.password)});
             await user.save().catch(this.handleUniqueError('username or email is not unique'));

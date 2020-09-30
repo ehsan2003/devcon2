@@ -29,7 +29,7 @@ class Update extends BaseController<PostsUpdateRequestHandler> {
             next();
         }
         ,
-        async (req, res, next) => {
+        async (req, res) => {
             const post = req.data as IPostDoc;
             Object.assign(post, {
                 ...extractProps(req.body, 'content', 'title', 'slug', 'featuredImage', 'category'),

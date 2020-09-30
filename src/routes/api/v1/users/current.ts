@@ -12,7 +12,7 @@ class Current extends BaseController<UsersCurrentRequestHandler> {
     readonly path: string = '/';
     protected middleware: UsersCurrentRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             res.json({msg: 'success', result: secureUserInfo(req.user as IUserDoc)});
         })
     ];

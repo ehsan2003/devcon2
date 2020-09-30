@@ -12,7 +12,7 @@ class Visible extends BaseController<CommentsVisibleRequestHandler> {
     readonly path: string = '/:commentId';
     protected middleware: CommentsVisibleRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const {commentId} = req.params;
             const visible = req.body.visible;
             const comment = await Comment.findByIdAndUpdate(commentId, {$set: {visible: visible === void 0 ? true : visible}}, {new: true});

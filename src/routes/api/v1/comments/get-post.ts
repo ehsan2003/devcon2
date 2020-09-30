@@ -14,7 +14,7 @@ class GetPost extends BaseController<CommentsGetPostRequestHandler> {
     readonly path: string = '/:id';
     protected middleware: CommentsGetPostRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const result = await Comment.aggregate().match({
                 visible: true,
                 forPost: Types.ObjectId(req.params.id),

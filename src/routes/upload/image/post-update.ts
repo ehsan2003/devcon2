@@ -30,7 +30,7 @@ class PostUpdate extends ImageUploader<UploadImagePostUpdateRequestHandler> {
                 throw new BadRequestError('no file');
             return next();
         },
-        async (req, res, next) => {
+        async (req, res) => {
             const imageDataDoc = await ImageData.findById(req.params.id);
             if (!imageDataDoc)
                 throw new NotFoundError('imageData not found');

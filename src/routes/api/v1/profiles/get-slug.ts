@@ -13,7 +13,7 @@ class GetSlug extends BaseController<ProfilesGetSlugRequestHandler> {
     readonly path = '/:slug';
     protected middleware: ProfilesGetSlugRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const profile = await Profile.findOne({slug: req.params.slug});
             if (!profile)
                 throw new NotFoundError('profile not found');

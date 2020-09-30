@@ -13,7 +13,7 @@ class GetId extends BaseController<ProfilesGetIdRequestHandler> {
     readonly path = '/:id';
     protected middleware: ProfilesGetIdRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const profile = await Profile.findById(req.params.id);
             if (!profile)
                 throw new NotFoundError('profile not found');

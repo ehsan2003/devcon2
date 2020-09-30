@@ -12,7 +12,7 @@ class Update extends BaseController<CommentsUpdateRequestHandler> {
     readonly path: string = '/:id';
     protected middleware: CommentsUpdateRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const id = req.params.id;
             const result = await Comment.findByIdAndUpdate(id, {$set: {content: req.body.content}}, {new: true});
             res.json({msg: 'success', result});

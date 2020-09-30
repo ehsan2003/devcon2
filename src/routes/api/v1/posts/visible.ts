@@ -24,7 +24,7 @@ class Visible extends BaseController<PostsVisibleRequestHandler> {
             req.data = post;
             next();
         },
-        async (req, res, next) => {
+        async (req, res) => {
             const post = req.data as IPostDoc;
             post.visible = req.body.visible || true;
             res.json({msg: 'success', result: post});

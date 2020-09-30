@@ -13,7 +13,7 @@ class VerifyToken extends BaseController<UsersVerifyTokenRequestHandler> {
     readonly path: string = '/:token';
     protected middleware: UsersVerifyTokenRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const {token} = req.params;
             const verifyAbleUser = await verifyByToken(token, verificationTypes.emailVerification);
             if (!verifyAbleUser)

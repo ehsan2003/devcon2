@@ -16,7 +16,7 @@ class Insert extends BaseController<PostsInsertRequestHandler> {
     readonly path: string = '/';
     protected middleware: PostsInsertRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const result = new Post({
                     ...extractProps(req.body, 'content', 'title', 'slug', 'featuredImage', 'category', 'tags'),
                     author: (req.user as IUserDoc)._id

@@ -13,7 +13,7 @@ class ChangeParent extends BaseController<CategoriesChangeParentRequestHandler> 
     readonly path: string = '/';
     protected middleware: CategoriesChangeParentRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const result = await Category.updateMany({parent: req.body.source}, {$set: {parent: req.body.dest || null}});
             res.json({msg: 'success', result});
         })

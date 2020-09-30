@@ -15,7 +15,7 @@ class Delete extends BaseController<TagsDeleteRequestHandler> {
     readonly path: string = '/';
     protected middleware: TagsDeleteRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const {ids} = req.query;
             if (!await Tag.tagsExist(ids))
                 throw new NotFoundError('at least one of the tags does\'t exist');

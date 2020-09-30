@@ -14,7 +14,7 @@ class Search extends BaseController<TagsSearchRequestHandler> {
     readonly path: string = '/';
     protected middleware: TagsSearchRequestHandler[]
         = [
-        (async (req, res, next) => {
+        (async (req, res) => {
             const pattern = req.query.q;
             const limit = req.query.l === void 0 ? configurations.tags.search.limitDefault : Math.abs(req.query.l);
             const result = await Tag.find({slug: {$regex: pattern}}).limit(limit);

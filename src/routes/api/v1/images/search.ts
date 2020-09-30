@@ -22,7 +22,7 @@ class Search extends BaseController<ImagesSearchRequestHandler> {
     };
     protected middleware: ImagesSearchRequestHandler[]
         = [
-        async (req, res, next) => {
+        async (req, res) => {
             const reqQuery = req.query;
             const matchQuery = {
                 ...reqQuery.search ? {$text: {$search: reqQuery.search}} : {},
