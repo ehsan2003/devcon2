@@ -7,6 +7,7 @@ import configurations from "@conf/configurations";
 import {ImageUploader} from "./controller-base";
 import {IUserDoc} from "@models/User";
 import {BadRequestError} from "@shared/errors";
+import {Codes} from "../../../@types";
 
 export type UploadImagePostRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc }, {
     description: string;
@@ -35,7 +36,7 @@ class Post extends ImageUploader<UploadImagePostRequestHandler> {
         = [
         (req, res, next) => {
             if (!req.file)
-                throw new BadRequestError('no file');
+                throw new BadRequestError(Codes.UPLOAD_IMAGE_POST_NOT_FOUND, 'no file');
             next();
         },
         async (req, res) => {

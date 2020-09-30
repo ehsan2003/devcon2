@@ -6,6 +6,7 @@ import {ImageUploader} from "./controller-base";
 import multer from "multer";
 import configurations from "@conf/configurations";
 import {BadRequestError, NotFoundError} from "@shared/errors";
+import {Codes} from "../../../@types";
 
 export type UploadImagePostUpdateRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, {}, {}>;
 
@@ -27,13 +28,13 @@ class PostUpdate extends ImageUploader<UploadImagePostUpdateRequestHandler> {
         = [this.upload.single('image'),
         (req, res, next) => {
             if (!req.file)
-                throw new BadRequestError('no file');
+                throw new BadRequestError(Codes.UPLOAD_IMAGE_POST_UPDATE_NO_FILE, 'no file');
             return next();
         },
         async (req, res) => {
             const imageDataDoc = await ImageData.findById(req.params.id);
             if (!imageDataDoc)
-                throw new NotFoundError('imageData not found');
+                throw new NotFoundError(Codes.UPLOAD_IMAGE_POST_UPDATE_NOT_FOUND, 'imageData not found');
             await this.saveImageFiles({
                 imageDataDoc,
                 sizes: configurations.posts.image.sizes,

@@ -4,6 +4,7 @@ import {query, ValidationChain} from "express-validator";
 import Tag from "@models/Tag";
 import {NotFoundError} from "@shared/errors";
 import {isValidObjectId, Query} from "mongoose";
+import {Codes} from "../../../../@types";
 
 type UnQuery<T> = T extends Query<infer R> ? R : any;
 export type TagsDeleteRequestHandler = RequestHandler<{}, { msg: string, result: UnQuery<ReturnType<typeof Tag.deleteMany>> }, {}, { ids: string[] }>;
@@ -18,7 +19,7 @@ class Delete extends BaseController<TagsDeleteRequestHandler> {
         (async (req, res) => {
             const {ids} = req.query;
             if (!await Tag.tagsExist(ids))
-                throw new NotFoundError('at least one of the tags does\'t exist');
+                throw new NotFoundError(Codes.TAGS_DELETE_NOT_FOUND, 'at least one of the tags does\'t exist');
             const result = await Tag.deleteMany({_id: {$in: ids}});
             res.json({msg: 'success', result});
         })

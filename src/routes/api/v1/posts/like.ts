@@ -5,6 +5,7 @@ import Post, {IPostDocSharable} from "@models/Post";
 import {IUserDoc} from "@models/User";
 import {Types} from "mongoose";
 import {ConflictError, NotFoundError} from "@shared/errors";
+import {Codes} from "../../../../@types";
 
 export type PostsLikeRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
 
@@ -19,9 +20,9 @@ class Like extends BaseController<PostsLikeRequestHandler> {
             const id = Types.ObjectId(req.params.id);
             const result = await Post.updateOne({_id: id}, {$addToSet: {likes: (req.user as IUserDoc).id}});
             if (result.nMatched === 0)
-                throw new NotFoundError('post not found');
+                throw new NotFoundError(Codes.POST_LIKE_NOT_FOUND, 'post not found');
             if (result.nModified === 0)
-                throw new ConflictError('already liked');
+                throw new ConflictError(Codes.POST_LIKE_ALREADY_LIKED, 'already liked');
             const updatedPost = await Post.preparePostForClient({_id: id});
 
             res.json({msg: 'success', result: updatedPost[0]});

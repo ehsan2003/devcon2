@@ -3,6 +3,7 @@ import {RequestHandler} from "express";
 import {param, ValidationChain} from "express-validator";
 import Profile, {IProfileDoc} from "@models/Profile";
 import {NotFoundError} from "@shared/errors";
+import {Codes} from "../../../../@types";
 
 export type ProfilesGetIdRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IProfileDoc }, {}, {}>;
 
@@ -16,7 +17,7 @@ class GetId extends BaseController<ProfilesGetIdRequestHandler> {
         async (req, res) => {
             const profile = await Profile.findById(req.params.id);
             if (!profile)
-                throw new NotFoundError('profile not found');
+                throw new NotFoundError(Codes.PROFILE_GET_ID_NOT_FOUND, 'profile not found');
             res.json({msg: 'success', result: profile});
 
         }

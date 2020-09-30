@@ -2,6 +2,7 @@ import {BaseController, extractProps, hashPassword, secureUserInfo, signJwt} fro
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import User from "@models/User";
+import {Codes} from "../../../../@types";
 
 export type UsersRegisterRequestHandler = RequestHandler<{}, { msg: string, token: string, result: ReturnType<typeof secureUserInfo> }, { password: string, username: string, email: string }>;
 
@@ -14,7 +15,7 @@ class Register extends BaseController<UsersRegisterRequestHandler> {
         async (req, res) => {
             const extracted = extractProps(req.body, 'email', 'username');
             const user = new User({...extracted, password: await hashPassword(req.body.password)});
-            await user.save().catch(this.handleUniqueError('username or email is not unique'));
+            await user.save().catch(this.handleUniqueError(Codes.USER_REGISTER_DUPLICATE, 'username or email is not unique'));
             const jwtToken = signJwt(user);
             res.json({msg: 'success', token: jwtToken, result: secureUserInfo(user)});
         }

@@ -5,6 +5,7 @@ import Post, {IPostDocSharable} from "@models/Post";
 import {Types} from "mongoose";
 import {IUserDoc} from "@models/User";
 import {ConflictError, NotFoundError} from "@shared/errors";
+import {Codes} from "../../../../@types";
 
 export type PostsDislikeRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
 
@@ -19,9 +20,9 @@ class Dislike extends BaseController<PostsDislikeRequestHandler> {
             const id = Types.ObjectId(req.params.id);
             const result = await Post.updateOne({_id: id}, {$pull: {likes: (req.user as IUserDoc)._id}});
             if (result.nMatched === 0)
-                throw new NotFoundError('post not found');
+                throw new NotFoundError(Codes.POST_DISLIKE_NOT_FOUND, 'post not found');
             if (result.nModified === 0)
-                throw new ConflictError('disliking when like is absent');
+                throw new ConflictError(Codes.POST_DISLIKE_ALREADY_LIKED, 'disliking when like is absent');
             const updatedPost = await Post.preparePostForClient({_id: id});
             res.json({msg: 'success', result: updatedPost[0]});
         }

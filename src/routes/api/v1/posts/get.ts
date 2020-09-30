@@ -4,6 +4,7 @@ import {param, ValidationChain} from "express-validator";
 import Post, {IPostDocSharable} from "@models/Post";
 import {NotFoundError} from "@shared/errors";
 import {Types} from "mongoose";
+import {Codes} from "../../../../@types";
 
 export type PostsGetRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
 
@@ -16,7 +17,7 @@ class Get extends BaseController<PostsGetRequestHandler> {
         async (req, res) => {
             const post = (await Post.preparePostForClient({_id: Types.ObjectId(req.params.id)}))[0];
             if (!post) {
-                throw new NotFoundError('post not found');
+                throw new NotFoundError(Codes.POSTS_GET_NOT_FOUND, 'post not found');
             }
             res.json({msg: 'success', result: post});
         }

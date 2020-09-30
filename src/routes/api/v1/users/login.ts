@@ -3,6 +3,7 @@ import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import User from "@models/User";
 import {BadRequestError} from "@shared/errors";
+import {Codes} from "../../../../@types";
 
 export type UsersLoginRequestHandler = RequestHandler<{}, { msg: string, token: string }, { password: string, username: string, email: string }>;
 
@@ -17,9 +18,9 @@ class Login extends BaseController<UsersLoginRequestHandler> {
             const {body: reqBody} = req;
             const user = await User.findOne({email: reqBody.email});
             if (!user)
-                throw new BadRequestError(`user doesn't exists`);
+                throw new BadRequestError(Codes.USER_LOGIN_INVALID_EMAIL, `user doesn't exists`);
             if (!await checkPassword(user, reqBody.password))
-                throw new BadRequestError('password is not valid');
+                throw new BadRequestError(Codes.USER_LOGIN_INVALID_PASSWORD, 'password is not valid');
             else
                 res.json({msg: 'success', token: signJwt(user)});
 

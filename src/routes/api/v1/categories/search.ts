@@ -4,6 +4,7 @@ import {query, ValidationChain} from "express-validator";
 import configurations from "@conf/configurations";
 import Category, {ICategoryDoc} from "@models/Category";
 import {NotFoundError} from "@shared/errors";
+import {Codes} from "../../../../@types";
 
 export type localRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc[] }, {}, { q: string, l?: string }>;
 
@@ -18,7 +19,7 @@ class Search extends BaseController<localRequestHandler> {
             const defaultLimit = configurations.categories.search.limit;
             const result = await Category.find({$or: [{slug: {$regex: req.query.q}}, {enName: {$regex: req.query.q}}]}).limit(parseInt(req.query.l || '0', 10) || defaultLimit);
             if (!result)
-                throw new NotFoundError('categories not found');
+                throw new NotFoundError(Codes.CATEGORIES_SEARCH_NOT_FOUND, 'categories not found');
             res.json({msg: 'success', result});
 
         })

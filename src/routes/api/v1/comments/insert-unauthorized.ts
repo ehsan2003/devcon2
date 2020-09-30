@@ -5,6 +5,7 @@ import Comment, {ICommentDoc} from '@models/Comment';
 import {Types} from "mongoose";
 import {ConflictError, NotFoundError} from "@shared/errors";
 import Post from "@models/Post";
+import {Codes} from "../../../../@types";
 
 export type CommentsInsertUnauthorizedRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, { email: string, name: string, content: string, post: Types.ObjectId, responseTo?: Types.ObjectId }, {}>;
 
@@ -18,9 +19,9 @@ class InsertUnauthorized extends BaseController<CommentsInsertUnauthorizedReques
             if (req.body.responseTo) {
                 const parent = await Comment.findById(req.body.responseTo);
                 if (!parent)
-                    throw new NotFoundError('responseTo not found');
+                    throw new NotFoundError(Codes.COMMENTS_INSERT_UNAUTHORIZED_RESPONSE_TO_NOT_FOUND, 'responseTo not found');
                 if (!req.body.post.equals(parent.forPost))
-                    throw new ConflictError('response post is not equal to parent post');
+                    throw new ConflictError(Codes.COMMENTS_INSERT_UNAUTHORIZED_RELATION_ERROR, 'response post is not equal to parent post');
             }
             console.log(req.body);
             const commentDoc = new Comment({

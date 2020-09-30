@@ -4,6 +4,7 @@ import {body, ValidationChain} from "express-validator";
 import ImageData, {IImageDataDoc} from "@models/ImageData";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
+import {Codes} from "../../../../@types";
 
 export type ImagesChangeAccessRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, { newAccess: Roles }, {}>;
 
@@ -18,7 +19,7 @@ class ChangeAccess extends BaseController<ImagesChangeAccessRequestHandler> {
             const id = Types.ObjectId(req.params.id);
             const imageDataDoc = await ImageData.findById(id);
             if (!imageDataDoc)
-                throw new NotFoundError('image not found');
+                throw new NotFoundError(Codes.IMAGES_CHANGE_ACCESS_NOT_FOUND, 'image not found');
             await imageDataDoc.changeData({access: req.body.newAccess});
             res.json({msg: 'success', result: imageDataDoc});
         }

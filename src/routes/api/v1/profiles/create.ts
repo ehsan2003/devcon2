@@ -4,6 +4,7 @@ import {body, ValidationChain} from "express-validator";
 import Profile, {IProfileDoc} from "@models/Profile";
 import {IUserDoc} from "@models/User";
 import {ConflictError} from "@shared/errors";
+import {Codes} from "../../../../@types";
 
 export type ProfilesCreateRequestHandler = RequestHandler<{}, { msg: string, result: IProfileDoc }, Pick<IProfileDoc, 'firstName' | 'lastName' | 'social' | 'bio' | 'slug'>, {}>;
 
@@ -18,12 +19,12 @@ class Create extends BaseController<ProfilesCreateRequestHandler> {
             const user = req.user as IUserDoc;
             const profileExists = await Profile.findOne({user: user._id});
             if (profileExists)
-                throw new ConflictError('profile already exists you can edit it');
+                throw new ConflictError(Codes.PROFILE_CREATE_ALREADY_EXISTS, 'profile already exists you can edit it');
             const profile = new Profile({
                 ...extractProps(req.body, 'firstName', 'lastName', 'social', 'bio', 'slug'),
                 user: user._id
             });
-            await profile.save().catch(this.handleUniqueError('handle already exists'));
+            await profile.save().catch(this.handleUniqueError(Codes.PROFILE_CREATE_DUPLICATE_SLUG, 'handle already exists'));
             res.json({msg: 'success', result: profile});
         }
     ];

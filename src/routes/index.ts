@@ -5,13 +5,14 @@ import {NotFoundError} from "@shared/errors";
 import v1 from './api/v1';
 import upload from './upload';
 import fileProtection from './file-protection';
+import {Codes} from "../@types";
 
 const router = Router();
 
 router.use('/api/v1', v1);
 router.use('/upload', upload);
 router.use('/static', fileProtection.getRouter(), express.static('upload'));
-router.all('*', (req, res, next) => next(new NotFoundError(`route not found ${req.method} ${req.path}`)));
+router.all('*', (req, res, next) => next(new NotFoundError(Codes.ROUTE_DOES_NOT_EXISTS, `route not found ${req.method} ${req.path}`)));
 router.use(errorLogger(process.env.NODE_ENV === 'development'));
 router.use(errorHandler(process.env.NODE_ENV === 'development'));
 

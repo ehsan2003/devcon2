@@ -4,6 +4,7 @@ import {body, ValidationChain} from "express-validator";
 import Profile, {IProfileDoc} from "@models/Profile";
 import {IUserDoc} from "@models/User";
 import {NotFoundError} from "@shared/errors";
+import {Codes} from "../../../../@types";
 
 export type ProfilesUpdateRequestHandler = RequestHandler<{}, { msg: string, result: IProfileDoc }, Partial<Pick<IProfileDoc, 'firstName' | 'lastName' | 'social' | 'bio'>>, {}>;
 
@@ -20,7 +21,7 @@ class Update extends BaseController<ProfilesUpdateRequestHandler> {
                 , {$set: extractProps(req.body, 'firstName', 'lastName', 'social', 'bio')}
                 , {new: true});
             if (!profile)
-                throw new NotFoundError('profile not found');
+                throw new NotFoundError(Codes.PROFILE_UPDATE_NOT_FOUND, 'profile not found');
             res.json({msg: 'success', result: profile});
         }
     ];

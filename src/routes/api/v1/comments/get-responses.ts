@@ -4,6 +4,7 @@ import {param, ValidationChain} from "express-validator";
 import Comment, {ICommentDoc} from "@models/Comment";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
+import {Codes} from "../../../../@types";
 
 export type CommentsGetResponsesRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ICommentDoc[] }, {}, {}>;
 
@@ -40,7 +41,7 @@ class GetResponses extends BaseController<CommentsGetResponsesRequestHandler> {
                 }
             ]);
             if (!result.length)
-                throw new NotFoundError('comments not found');
+                throw new NotFoundError(Codes.COMMENTS_GET_RESPONSES_NOT_FOUND, 'comments not found');
             res.json({msg: 'success', result});
 
         })

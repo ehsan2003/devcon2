@@ -5,6 +5,7 @@ import Category from "@models/Category";
 import configurations from "@conf/configurations";
 import {NotFoundError} from "@shared/errors";
 import {IPostDocSharable} from "@models/Post";
+import {Codes} from "../../../../@types";
 
 export type PostsSearchCategoryRequestHandler = RequestHandler<{ category: string }, { msg: string, result: (IPostDocSharable & { isLiked?: boolean })[] }, {}, {
     q?: string;
@@ -88,7 +89,7 @@ class SearchByCategory extends BaseController<PostsSearchCategoryRequestHandler>
 
             const result = await Category.aggregate(chain.getPipelineInstance());
             if (!result.length)
-                throw new NotFoundError('post not found');
+                throw new NotFoundError(Codes.POSTS_SEARCH_CATEGORY_NOT_FOUND, 'post not found');
             res.json({msg: 'success', result});
         }
     ];

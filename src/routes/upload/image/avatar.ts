@@ -8,6 +8,7 @@ import {IUserDoc} from "@models/User";
 import Profile, {IProfileDoc} from "@models/Profile";
 import {BadRequestError, InternalServerError, NotFoundError} from "@shared/errors";
 import path from "path";
+import {Codes} from "../../../@types";
 
 export type UploadImageAvatarRequestHandler = RequestHandler<{}, { msg: string, result: IImageDataDoc }, {}, {}>;
 
@@ -28,14 +29,14 @@ class Avatar extends ImageUploader<UploadImageAvatarRequestHandler> {
         = [this.upload.single('avatar'),
         (req, res, next) => {
             if (!req.file)
-                throw new BadRequestError('no file');
+                throw new BadRequestError(Codes.UPLOAD_IMAGE_AVATAR_NO_FILE, 'no file');
             next();
         },
         async (req, res, next) => {
             const user = req.user as IUserDoc;
             const profile = await Profile.findOne({user: user._id});
             if (!profile)
-                throw new NotFoundError('profile not found');
+                throw new NotFoundError(Codes.UPLOAD_IMAGE_PROFILE_NOT_FOUND, 'profile not found');
             req.data = profile;
             next();
 

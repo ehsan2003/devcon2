@@ -6,6 +6,7 @@ import {IUserDoc} from "@models/User";
 import {isValidObjectId, Types} from "mongoose";
 import Category from "@models/Category";
 import Tag from "@models/Tag";
+import {Codes} from "../../../../@types";
 
 export type PostsInsertRequestHandler = RequestHandler<{}, { msg: string, result: IPostDoc }, Pick<IPostDoc, 'content' | 'title' | 'slug' | 'featuredImage' | 'category' | 'tags'>, {}>;
 
@@ -22,7 +23,7 @@ class Insert extends BaseController<PostsInsertRequestHandler> {
                     author: (req.user as IUserDoc)._id
                 }
             );
-            await result.save().catch(this.handleUniqueError('duplicate slug'));
+            await result.save().catch(this.handleUniqueError(Codes.POST_INSERT_DUPLICATE_SLUG, 'duplicate slug'));
             res.json({msg: 'success', result});
         })
     ];

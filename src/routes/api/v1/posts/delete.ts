@@ -4,6 +4,7 @@ import {param, ValidationChain} from "express-validator";
 import Post, {IPostDoc} from "@models/Post";
 import {IUserDoc} from "@models/User";
 import {AccessForbiddenError, NotFoundError} from "@shared/errors";
+import {Codes} from "../../../../@types";
 
 export type PostsDeleteRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, {}, {}>;
 
@@ -17,9 +18,9 @@ class Delete extends BaseController<PostsDeleteRequestHandler> {
         const user = req.user as IUserDoc;
         const post = await Post.findById(req.params.id);
         if (!post)
-            throw new NotFoundError('post not found');
+            throw new NotFoundError(Codes.POSTS_DELETE_NOT_FOUND, 'post not found');
         if (post.visible && user.role === Roles.contributor)
-            throw new AccessForbiddenError('deleting this post is not permitted by you');
+            throw new AccessForbiddenError(Codes.POSTS_DELETE_ACCESS_FORBIDDEN, 'deleting this post is not permitted by you');
         req.data = post;
         next();
     }

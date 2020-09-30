@@ -4,6 +4,7 @@ import {body, ValidationChain} from "express-validator";
 import Post, {IPostDoc} from "@models/Post";
 import {AccessForbiddenError, NotFoundError} from "@shared/errors";
 import {IUserDoc} from "@models/User";
+import {Codes} from "../../../../@types";
 
 export type PostsVisibleRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, { visible?: boolean }, {}>;
 
@@ -18,9 +19,9 @@ class Visible extends BaseController<PostsVisibleRequestHandler> {
             const user = req.user as IUserDoc;
             const post = await Post.findById(req.params.id);
             if (!post)
-                throw new NotFoundError('post not found');
+                throw new NotFoundError(Codes.POSTS_VISIBLE_POST_NOT_FOUND, 'post not found');
             if (user.role === Roles.author && !post.author.equals(user._id))
-                throw new AccessForbiddenError(`you can't make this post visible`);
+                throw new AccessForbiddenError(Codes.POSTS_VISIBLE_ACCESS_FORBIDDEN, `you can't make this post visible`);
             req.data = post;
             next();
         },

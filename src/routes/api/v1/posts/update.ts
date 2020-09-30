@@ -7,6 +7,7 @@ import {AccessForbiddenError, NotFoundError} from "@shared/errors";
 import {isValidObjectId, Types} from "mongoose";
 import Category from "@models/Category";
 import Tag from "@models/Tag";
+import {Codes} from "../../../../@types";
 
 export type PostsUpdateRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDoc }, Partial<Pick<IPostDoc, 'content' | 'title' | 'slug' | 'featuredImage' | 'category' | 'tags'>>, {}>;
 
@@ -22,9 +23,9 @@ class Update extends BaseController<PostsUpdateRequestHandler> {
             const postId = req.params.id;
             const post = await Post.findById(postId);
             if (!post)
-                throw new NotFoundError('post not found');
+                throw new NotFoundError(Codes.POST_UPDATE_POST_NOT_FOUND, 'post not found');
             if (user.role < Roles.editor && !post.author.equals(user._id))
-                throw new AccessForbiddenError('access denied');
+                throw new AccessForbiddenError(Codes.POST_UPDATE_ACCESS_FORBIDDEN, 'access denied');
             req.data = post;
             next();
         }
@@ -35,7 +36,7 @@ class Update extends BaseController<PostsUpdateRequestHandler> {
                 ...extractProps(req.body, 'content', 'title', 'slug', 'featuredImage', 'category'),
                 lastModified: Date.now()
             });
-            post.save().catch(this.handleUniqueError('duplicate slug'));
+            post.save().catch(this.handleUniqueError(Codes.POSTS_UPDATE_DUPLICATE_SLUG, 'duplicate slug'));
             res.json({msg: 'success', result: post});
         }
     ];

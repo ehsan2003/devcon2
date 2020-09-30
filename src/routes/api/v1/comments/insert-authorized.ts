@@ -7,6 +7,7 @@ import {Middleware} from "express-validator/src/base";
 import {IUserDoc} from "@models/User";
 import {ConflictError, NotFoundError} from "@shared/errors";
 import Post from "@models/Post";
+import {Codes} from "../../../../@types";
 
 export type CommentsInsertAuthorizedRequestHandler = RequestHandler<{}, { msg: string, result: ICommentDoc }, {
     content: string, responseTo?: Types.ObjectId, post: Types.ObjectId
@@ -25,9 +26,9 @@ class InsertAuthorized extends BaseController<CommentsInsertAuthorizedRequestHan
             if (reqBody.responseTo) {
                 const parent = await Comment.findById(reqBody.responseTo);
                 if (!parent)
-                    throw new NotFoundError('responseTo not found');
+                    throw new NotFoundError(Codes.COMMENTS_INSERT_AUTHORIZED, 'responseTo not found');
                 if (!reqBody.post.equals(parent.forPost))
-                    throw new ConflictError('response post is not equal to parent post');
+                    throw new ConflictError(Codes.COMMENTS_INSERT_RELATION_ERROR, 'response post is not equal to parent post');
             }
 
             const comment = new Comment({

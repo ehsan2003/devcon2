@@ -2,6 +2,7 @@ import {ErrorRequestHandler} from 'express';
 import {BadRequestError, InternalServerError, SiteError} from "@shared/errors";
 import logger from "@shared/logger";
 import {MulterError} from "multer";
+import {Codes} from "../@types";
 
 
 export default (isDev: boolean): ErrorRequestHandler => (err: Error, req, res, next) => {
@@ -10,7 +11,7 @@ export default (isDev: boolean): ErrorRequestHandler => (err: Error, req, res, n
         return next(err);
     } else if (err instanceof MulterError) {
         logger.silly(err.message, {err, req, res});
-        return next(new BadRequestError(err.message));
+        return next(new BadRequestError(Codes.MULTER_ERROR, err.message));
     }
     logger.error(err.message, {err, req, res});
     next(new InternalServerError(err));

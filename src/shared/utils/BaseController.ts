@@ -7,6 +7,7 @@ import {types as utilTypes} from 'util';
 import {ValidationChain, validationResult} from "express-validator";
 import {mongo} from "mongoose";
 import {Middleware} from "express-validator/src/base";
+import {Codes} from "../../@types";
 
 export abstract class BaseController<LocalRequestHandler extends RequestHandler<any, { msg: string }, any, any>> {
     public abstract readonly method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
@@ -28,10 +29,10 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
     private finalMiddleware: LocalRequestHandler[] = [];
     private router: Router = Router();
 
-    protected handleUniqueError(message: string): (err: Error) => never {
+    protected handleUniqueError(code: Codes, message: string): (err: Error) => never {
         return (err: Error) => {
             if (err instanceof mongo.MongoError && err.code === 11000)
-                throw new ConflictError(message);
+                throw new ConflictError(code, message);
             else
                 throw err;
         };
@@ -73,7 +74,7 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
         return ((req, res, next) => {
             const user = req.user || {role: -1};
             if (this.exactAccess ? user.role !== this.access : (user.role < (this.access as Roles)))
-                next(new AccessForbiddenError('access denied'));
+                next(new AccessForbiddenError(Codes.ROUTE_INACCESSIBLE, 'access denied'));
             next();
         }) as LocalRequestHandler;
     }
