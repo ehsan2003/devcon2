@@ -1,3 +1,6 @@
 import {combineReducers} from "redux";
+import authorization from "@reducers/reducer-authorization";
 
-export default combineReducers({});
+export default combineReducers({
+    authorization
+});
