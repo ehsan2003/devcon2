@@ -1,11 +1,10 @@
-import {BaseController, Roles} from "@shared/utils";
+import {BaseController, ErrorCodes, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {param, ValidationChain} from "express-validator";
 import Post, {IPostDocSharable} from "@models/Post";
 import {Types} from "mongoose";
 import {IUserDoc} from "@models/User";
 import {ConflictError, NotFoundError} from "@shared/errors";
-import {Codes} from "../../../../@types";
 
 export type PostsDislikeRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
 
@@ -20,9 +19,9 @@ class Dislike extends BaseController<PostsDislikeRequestHandler> {
             const id = Types.ObjectId(req.params.id);
             const result = await Post.updateOne({_id: id}, {$pull: {likes: (req.user as IUserDoc)._id}});
             if (result.nMatched === 0)
-                throw new NotFoundError(Codes.POSTS_DISLIKE_$_NOT_FOUND, 'post not found');
+                throw new NotFoundError(ErrorCodes.POSTS_DISLIKE_$_NOT_FOUND, 'post not found');
             if (result.nModified === 0)
-                throw new ConflictError(Codes.POSTS_DISLIKE_$_ALREADY_LIKED, 'disliking when like is absent');
+                throw new ConflictError(ErrorCodes.POSTS_DISLIKE_$_ALREADY_LIKED, 'disliking when like is absent');
             const updatedPost = await Post.preparePostForClient({_id: id});
             res.json({msg: 'success', result: updatedPost[0]});
         }

@@ -1,10 +1,9 @@
-import {BaseController, isValidRegexP} from "@shared/utils";
+import {BaseController, ErrorCodes, isValidRegexP} from "@shared/utils";
 import {RequestHandler} from "express";
 import {query, ValidationChain} from "express-validator";
 import Tag, {ITagDoc} from "@models/Tag";
 import {NotFoundError} from "@shared/errors";
 import configurations from "@conf/configurations";
-import {Codes} from "../../../../@types";
 
 export type TagsSearchRequestHandler = RequestHandler<{}, { msg: string, result: ITagDoc[] }, {}, { q: string, l: number }>;
 
@@ -20,7 +19,7 @@ class Search extends BaseController<TagsSearchRequestHandler> {
             const limit = req.query.l === void 0 ? configurations.tags.search.limitDefault : Math.abs(req.query.l);
             const result = await Tag.find({slug: {$regex: pattern}}).limit(limit);
             if (!result.length)
-                throw new NotFoundError(Codes.TAGS_SEARCH_$_TAG_NOT_FOUND, 'tags not found');
+                throw new NotFoundError(ErrorCodes.TAGS_SEARCH_$_TAG_NOT_FOUND, 'tags not found');
 
             res.json({msg: 'success', result});
         })

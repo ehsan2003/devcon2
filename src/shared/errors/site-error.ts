@@ -1,14 +1,12 @@
-import {Codes} from "../../@types";
-
 export abstract class SiteError extends Error {
     abstract readonly status: number;
-    public readonly code: Codes;
+    public readonly code: string;
 
     public sanitizeResponse(response: { [key: string]: any }) {
         return response;
     }
 
-    public constructor(code: Codes, message: string) {
+    public constructor(code: string, message: string) {
         super(message);
         this.code = code;
     }

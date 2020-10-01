@@ -1,9 +1,8 @@
-import {BaseController} from "@shared/utils";
+import {BaseController, ErrorCodes} from "@shared/utils";
 import {RequestHandler} from "express";
 import {param, ValidationChain} from "express-validator";
 import Profile, {IProfileDoc} from "@models/Profile";
 import {NotFoundError} from "@shared/errors";
-import {Codes} from "../../../../@types";
 
 export type ProfilesGetSlugRequestHandler = RequestHandler<{ slug: string }, { msg: string, result: IProfileDoc }, {}, {}>;
 
@@ -17,7 +16,7 @@ class GetSlug extends BaseController<ProfilesGetSlugRequestHandler> {
         async (req, res) => {
             const profile = await Profile.findOne({slug: req.params.slug});
             if (!profile)
-                throw new NotFoundError(Codes.PROFILE_GET_$_SLUG_NOT_FOUND, 'profile not found');
+                throw new NotFoundError(ErrorCodes.PROFILE_GET_$_SLUG_NOT_FOUND, 'profile not found');
             res.json({msg: 'success', result: profile});
 
         }

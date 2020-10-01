@@ -1,9 +1,8 @@
-import {BaseController, Roles, secureUserInfo} from "@shared/utils";
+import {BaseController, ErrorCodes, Roles, secureUserInfo} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, param, ValidationChain} from "express-validator";
 import User, {IUserDoc} from "@models/User";
 import {AccessForbiddenError, NotFoundError} from "@shared/errors";
-import {Codes} from "../../../../@types";
 
 export type UsersChangeRolsRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ReturnType<typeof secureUserInfo> }, {
     newRole: Roles;
@@ -29,10 +28,10 @@ class ChangeRoles extends BaseController<UsersChangeRolsRequestHandler> {
         async (req, res) => {
             const user = req.user as IUserDoc;
             if (this.allowedChanges[user.role] < req.body.newRole)
-                throw new AccessForbiddenError(Codes.USER_CHANGE_ROLE_$_FORBIDDEN, 'access forbidden');
+                throw new AccessForbiddenError(ErrorCodes.USER_CHANGE_ROLE_$_FORBIDDEN, 'access forbidden');
             const modifiedUser = await User.findById(req.params.id);
             if (!modifiedUser)
-                throw new NotFoundError(Codes.USER_CHANGE_ROLE_$_USER_NOT_FOUND, 'user not found');
+                throw new NotFoundError(ErrorCodes.USER_CHANGE_ROLE_$_USER_NOT_FOUND, 'user not found');
             res.json({msg: 'success', result: secureUserInfo(modifiedUser)});
         }
 

@@ -1,10 +1,9 @@
-import {BaseController, Roles} from "@shared/utils";
+import {BaseController, ErrorCodes, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, param, ValidationChain} from "express-validator";
 import ImageData, {IImageDataDoc} from "@models/ImageData";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
-import {Codes} from "../../../../@types";
 
 export type ImagesChangeSlugRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, { newSlug: string }, {}>;
 
@@ -19,7 +18,7 @@ class ChangeSlug extends BaseController<ImagesChangeSlugRequestHandler> {
             const id = Types.ObjectId(req.params.id);
             const imageDataDoc = await ImageData.findOne({_id: id});
             if (!imageDataDoc)
-                throw new NotFoundError(Codes.IMAGES_CHANGE_SLUG_$_NOT_FOUND, 'image not found');
+                throw new NotFoundError(ErrorCodes.IMAGES_CHANGE_SLUG_$_NOT_FOUND, 'image not found');
             const result = await imageDataDoc.changeData({slugPrefix: req.body.newSlug});
             res.json({msg: 'success', result});
         }

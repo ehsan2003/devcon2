@@ -1,11 +1,10 @@
-import {AggregationChain, BaseController, isValidRegexP, Roles} from "@shared/utils";
+import {AggregationChain, BaseController, ErrorCodes, isValidRegexP, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {param, query, ValidationChain} from "express-validator";
 import Category from "@models/Category";
 import configurations from "@conf/configurations";
 import {NotFoundError} from "@shared/errors";
 import {IPostDocSharable} from "@models/Post";
-import {Codes} from "../../../../@types";
 
 export type PostsSearchCategoryRequestHandler = RequestHandler<{ category: string }, { msg: string, result: (IPostDocSharable & { isLiked?: boolean })[] }, {}, {
     q?: string;
@@ -89,7 +88,7 @@ class SearchByCategory extends BaseController<PostsSearchCategoryRequestHandler>
 
             const result = await Category.aggregate(chain.getPipelineInstance());
             if (!result.length)
-                throw new NotFoundError(Codes.POSTS_SEARCH_CATEGORY_$_NOT_FOUND, 'post not found');
+                throw new NotFoundError(ErrorCodes.POSTS_SEARCH_CATEGORY_$_NOT_FOUND, 'post not found');
             res.json({msg: 'success', result});
         }
     ];

@@ -1,10 +1,9 @@
-import {BaseController} from "@shared/utils";
+import {BaseController, ErrorCodes} from "@shared/utils";
 import {RequestHandler} from "express";
 import {ValidationChain} from "express-validator";
 import Comment, {ICommentDoc} from "@models/Comment";
 import {Types} from "mongoose";
 import {NotFoundError} from "@shared/errors";
-import {Codes} from "../../../../@types";
 
 export type CommentsGetPostRequestHandler = RequestHandler<{ id: string }, { msg: string, result: (ICommentDoc & { responses: number })[] }, {}, {}>;
 
@@ -29,7 +28,7 @@ class GetPost extends BaseController<CommentsGetPostRequestHandler> {
                 responses: {$size: '$responses'}
             });
             if (!result.length)
-                throw new NotFoundError(Codes.COMMENTS_GET_POST_$_COMMENTS_NOT_FOUND, 'comments not found');
+                throw new NotFoundError(ErrorCodes.COMMENTS_GET_POST_$_COMMENTS_NOT_FOUND, 'comments not found');
             res.json({msg: 'success', result});
 
         })

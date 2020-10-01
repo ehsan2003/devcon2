@@ -1,9 +1,8 @@
-import {BaseController, Roles} from "@shared/utils";
+import {BaseController, ErrorCodes, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import ImageData, {IImageDataDoc} from "@models/ImageData";
 import {NotFoundError} from "@shared/errors";
-import {Codes} from "../../../../@types";
 
 export type ImagesChangeInfoRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, {
     details?: string;
@@ -29,7 +28,7 @@ class ChangeInfo extends BaseController<ImagesChangeInfoRequestHandler> {
                 }).filter(([index, value]) => value !== void 0))
             }, {new: true});
             if (!imageData)
-                throw new NotFoundError(Codes.CHANGE_INFO_$_NOT_FOUND, 'image not found');
+                throw new NotFoundError(ErrorCodes.CHANGE_INFO_$_NOT_FOUND, 'image not found');
             res.json({msg: 'success', result: imageData});
 
         }

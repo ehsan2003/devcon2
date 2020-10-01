@@ -1,10 +1,9 @@
-import {BaseController, extractProps, Roles} from "@shared/utils";
+import {BaseController, ErrorCodes, extractProps, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import Profile, {IProfileDoc} from "@models/Profile";
 import {IUserDoc} from "@models/User";
 import {NotFoundError} from "@shared/errors";
-import {Codes} from "../../../../@types";
 
 export type ProfilesUpdateRequestHandler = RequestHandler<{}, { msg: string, result: IProfileDoc }, Partial<Pick<IProfileDoc, 'firstName' | 'lastName' | 'social' | 'bio'>>, {}>;
 
@@ -21,7 +20,7 @@ class Update extends BaseController<ProfilesUpdateRequestHandler> {
                 , {$set: extractProps(req.body, 'firstName', 'lastName', 'social', 'bio')}
                 , {new: true});
             if (!profile)
-                throw new NotFoundError(Codes.PROFILE_UPDATE_$_NOT_FOUND, 'profile not found');
+                throw new NotFoundError(ErrorCodes.PROFILE_UPDATE_$_NOT_FOUND, 'profile not found');
             res.json({msg: 'success', result: profile});
         }
     ];

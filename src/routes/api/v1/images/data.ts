@@ -1,9 +1,8 @@
-import {BaseController} from "@shared/utils";
+import {BaseController, ErrorCodes} from "@shared/utils";
 import {RequestHandler} from "express";
 import {param, ValidationChain} from "express-validator";
 import ImageData, {IImageDataDoc} from "@models/ImageData";
 import {NotFoundError} from "@shared/errors";
-import {Codes} from "../../../../@types";
 
 export type ImagesDataRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, {}, {}>;
 
@@ -17,7 +16,7 @@ class Data extends BaseController<ImagesDataRequestHandler> {
         async (req, res) => {
             const imageData = await ImageData.findById(req.params.id);
             if (!imageData)
-                throw new NotFoundError(Codes.IMAGES_DATA_$_NOT_FOUND, 'imageData not found');
+                throw new NotFoundError(ErrorCodes.IMAGES_DATA_$_NOT_FOUND, 'imageData not found');
             res.json({msg: 'success', result: imageData});
         }
     ];

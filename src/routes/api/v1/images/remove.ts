@@ -1,9 +1,8 @@
-import {BaseController, Roles} from "@shared/utils";
+import {BaseController, ErrorCodes, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {param, ValidationChain} from "express-validator";
 import ImageData, {IImageDataDoc} from "@models/ImageData";
 import {NotFoundError} from "@shared/errors";
-import {Codes} from "../../../../@types";
 
 export type ImagesRemoveRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IImageDataDoc }, {}, {}>;
 
@@ -17,7 +16,7 @@ class Remove extends BaseController<ImagesRemoveRequestHandler> {
         async (req, res) => {
             const imageData = await ImageData.findById(req.params.id);
             if (!imageData)
-                throw new NotFoundError(Codes.IMAGES_REMOVE_$_NOT_FOUND, 'image not found');
+                throw new NotFoundError(ErrorCodes.IMAGES_REMOVE_$_NOT_FOUND, 'image not found');
             await imageData.removeAll();
             res.json({msg: 'success', result: imageData});
         }

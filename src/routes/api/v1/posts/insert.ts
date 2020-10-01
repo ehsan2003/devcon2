@@ -1,4 +1,4 @@
-import {BaseController, extractProps, Roles} from "@shared/utils";
+import {BaseController, ErrorCodes, extractProps, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import Post, {IPostDoc} from "@models/Post";
@@ -6,7 +6,6 @@ import {IUserDoc} from "@models/User";
 import {isValidObjectId, Types} from "mongoose";
 import Category from "@models/Category";
 import Tag from "@models/Tag";
-import {Codes} from "../../../../@types";
 
 export type PostsInsertRequestHandler = RequestHandler<{}, { msg: string, result: IPostDoc }, Pick<IPostDoc, 'content' | 'title' | 'slug' | 'featuredImage' | 'category' | 'tags'>, {}>;
 
@@ -23,7 +22,7 @@ class Insert extends BaseController<PostsInsertRequestHandler> {
                     author: (req.user as IUserDoc)._id
                 }
             );
-            await result.save().catch(this.handleUniqueError(Codes.POSTS_INSERT_$_DUPLICATE_SLUG, 'duplicate slug'));
+            await result.save().catch(this.handleUniqueError(ErrorCodes.POSTS_INSERT_$_DUPLICATE_SLUG, 'duplicate slug'));
             res.json({msg: 'success', result});
         })
     ];

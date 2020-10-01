@@ -1,10 +1,9 @@
-import {BaseController, Roles} from "@shared/utils";
+import {BaseController, ErrorCodes, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {param, ValidationChain} from "express-validator";
 import Category, {ICategoryDoc} from "@models/Category";
 import {BadRequestError, NotFoundError} from "@shared/errors";
 import {Types} from "mongoose";
-import {Codes} from "../../../../@types";
 
 export type localRequestHandler = RequestHandler<{ id: string }, { msg: string, result: ICategoryDoc }, {}, {}>;
 
@@ -17,11 +16,11 @@ class Delete extends BaseController<localRequestHandler> {
         = [
         (async (req, res) => {
             if (await Category.exists({parent: Types.ObjectId(req.params.id)}))
-                throw new BadRequestError(Codes.CATEGORIES_DELETE_$_DEPENDENCY_ERROR, 'this category is parent of other categories');
+                throw new BadRequestError(ErrorCodes.CATEGORIES_DELETE_$_DEPENDENCY_ERROR, 'this category is parent of other categories');
 
             const deletedCategory = await Category.findOneAndDelete({_id: Types.ObjectId(req.params.id)});
             if (!deletedCategory)
-                throw new NotFoundError(Codes.CATEGORIES_DELETE_$_CATEGORY_NOT_FOUND, 'category not found');
+                throw new NotFoundError(ErrorCodes.CATEGORIES_DELETE_$_CATEGORY_NOT_FOUND, 'category not found');
             res.json({msg: 'success', result: deletedCategory});
 
         })

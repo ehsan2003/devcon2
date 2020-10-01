@@ -1,11 +1,10 @@
-import {BaseController, Roles} from "@shared/utils";
+import {BaseController, ErrorCodes, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {param, ValidationChain} from "express-validator";
 import Post, {IPostDocSharable} from "@models/Post";
 import {IUserDoc} from "@models/User";
 import {Types} from "mongoose";
 import {ConflictError, NotFoundError} from "@shared/errors";
-import {Codes} from "../../../../@types";
 
 export type PostsLikeRequestHandler = RequestHandler<{ id: string }, { msg: string, result: IPostDocSharable }, {}, {}>;
 
@@ -20,9 +19,9 @@ class Like extends BaseController<PostsLikeRequestHandler> {
             const id = Types.ObjectId(req.params.id);
             const result = await Post.updateOne({_id: id}, {$addToSet: {likes: (req.user as IUserDoc).id}});
             if (result.nMatched === 0)
-                throw new NotFoundError(Codes.POSTS_LIKE_$_NOT_FOUND, 'post not found');
+                throw new NotFoundError(ErrorCodes.POSTS_LIKE_$_NOT_FOUND, 'post not found');
             if (result.nModified === 0)
-                throw new ConflictError(Codes.POSTS_LIKE_$_ALREADY_LIKED, 'already liked');
+                throw new ConflictError(ErrorCodes.POSTS_LIKE_$_ALREADY_LIKED, 'already liked');
             const updatedPost = await Post.preparePostForClient({_id: id});
 
             res.json({msg: 'success', result: updatedPost[0]});

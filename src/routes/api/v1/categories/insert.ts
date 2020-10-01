@@ -1,8 +1,7 @@
-import {BaseController, Roles} from "@shared/utils";
+import {BaseController, ErrorCodes, Roles} from "@shared/utils";
 import {RequestHandler} from "express";
 import {body, ValidationChain} from "express-validator";
 import Category, {ICategoryDoc} from "@models/Category";
-import {Codes} from "../../../../@types";
 
 export type CategoriesInsertRequestHandler = RequestHandler<{}, { msg: string, result: ICategoryDoc }, { slug: string, enName: string, parent?: string }, {}>;
 
@@ -20,7 +19,7 @@ class Insert extends BaseController<CategoriesInsertRequestHandler> {
                 enName: reqBody.enName,
                 parent: reqBody.parent || null
             });
-            await category.save().catch(this.handleUniqueError(Codes.CATEGORIES_INSERT_$_DUPLICATE_SLUG, 'duplicate slug'));
+            await category.save().catch(this.handleUniqueError(ErrorCodes.CATEGORIES_INSERT_$_DUPLICATE_SLUG, 'duplicate slug'));
             res.json({msg: 'success', result: category});
         })
     ];
