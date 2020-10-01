@@ -15,7 +15,7 @@ class Register extends BaseController<UsersRegisterRequestHandler> {
         async (req, res) => {
             const extracted = extractProps(req.body, 'email', 'username');
             const user = new User({...extracted, password: await hashPassword(req.body.password)});
-            await user.save().catch(this.handleUniqueError(Codes.USER_REGISTER_DUPLICATE, 'username or email is not unique'));
+            await user.save().catch(this.handleUniqueError(Codes.USER_REGISTER_$_DUPLICATE, 'username or email is not unique'));
             const jwtToken = signJwt(user);
             res.json({msg: 'success', token: jwtToken, result: secureUserInfo(user)});
         }

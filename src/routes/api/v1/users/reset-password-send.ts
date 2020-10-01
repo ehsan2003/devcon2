@@ -18,12 +18,12 @@ class ResetPasswordSend extends BaseController<UsersResetPasswordSendRequestHand
         (async (req, res) => {
             const {email} = req.body;
             if (!await User.exists({email}))
-                throw new NotFoundError(Codes.USER_RESET_PASSWORD_USER_NOT_FOUND, 'user not found');
+                throw new NotFoundError(Codes.USER_RESET_PASSWORD_$_USER_NOT_FOUND, 'user not found');
             const verificationDoc = new Verification({
                 token: await getRandomToken()
                 , data: {for: verificationTypes.resetPassword, email}
             });
-            await verificationDoc.save().catch(this.handleUniqueError(Codes.USER_VERIFICATION_DUPLICATE_VERIFICATION_DATA, 'duplicate verification data'));
+            await verificationDoc.save().catch(this.handleUniqueError(Codes.USER_VERIFICATION_$_DUPLICATE_VERIFICATION_DATA, 'duplicate verification data'));
             console.log(verificationDoc.token);
             res.json({msg: 'success'});
         })

@@ -89,7 +89,7 @@ class SearchByCategory extends BaseController<PostsSearchCategoryRequestHandler>
 
             const result = await Category.aggregate(chain.getPipelineInstance());
             if (!result.length)
-                throw new NotFoundError(Codes.POSTS_SEARCH_CATEGORY_NOT_FOUND, 'post not found');
+                throw new NotFoundError(Codes.POSTS_SEARCH_CATEGORY_$_NOT_FOUND, 'post not found');
             res.json({msg: 'success', result});
         }
     ];

@@ -19,7 +19,7 @@ class ResetPasswordToken extends BaseController<UsersResetPasswordTokenRequestHa
             const {newPassword} = req.body;
             const verificationResult = await verifyByToken(token, verificationTypes.resetPassword);
             if (!verificationResult)
-                throw new BadRequestError(Codes.USER_RESET_PASSWORD_INVALID_TOKEN, 'invalid token');
+                throw new BadRequestError(Codes.USER_RESET_PASSWORD_$_INVALID_TOKEN, 'invalid token');
             verificationResult.password = await hashPassword(newPassword);
             await verificationResult.save();
             res.json({msg: 'success'});

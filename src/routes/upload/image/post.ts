@@ -36,7 +36,7 @@ class Post extends ImageUploader<UploadImagePostRequestHandler> {
         = [
         (req, res, next) => {
             if (!req.file)
-                throw new BadRequestError(Codes.UPLOAD_IMAGE_POST_NOT_FOUND, 'no file');
+                throw new BadRequestError(Codes.UPLOAD_IMAGE_POST_$_NOT_FOUND, 'no file');
             next();
         },
         async (req, res) => {

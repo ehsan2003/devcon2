@@ -29,10 +29,10 @@ class ChangeRoles extends BaseController<UsersChangeRolsRequestHandler> {
         async (req, res) => {
             const user = req.user as IUserDoc;
             if (this.allowedChanges[user.role] < req.body.newRole)
-                throw new AccessForbiddenError(Codes.USER_CHANGE_ROLE_FORBIDDEN, 'access forbidden');
+                throw new AccessForbiddenError(Codes.USER_CHANGE_ROLE_$_FORBIDDEN, 'access forbidden');
             const modifiedUser = await User.findById(req.params.id);
             if (!modifiedUser)
-                throw new NotFoundError(Codes.USER_CHANGE_ROLE_USER_NOT_FOUND, 'user not found');
+                throw new NotFoundError(Codes.USER_CHANGE_ROLE_$_USER_NOT_FOUND, 'user not found');
             res.json({msg: 'success', result: secureUserInfo(modifiedUser)});
         }
 

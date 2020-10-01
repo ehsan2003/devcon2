@@ -29,14 +29,14 @@ class Avatar extends ImageUploader<UploadImageAvatarRequestHandler> {
         = [this.upload.single('avatar'),
         (req, res, next) => {
             if (!req.file)
-                throw new BadRequestError(Codes.UPLOAD_IMAGE_AVATAR_NO_FILE, 'no file');
+                throw new BadRequestError(Codes.UPLOAD_IMAGE_AVATAR_$_NO_FILE, 'no file');
             next();
         },
         async (req, res, next) => {
             const user = req.user as IUserDoc;
             const profile = await Profile.findOne({user: user._id});
             if (!profile)
-                throw new NotFoundError(Codes.UPLOAD_IMAGE_PROFILE_NOT_FOUND, 'profile not found');
+                throw new NotFoundError(Codes.UPLOAD_IMAGE_AVATAR_$_NOT_FOUND, 'profile not found');
             req.data = profile;
             next();
 

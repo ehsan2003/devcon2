@@ -20,7 +20,7 @@ class Insert extends BaseController<CategoriesInsertRequestHandler> {
                 enName: reqBody.enName,
                 parent: reqBody.parent || null
             });
-            await category.save().catch(this.handleUniqueError(Codes.CATEGORIES_INSERT_DUPLICATE_SLUG, 'duplicate slug'));
+            await category.save().catch(this.handleUniqueError(Codes.CATEGORIES_INSERT_$_DUPLICATE_SLUG, 'duplicate slug'));
             res.json({msg: 'success', result: category});
         })
     ];

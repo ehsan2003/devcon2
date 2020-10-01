@@ -28,13 +28,13 @@ class PostUpdate extends ImageUploader<UploadImagePostUpdateRequestHandler> {
         = [this.upload.single('image'),
         (req, res, next) => {
             if (!req.file)
-                throw new BadRequestError(Codes.UPLOAD_IMAGE_POST_UPDATE_NO_FILE, 'no file');
+                throw new BadRequestError(Codes.UPLOAD_IMAGE_POST_UPDATE_$_NO_FILE, 'no file');
             return next();
         },
         async (req, res) => {
             const imageDataDoc = await ImageData.findById(req.params.id);
             if (!imageDataDoc)
-                throw new NotFoundError(Codes.UPLOAD_IMAGE_POST_UPDATE_NOT_FOUND, 'imageData not found');
+                throw new NotFoundError(Codes.UPLOAD_IMAGE_POST_UPDATE_$_NOT_FOUND, 'imageData not found');
             await this.saveImageFiles({
                 imageDataDoc,
                 sizes: configurations.posts.image.sizes,

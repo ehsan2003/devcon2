@@ -29,7 +29,7 @@ class ChangeInfo extends BaseController<ImagesChangeInfoRequestHandler> {
                 }).filter(([index, value]) => value !== void 0))
             }, {new: true});
             if (!imageData)
-                throw new NotFoundError(Codes.CHANGE_INFO_NOT_FOUND, 'image not found');
+                throw new NotFoundError(Codes.CHANGE_INFO_$_NOT_FOUND, 'image not found');
             res.json({msg: 'success', result: imageData});
 
         }

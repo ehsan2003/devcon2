@@ -41,7 +41,7 @@ class GetResponses extends BaseController<CommentsGetResponsesRequestHandler> {
                 }
             ]);
             if (!result.length)
-                throw new NotFoundError(Codes.COMMENTS_GET_RESPONSES_NOT_FOUND, 'comments not found');
+                throw new NotFoundError(Codes.COMMENTS_GET_RESPONSES_$_NOT_FOUND, 'comments not found');
             res.json({msg: 'success', result});
 
         })

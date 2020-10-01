@@ -20,7 +20,7 @@ class Search extends BaseController<TagsSearchRequestHandler> {
             const limit = req.query.l === void 0 ? configurations.tags.search.limitDefault : Math.abs(req.query.l);
             const result = await Tag.find({slug: {$regex: pattern}}).limit(limit);
             if (!result.length)
-                throw new NotFoundError(Codes.TAGS_SEARCH_TAG_NOT_FOUND, 'tags not found');
+                throw new NotFoundError(Codes.TAGS_SEARCH_$_TAG_NOT_FOUND, 'tags not found');
 
             res.json({msg: 'success', result});
         })

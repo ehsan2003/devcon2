@@ -19,7 +19,7 @@ class ChangeAccess extends BaseController<ImagesChangeAccessRequestHandler> {
             const id = Types.ObjectId(req.params.id);
             const imageDataDoc = await ImageData.findById(id);
             if (!imageDataDoc)
-                throw new NotFoundError(Codes.IMAGES_CHANGE_ACCESS_NOT_FOUND, 'image not found');
+                throw new NotFoundError(Codes.IMAGES_CHANGE_ACCESS_$_NOT_FOUND, 'image not found');
             await imageDataDoc.changeData({access: req.body.newAccess});
             res.json({msg: 'success', result: imageDataDoc});
         }

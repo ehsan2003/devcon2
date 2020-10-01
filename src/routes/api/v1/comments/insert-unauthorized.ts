@@ -19,9 +19,9 @@ class InsertUnauthorized extends BaseController<CommentsInsertUnauthorizedReques
             if (req.body.responseTo) {
                 const parent = await Comment.findById(req.body.responseTo);
                 if (!parent)
-                    throw new NotFoundError(Codes.COMMENTS_INSERT_UNAUTHORIZED_RESPONSE_TO_NOT_FOUND, 'responseTo not found');
+                    throw new NotFoundError(Codes.COMMENTS_INSERT_UNAUTHORIZED_$_PARENT_NOT_FOUND, 'responseTo not found');
                 if (!req.body.post.equals(parent.forPost))
-                    throw new ConflictError(Codes.COMMENTS_INSERT_UNAUTHORIZED_RELATION_ERROR, 'response post is not equal to parent post');
+                    throw new ConflictError(Codes.COMMENTS_INSERT_UNAUTHORIZED_$_POST_CONFLICT, 'response post is not equal to parent post');
             }
             console.log(req.body);
             const commentDoc = new Comment({

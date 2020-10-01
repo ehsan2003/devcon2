@@ -17,7 +17,7 @@ class Get extends BaseController<PostsGetRequestHandler> {
         async (req, res) => {
             const post = (await Post.preparePostForClient({_id: Types.ObjectId(req.params.id)}))[0];
             if (!post) {
-                throw new NotFoundError(Codes.POSTS_GET_NOT_FOUND, 'post not found');
+                throw new NotFoundError(Codes.POSTS_GET_$_NOT_FOUND, 'post not found');
             }
             res.json({msg: 'success', result: post});
         }

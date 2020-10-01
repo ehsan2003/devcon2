@@ -19,7 +19,7 @@ class FileProtection extends BaseController<localRequestHandler> {
             const accessRole = Roles[req.params.role];
             const user = req.user as IUserDoc;
             if (user.role < accessRole)
-                throw new AccessForbiddenError(Codes.FILE_PROTECTION_FILE_INACCESSIBLE, 'file is not accessible');
+                throw new AccessForbiddenError(Codes.FILE_PROTECTION_$_FILE_INACCESSIBLE, 'file is not accessible');
             next();
         }
     ];

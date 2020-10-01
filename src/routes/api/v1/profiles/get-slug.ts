@@ -17,7 +17,7 @@ class GetSlug extends BaseController<ProfilesGetSlugRequestHandler> {
         async (req, res) => {
             const profile = await Profile.findOne({slug: req.params.slug});
             if (!profile)
-                throw new NotFoundError(Codes.PROFILES_GET_SLUG_NOT_FOUND, 'profile not found');
+                throw new NotFoundError(Codes.PROFILE_GET_$_SLUG_NOT_FOUND, 'profile not found');
             res.json({msg: 'success', result: profile});
 
         }

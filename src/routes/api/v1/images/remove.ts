@@ -17,7 +17,7 @@ class Remove extends BaseController<ImagesRemoveRequestHandler> {
         async (req, res) => {
             const imageData = await ImageData.findById(req.params.id);
             if (!imageData)
-                throw new NotFoundError(Codes.IMAGES_REMOVE_NOT_FOUND, 'image not found');
+                throw new NotFoundError(Codes.IMAGES_REMOVE_$_NOT_FOUND, 'image not found');
             await imageData.removeAll();
             res.json({msg: 'success', result: imageData});
         }

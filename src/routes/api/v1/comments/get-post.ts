@@ -29,7 +29,7 @@ class GetPost extends BaseController<CommentsGetPostRequestHandler> {
                 responses: {$size: '$responses'}
             });
             if (!result.length)
-                throw new NotFoundError(Codes.COMMENTS_GET_POST_COMMENTS_NOT_FOUND, 'comments not found');
+                throw new NotFoundError(Codes.COMMENTS_GET_POST_$_COMMENTS_NOT_FOUND, 'comments not found');
             res.json({msg: 'success', result});
 
         })
