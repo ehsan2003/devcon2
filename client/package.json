@@ -19,8 +19,9 @@
     "redux": "^4.0.5",
     "redux-observable": "^1.2.0",
     "rxjs": "^6.6.3",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8"
   },
+  "proxy": "http://localhost:3001",
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
