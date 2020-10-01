@@ -10,7 +10,8 @@ module.exports = function (override, env) {
         "@components": path.resolve(__dirname, 'src/components'),
         "@reducers": path.resolve(__dirname, 'src/reducers'),
         "@actions": path.resolve(__dirname, 'src/actions'),
-        "@epics": path.resolve(__dirname, 'src/epics')
+        "@epics": path.resolve(__dirname, 'src/epics'),
+        "@shared": path.resolve(__dirname, 'src/shared'),
     })
     return override
 };

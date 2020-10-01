@@ -13,6 +13,9 @@
       ],
       "@epics/*": [
         "epics/*"
+      ],
+      "@shared/*": [
+        "shared/*"
       ]
     }
   }
