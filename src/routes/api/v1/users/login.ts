@@ -29,10 +29,7 @@ class Login extends BaseController<UsersLoginRequestHandler> {
     protected validator: ValidationChain[] = [
         body('password')
             .exists().withMessage('password is required')
-            .isString().withMessage('password is not a string')
-            .isLength({min: 8, max: 100}).withMessage('password length should be between 8 and 100')
-            .matches(/\d/).withMessage('password should contains number')
-            .matches(/\w/).withMessage('password should contains letters'),
+            .isString().withMessage('password is not a string'),
         body('email')
             .exists().withMessage('email required')
             .isEmail().withMessage('email is invalid')
