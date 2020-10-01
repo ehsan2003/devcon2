@@ -18,7 +18,7 @@ class ChangeSlug extends BaseController<ImagesChangeSlugRequestHandler> {
             const id = Types.ObjectId(req.params.id);
             const imageDataDoc = await ImageData.findOne({_id: id});
             if (!imageDataDoc)
-                throw new NotFoundError(ErrorCodes.IMAGES_CHANGE_SLUG_$_NOT_FOUND, 'image not found');
+                throw new NotFoundError(ErrorCodes.ERROR_IMAGES_CHANGE_SLUG_$_NOT_FOUND, 'image not found');
             const result = await imageDataDoc.changeData({slugPrefix: req.body.newSlug});
             res.json({msg: 'success', result});
         }

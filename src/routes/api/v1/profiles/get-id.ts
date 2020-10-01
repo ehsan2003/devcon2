@@ -16,7 +16,7 @@ class GetId extends BaseController<ProfilesGetIdRequestHandler> {
         async (req, res) => {
             const profile = await Profile.findById(req.params.id);
             if (!profile)
-                throw new NotFoundError(ErrorCodes.PROFILE_GET_$_ID_NOT_FOUND, 'profile not found');
+                throw new NotFoundError(ErrorCodes.ERROR_PROFILE_GET_$_ID_NOT_FOUND, 'profile not found');
             res.json({msg: 'success', result: profile});
 
         }

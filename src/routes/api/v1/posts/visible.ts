@@ -18,9 +18,9 @@ class Visible extends BaseController<PostsVisibleRequestHandler> {
             const user = req.user as IUserDoc;
             const post = await Post.findById(req.params.id);
             if (!post)
-                throw new NotFoundError(ErrorCodes.POST_VISIBLE_$_POST_NOT_FOUND, 'post not found');
+                throw new NotFoundError(ErrorCodes.ERROR_POST_VISIBLE_$_POST_NOT_FOUND, 'post not found');
             if (user.role === Roles.author && !post.author.equals(user._id))
-                throw new AccessForbiddenError(ErrorCodes.POST_VISIBLE_$_ACCESS_FORBIDDEN, `you can't make this post visible`);
+                throw new AccessForbiddenError(ErrorCodes.ERROR_POST_VISIBLE_$_ACCESS_FORBIDDEN, `you can't make this post visible`);
             req.data = post;
             next();
         },

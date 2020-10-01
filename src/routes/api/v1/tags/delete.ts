@@ -18,7 +18,7 @@ class Delete extends BaseController<TagsDeleteRequestHandler> {
         (async (req, res) => {
             const {ids} = req.query;
             if (!await Tag.tagsExist(ids))
-                throw new NotFoundError(ErrorCodes.TAGS_DELETE_$_NOT_FOUND, 'at least one of the tags does\'t exist');
+                throw new NotFoundError(ErrorCodes.ERROR_TAGS_DELETE_$_NOT_FOUND, 'at least one of the tags does\'t exist');
             const result = await Tag.deleteMany({_id: {$in: ids}});
             res.json({msg: 'success', result});
         })

@@ -17,7 +17,7 @@ class VerifyToken extends BaseController<UsersVerifyTokenRequestHandler> {
             const {token} = req.params;
             const verifyAbleUser = await verifyByToken(token, verificationTypes.emailVerification);
             if (!verifyAbleUser)
-                throw new BadRequestError(ErrorCodes.USER_VERIFICATION_$_INVALID_TOKEN, 'invalid token');
+                throw new BadRequestError(ErrorCodes.ERROR_USER_VERIFICATION_$_INVALID_TOKEN, 'invalid token');
             verifyAbleUser.role = Roles.subscriber;
             await verifyAbleUser.save();
             res.json({msg: 'success', result: secureUserInfo(verifyAbleUser)});

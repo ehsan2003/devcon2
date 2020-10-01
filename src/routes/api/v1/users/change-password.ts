@@ -16,7 +16,7 @@ class ChangePassword extends BaseController<UsersChangePasswordRequestHandler> {
         (async (req, res) => {
             const user = req.user as IUserDoc;
             if (!await checkPassword(user, req.body.password))
-                throw new BadRequestError(ErrorCodes.USER_CHANGE_PASSWORD_$_INVALID_PASSWORD, 'password is invalid');
+                throw new BadRequestError(ErrorCodes.ERROR_USER_CHANGE_PASSWORD_$_INVALID_PASSWORD, 'password is invalid');
             user.password = await hashPassword(req.body.new);
             await user.save();
             res.json({msg: 'success'});

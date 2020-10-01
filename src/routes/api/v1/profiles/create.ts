@@ -18,12 +18,12 @@ class Create extends BaseController<ProfilesCreateRequestHandler> {
             const user = req.user as IUserDoc;
             const profileExists = await Profile.findOne({user: user._id});
             if (profileExists)
-                throw new ConflictError(ErrorCodes.PROFILE_CREATE_$_ALREADY_EXISTS, 'profile already exists you can edit it');
+                throw new ConflictError(ErrorCodes.ERROR_PROFILE_CREATE_$_ALREADY_EXISTS, 'profile already exists you can edit it');
             const profile = new Profile({
                 ...extractProps(req.body, 'firstName', 'lastName', 'social', 'bio', 'slug'),
                 user: user._id
             });
-            await profile.save().catch(this.handleUniqueError(ErrorCodes.PROFILE_CREATE_$_DUPLICATE_SLUG, 'handle already exists'));
+            await profile.save().catch(this.handleUniqueError(ErrorCodes.ERROR_PROFILE_CREATE_$_DUPLICATE_SLUG, 'handle already exists'));
             res.json({msg: 'success', result: profile});
         }
     ];

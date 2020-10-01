@@ -73,7 +73,7 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
         return ((req, res, next) => {
             const user = req.user || {role: -1};
             if (this.exactAccess ? user.role !== this.access : (user.role < (this.access as Roles)))
-                next(new AccessForbiddenError(ErrorCodes.ROUTE_INACCESSIBLE, 'access denied'));
+                next(new AccessForbiddenError(ErrorCodes.ERROR_ROUTE_INACCESSIBLE, 'access denied'));
             next();
         }) as LocalRequestHandler;
     }

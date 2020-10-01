@@ -11,7 +11,7 @@ export default (isDev: boolean): ErrorRequestHandler => (err: Error, req, res, n
         return next(err);
     } else if (err instanceof MulterError) {
         logger.silly(err.message, {err, req, res});
-        return next(new BadRequestError(ErrorCodes.FILE_UPLOAD_ERROR, err.message));
+        return next(new BadRequestError(ErrorCodes.ERROR_FILE_UPLOAD_ERROR, err.message));
     }
     logger.error(err.message, {err, req, res});
     next(new InternalServerError(err));

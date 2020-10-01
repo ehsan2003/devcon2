@@ -12,7 +12,7 @@ const router = Router();
 router.use('/api/v1', v1);
 router.use('/upload', upload);
 router.use('/static', fileProtection.getRouter(), express.static('upload'));
-router.all('*', (req, res, next) => next(new NotFoundError(ErrorCodes.ROUTE_DOES_NOT_EXISTS, `route not found ${req.method} ${req.path}`)));
+router.all('*', (req, res, next) => next(new NotFoundError(ErrorCodes.ERROR_ROUTE_DOES_NOT_EXISTS, `route not found ${req.method} ${req.path}`)));
 router.use(errorLogger(process.env.NODE_ENV === 'development'));
 router.use(errorHandler(process.env.NODE_ENV === 'development'));
 

@@ -7,7 +7,7 @@ export class UnprocessableEntity extends SiteError {
     readonly status = StatusCode.ClientErrorUnprocessableEntity;
 
     constructor(msg: string, public errors: ValidationError[]) {
-        super(ErrorCodes.VALIDATION_ERROR, msg);
+        super(ErrorCodes.ERROR_VALIDATION_ERROR, msg);
     }
 
     public sanitizeResponse(response: { [p: string]: any }): { [p: string]: any } {

@@ -12,7 +12,7 @@ export default (passportInstance: passport.PassportStatic) => {
             if (user)
                 done(null, user);
             else
-                done(new NotFoundError(ErrorCodes.AUTHORIZATION_$_USER_NOT_FOUND, 'user notfound'), false);
+                done(new NotFoundError(ErrorCodes.ERROR_AUTHORIZATION_$_USER_NOT_FOUND, 'user notfound'), false);
         }).catch((err) => done(err, false));
     }));
     passport.use(new AnonymousStrategy());

@@ -17,9 +17,9 @@ class Login extends BaseController<UsersLoginRequestHandler> {
             const {body: reqBody} = req;
             const user = await User.findOne({email: reqBody.email});
             if (!user)
-                throw new BadRequestError(ErrorCodes.USER_LOGIN_$_INVALID_EMAIL, `user doesn't exists`);
+                throw new BadRequestError(ErrorCodes.ERROR_USER_LOGIN_$_INVALID_EMAIL, `user doesn't exists`);
             if (!await checkPassword(user, reqBody.password))
-                throw new BadRequestError(ErrorCodes.USER_LOGIN_$_INVALID_PASSWORD, 'password is not valid');
+                throw new BadRequestError(ErrorCodes.ERROR_USER_LOGIN_$_INVALID_PASSWORD, 'password is not valid');
             else
                 res.json({msg: 'success', token: signJwt(user)});
 

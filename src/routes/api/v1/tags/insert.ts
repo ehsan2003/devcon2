@@ -15,7 +15,7 @@ class Insert extends BaseController<TagsInsertRequestHandler> {
         = [
         (async (req, res) => {
             const {slug, id} = req.body;
-            const tag = await Tag.updateOne({_id: id || new Types.ObjectId()}, {slug}, {upsert: true}).catch(this.handleUniqueError(ErrorCodes.TAGS_INSERT_$_DUPLICATE_SLUG, 'duplicate slug'));
+            const tag = await Tag.updateOne({_id: id || new Types.ObjectId()}, {slug}, {upsert: true}).catch(this.handleUniqueError(ErrorCodes.ERROR_TAGS_INSERT_$_DUPLICATE_SLUG, 'duplicate slug'));
             res.json({msg: 'success', result: tag});
         })
     ];

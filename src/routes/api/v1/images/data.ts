@@ -16,7 +16,7 @@ class Data extends BaseController<ImagesDataRequestHandler> {
         async (req, res) => {
             const imageData = await ImageData.findById(req.params.id);
             if (!imageData)
-                throw new NotFoundError(ErrorCodes.IMAGES_DATA_$_NOT_FOUND, 'imageData not found');
+                throw new NotFoundError(ErrorCodes.ERROR_IMAGES_DATA_$_NOT_FOUND, 'imageData not found');
             res.json({msg: 'success', result: imageData});
         }
     ];

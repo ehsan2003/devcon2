@@ -18,7 +18,7 @@ class Update extends BaseController<CategoriesUpdateRequestHandler> {
             const {body: reqBody} = req;
             const result = await Category.findOneAndUpdate({_id: reqBody.id}, {$set: extractProps(reqBody, 'enName', 'parent', 'slug')}, {new: true});
             if (!result)
-                throw new NotFoundError(ErrorCodes.CATEGORIES_UPDATE_$_CATEGORY_NOT_FOUND, 'category not found');
+                throw new NotFoundError(ErrorCodes.ERROR_CATEGORIES_UPDATE_$_CATEGORY_NOT_FOUND, 'category not found');
             res.json({result, msg: 'success'});
 
         })

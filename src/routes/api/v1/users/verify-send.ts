@@ -19,7 +19,7 @@ class VerifySend extends BaseController<UsersVerifySendRequestHandler> {
                 token: await getRandomToken(),
                 data: {for: verificationTypes.emailVerification, email: user.email}
             });
-            await verificationDoc.save().catch(this.handleUniqueError(ErrorCodes.USER_VERIFICATION_$_DUPLICATE_VERIFICATION_DATA, 'duplicate verification data'));
+            await verificationDoc.save().catch(this.handleUniqueError(ErrorCodes.ERROR_USER_VERIFICATION_$_DUPLICATE_VERIFICATION_DATA, 'duplicate verification data'));
             console.log(verificationDoc.token); // todo add email sender method
             res.json({msg: 'success'});
         }

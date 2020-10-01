@@ -22,7 +22,7 @@ class Insert extends BaseController<PostsInsertRequestHandler> {
                     author: (req.user as IUserDoc)._id
                 }
             );
-            await result.save().catch(this.handleUniqueError(ErrorCodes.POSTS_INSERT_$_DUPLICATE_SLUG, 'duplicate slug'));
+            await result.save().catch(this.handleUniqueError(ErrorCodes.ERROR_POSTS_INSERT_$_DUPLICATE_SLUG, 'duplicate slug'));
             res.json({msg: 'success', result});
         })
     ];

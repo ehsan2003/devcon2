@@ -19,9 +19,9 @@ class Dislike extends BaseController<PostsDislikeRequestHandler> {
             const id = Types.ObjectId(req.params.id);
             const result = await Post.updateOne({_id: id}, {$pull: {likes: (req.user as IUserDoc)._id}});
             if (result.nMatched === 0)
-                throw new NotFoundError(ErrorCodes.POSTS_DISLIKE_$_NOT_FOUND, 'post not found');
+                throw new NotFoundError(ErrorCodes.ERROR_POSTS_DISLIKE_$_NOT_FOUND, 'post not found');
             if (result.nModified === 0)
-                throw new ConflictError(ErrorCodes.POSTS_DISLIKE_$_ALREADY_LIKED, 'disliking when like is absent');
+                throw new ConflictError(ErrorCodes.ERROR_POSTS_DISLIKE_$_ALREADY_LIKED, 'disliking when like is absent');
             const updatedPost = await Post.preparePostForClient({_id: id});
             res.json({msg: 'success', result: updatedPost[0]});
         }

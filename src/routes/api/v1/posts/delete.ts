@@ -17,9 +17,9 @@ class Delete extends BaseController<PostsDeleteRequestHandler> {
         const user = req.user as IUserDoc;
         const post = await Post.findById(req.params.id);
         if (!post)
-            throw new NotFoundError(ErrorCodes.POST_DELETE_$_NOT_FOUND, 'post not found');
+            throw new NotFoundError(ErrorCodes.ERROR_POST_DELETE_$_NOT_FOUND, 'post not found');
         if (post.visible && user.role === Roles.contributor)
-            throw new AccessForbiddenError(ErrorCodes.POST_DELETE_$_ACCESS_FORBIDDEN, 'deleting this post is not permitted by you');
+            throw new AccessForbiddenError(ErrorCodes.ERROR_POST_DELETE_$_ACCESS_FORBIDDEN, 'deleting this post is not permitted by you');
         req.data = post;
         next();
     }

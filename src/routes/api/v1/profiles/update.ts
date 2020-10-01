@@ -20,7 +20,7 @@ class Update extends BaseController<ProfilesUpdateRequestHandler> {
                 , {$set: extractProps(req.body, 'firstName', 'lastName', 'social', 'bio')}
                 , {new: true});
             if (!profile)
-                throw new NotFoundError(ErrorCodes.PROFILE_UPDATE_$_NOT_FOUND, 'profile not found');
+                throw new NotFoundError(ErrorCodes.ERROR_PROFILE_UPDATE_$_NOT_FOUND, 'profile not found');
             res.json({msg: 'success', result: profile});
         }
     ];
