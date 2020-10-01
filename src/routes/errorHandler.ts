@@ -5,7 +5,7 @@ import util from 'util';
 export default (isDev: boolean) => (err: SiteError, req: Request, res: Response, next: NextFunction) => {
     const responseObject: { [p: string]: any } = {
         msg: err.message,
-        code: err.code
+        errCode: err.code
     };
     if (isDev) {
         responseObject.err = util.inspect(err);
