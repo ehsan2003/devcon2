@@ -21,11 +21,9 @@ export const epicUserLogin: Epic<AllActions, ActionTypeUserLoginFulfilled | Acti
                 , method: 'POST'
                 , body: action.payload
             }).pipe(
-                map(response => {
-                    console.log(response);
-                    const responseJson = response.response as ExtractResponseType<UsersLoginRequestHandler>;
-                    return userLoginFulfilled(responseJson.token);
-                }),
+                map(response =>
+                    userLoginFulfilled((response.response as ExtractResponseType<UsersLoginRequestHandler>).token)
+                ),
                 catchError((err, caught) => of(userLoginRejected(err)))
             )
         ));
