@@ -1,6 +1,6 @@
 import {ActionTypeUserLoginFulfilled, userLoginFulfilled} from "@actions/creator-user-login-fulfilled";
 import {ActionTypeUserLogin, userLogin} from "@actions/creator-user-login";
-import {ErrorCodes} from "@shared/utils";
+import {ActionTypeUserLoginRejected} from "@actions/creator-user-login-rejected";
 
 export type AllActionCreators =
     typeof userLogin |
@@ -8,5 +8,4 @@ export type AllActionCreators =
 export type AllActions =
     ActionTypeUserLoginFulfilled
     | ActionTypeUserLogin
-    | { type: keyof typeof ErrorCodes, error: any }
-    ;
+    | ActionTypeUserLoginRejected;
