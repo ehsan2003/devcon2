@@ -7,7 +7,8 @@
   "rules": {
     "semicolon": true,
     "no-console": false,
-    "no-trailing-whitespace": false
+    "no-trailing-whitespace": false,
+    "no-empty-interface": false
   },
   "rulesDirectory": []
 }

@@ -1,3 +1,5 @@
+import {ErrorCodes} from "@shared/utils";
+
 export abstract class SiteError extends Error {
     abstract readonly status: number;
     public readonly code: string;
@@ -10,4 +12,9 @@ export abstract class SiteError extends Error {
         super(message);
         this.code = code;
     }
+}
+
+export interface SiteErrorErrorType {
+    code: keyof typeof ErrorCodes;
+    msg: string;
 }

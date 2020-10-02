@@ -4,3 +4,5 @@ import StatusCode from "status-code-enum";
 export class ConflictError extends SiteError {
     readonly status = StatusCode.ClientErrorConflict;
 }
+export interface ConflictErrorType {
+}

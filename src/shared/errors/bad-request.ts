@@ -1,4 +1,4 @@
-import {SiteError} from "@shared/errors/site-error";
+import {SiteError, SiteErrorErrorType} from "@shared/errors/site-error";
 import StatusCode from "status-code-enum";
 
 export class BadRequestError extends SiteError {
@@ -7,4 +7,7 @@ export class BadRequestError extends SiteError {
     constructor(code: string, msg: string = 'some of the request failed are invalid or not exists yet') {
         super(code, msg);
     }
+}
+
+export interface BadRequestErrorType extends SiteErrorErrorType {
 }
