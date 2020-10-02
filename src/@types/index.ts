@@ -1,3 +1,4 @@
+// models
 export type {IProfile} from '@models/Profile';
 export type {IImageData} from '@models/ImageData';
 export type {IVerification} from '@models/Verification';
@@ -6,7 +7,7 @@ export type {ITag} from '@models/Tag';
 export type {IComment} from '@models/Comment';
 export type {ICategory} from '@models/Category';
 
-
+// success response types
 export type {ImagesChangeAccessRequestHandler} from '../routes/api/v1/images/change-access';
 export type {ImagesChangeInfoRequestHandler} from '../routes/api/v1/images/change-info';
 export type {ImagesSearchRequestHandler} from '../routes/api/v1/images/search';
