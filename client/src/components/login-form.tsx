@@ -24,15 +24,8 @@ class LoginForm extends Component<ReturnType<typeof mapStateToProps> & (typeof m
     };
 
     render() {
-        console.log(this.state);
         return (
             <div>
-                <form onSubmit={this.onSubmit}>
-                    <input type="text" value={this.state.email} onChange={this.onChange} name='email'/>
-                    <input type="password" value={this.state.password} onChange={this.onChange} name="password"/>
-                    <input type="submit"/>
-                </form>
-
             </div>
         );
     }

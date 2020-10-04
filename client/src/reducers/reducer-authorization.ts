@@ -1,11 +1,11 @@
 import {Reducer} from "redux";
 import {AllActions} from "@actions/index";
 import {USER_LOGIN_FULFILLED} from "@actions/creator-user-login-fulfilled";
+import {USER_LOGIN_REJECTED} from "@actions/creator-user-login-rejected";
 
 export type StateAuthorization = {
-    error: null | Error, data: null | string
+    error: null | string, data: null | string
 };
-
 const authorization: Reducer<StateAuthorization, AllActions> =
     (state = {
         error: null
@@ -14,16 +14,8 @@ const authorization: Reducer<StateAuthorization, AllActions> =
         switch (action.type) {
             case USER_LOGIN_FULFILLED:
                 return {data: action.payload.token, error: null};
-            case "ERROR_USER_LOGIN_$_INVALID_EMAIL":
-                return {
-                    data: null,
-                    error: action.error
-                };
-            case "ERROR_USER_LOGIN_$_INVALID_PASSWORD":
-                return {
-                    data: null,
-                    error: action.error
-                };
+            case USER_LOGIN_REJECTED:
+                return {data: null, error: action.error.code};
             default:
                 return state;
         }
