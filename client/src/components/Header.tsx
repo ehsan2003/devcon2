@@ -11,6 +11,7 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
+    SvgIconTypeMap,
     Theme,
     Toolbar,
     Typography,
@@ -27,6 +28,7 @@ import {
 import containerTheme from "../theme";
 import {RootState} from "../reducers";
 import {dispatchType} from "@shared/utils";
+import {OverridableComponent} from "@material-ui/core/OverridableComponent";
 
 export interface OwnProps {}
 
@@ -90,7 +92,12 @@ const Header: React.FC<Props> = (props => {
                 icon: ProfileIcon
             }
         ] : []
-    ];
+    ] as {
+        icon: OverridableComponent<SvgIconTypeMap<any, any>>;
+        link: string,
+        text: string,
+        secondary: string
+    }[];
     const classes = useStyles(containerTheme);
     props.authorization.data = 'hello';
     const [mainMenuOpen, setMainMenuOpen] = useState(false);
@@ -126,13 +133,12 @@ const Header: React.FC<Props> = (props => {
             >
                 <Toolbar/>
                 <List>
-                    {menuItems.map(({icon: Icon, text, secondary}) =>
+                    {menuItems.map(({icon: Icon, text, secondary, link}) =>
                         <ListItem button>
-                            <Link>
-                                <ListItemIcon>
-                                    <Icon/>
-                                </ListItemIcon>
-                                <ListItemText primary={text} secondary={secondary}/></Link>
+                            <ListItemIcon>
+                                <Icon/>
+                            </ListItemIcon>
+                            <ListItemText primary={text} secondary={secondary}/>
                         </ListItem>
                     )}
 
