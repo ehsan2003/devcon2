@@ -1,20 +1,11 @@
-import React, {Component, ReducerState} from 'react';
+import React, {FunctionComponent, ReducerState, useState} from 'react';
 import {connect} from 'react-redux';
 import rootReducer from '@reducers/index';
-import {createStyles, withStyles} from "@material-ui/styles";
-import {AppBar, Box, Button, Hidden, IconButton, Theme, Toolbar, Typography, WithStyles} from "@material-ui/core";
-import {Menu as MenuIcon, Person, PersonAdd} from '@material-ui/icons';
+import {makeStyles} from "@material-ui/styles";
+import {AppBar, Drawer, Hidden, IconButton, Theme, Toolbar} from "@material-ui/core";
+import {Menu as MenuIcon} from "@material-ui/icons";
+import containerTheme from "../theme";
 
-const styles = (theme: Theme) => createStyles({
-    root: {
-        color: 'red',
-    }
-});
-
-// propTypes
-interface Props extends WithStyles<typeof styles> {
-
-}
 
 function mapStateToProps(state: ReducerState<typeof rootReducer>) {
     return {};
@@ -22,42 +13,41 @@ function mapStateToProps(state: ReducerState<typeof rootReducer>) {
 
 const mapDispatchToProps = {};
 
-class Header extends Component<Props & ReturnType<typeof mapStateToProps> & (typeof mapDispatchToProps)> {
-    render() {
-        return (
-            <AppBar color={'primary'} position={'fixed'}>
+// propTypes
+interface Props extends ReturnType<typeof mapStateToProps> {
+
+}
+
+const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+        color: 'red',
+    },
+    menuIcon: {
+        marginRight: theme.spacing(2)
+    }
+}));
+const Header: FunctionComponent<Props> = (props) => {
+    const classes = useStyles(containerTheme);
+    const [mainMenuOpen, setMainMenuOpen] = useState(false);
+    return (
+        <React.Fragment>
+            <AppBar>
                 <Toolbar>
-                    <IconButton color={'inherit'}>
-                        <MenuIcon/>
-                    </IconButton>
-                    <Box mr={'auto'}>
-                        <Typography variant={'h6'}>
-                            Devcon project
-                        </Typography>
-                    </Box>
-                    <Hidden smDown>
-                        <Button color={'inherit'}>
-                            login
-                        </Button>
-                    </Hidden>
-                    <Hidden mdUp>
-                        <IconButton color={'inherit'}><Person/></IconButton>
-                    </Hidden>
-                    <Hidden smDown>
-                        <Button color={'inherit'}>
-                            register
-                        </Button>
-                    </Hidden>
-                    <Hidden mdUp>
-                        <IconButton color={'inherit'}><PersonAdd/></IconButton>
+                    <Hidden smUp>
+                        <IconButton color={'inherit'} className={classes.menuIcon}>
+                            <MenuIcon onClick={() => setMainMenuOpen(true)}/>
+                        </IconButton>
                     </Hidden>
                 </Toolbar>
             </AppBar>
-        );
-    }
-}
+            <Drawer open={mainMenuOpen}>
+
+            </Drawer>
+        </React.Fragment>
+    );
+};
 
 export default connect(
     mapStateToProps
     , mapDispatchToProps
-)(withStyles(styles, {withTheme: true})(Header));
+)(Header);
