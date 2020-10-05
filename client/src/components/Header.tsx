@@ -106,8 +106,11 @@ const Header: React.FC<Props> = (props => {
             <AppBar className={classes.appBar} position={'fixed'}>
                 <Toolbar>
                     <Hidden smUp>
-                        <IconButton onClick={() => setMainMenuOpen(!mainMenuOpen)} color={'inherit'}
-                                    className={classes.menuIcon}>
+                        <IconButton
+                            onClick={() => setMainMenuOpen(!mainMenuOpen)}
+                            color={'inherit'}
+                            className={classes.menuIcon}
+                        >
                             <Zoom in={mainMenuOpen} unmountOnExit><CloseIcon className={classes.menuIconIcon}/></Zoom>
                             <Zoom in={!mainMenuOpen} unmountOnExit><MenuIcon className={classes.menuIconIcon}/></Zoom>
                         </IconButton>
@@ -115,12 +118,13 @@ const Header: React.FC<Props> = (props => {
                     <Typography variant={'h6'} className={classes.brandName}>
                         Devcon
                     </Typography>
-                    <Hidden xsDown
-                    >{menuItems.map(({text}) =>
-                        <Button className={classes.menuButton}>
-                            {text}
-                        </Button>
-                    )}</Hidden>
+                    <Hidden xsDown>
+                        {menuItems.map(({text}) =>
+                            <Button className={classes.menuButton}>
+                                {text}
+                            </Button>
+                        )}
+                    </Hidden>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -141,7 +145,6 @@ const Header: React.FC<Props> = (props => {
                             <ListItemText primary={text} secondary={secondary}/>
                         </ListItem>
                     )}
-
                 </List>
             </Drawer>
         </React.Fragment>
