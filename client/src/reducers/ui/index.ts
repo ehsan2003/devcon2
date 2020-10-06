@@ -5,7 +5,6 @@ import deviceWidth from './reducer-device-width';
 const Ui = combineReducers({
     mainMenuOpen,
     deviceWidth
-
 });
 
 export default Ui;
