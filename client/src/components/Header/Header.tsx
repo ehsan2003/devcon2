@@ -77,8 +77,6 @@ const Header: React.FC<Props> = (props => {
             <AppBar className={classes.appBar} position={'fixed'}>
                 <HeaderAppBarToolbar
                     menuItems={menuItems}
-                    menuDrawerOpen={mainMenuOpen}
-                    setMenuDrawerOpen={setMainMenuOpen}
                 />
             </AppBar>
             <MenuDrawer menuItems={menuItems} open={mainMenuOpen} setOpen={props.mainMenuOpenSet}/>

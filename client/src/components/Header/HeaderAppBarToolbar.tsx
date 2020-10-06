@@ -1,20 +1,31 @@
 import React from 'react';
+import {connect} from "react-redux";
+import {dispatchType} from "@shared/utils";
 import {makeStyles} from "@material-ui/styles";
 import {Button, Hidden, IconButton, Theme, Toolbar, Typography, Zoom} from "@material-ui/core";
+import {RootState} from "@reducers/index";
 import {OverridableComponent} from "@material-ui/core/OverridableComponent";
 import {Close as CloseIcon, Menu as MenuIcon} from "@material-ui/icons";
+import {mainMenuOpenSet} from "@actions/creator-main-menu-open-set";
 
-
-export interface Props {
+export interface OwnProps {
     menuItems: {
         icon: OverridableComponent<any>;
         link: string;
         text: string;
         secondary?: string;
     }[];
-    menuDrawerOpen: boolean;
-    setMenuDrawerOpen: (open: boolean) => void;
 }
+
+const mapDispatchToProps = {
+    setMenuDrawerOpen: mainMenuOpenSet
+};
+const mapStateToProps = (state: RootState) => ({
+    menuDrawerOpen: state.ui.mainMenuOpen.data
+});
+
+export interface Props extends ReturnType<typeof mapStateToProps>, OwnProps, dispatchType<typeof mapDispatchToProps> {}
+
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -37,9 +48,9 @@ const useStyles = makeStyles((theme: Theme) => ({
         marginLeft: theme.spacing(1),
         fontWeight: 'bold'
     }, authorizationButtons: {
-        color:'inherit',
-        marginLeft:theme.spacing(1),
-        fontWeight:'bold'
+        color: 'inherit',
+        marginLeft: theme.spacing(1),
+        fontWeight: 'bold'
     }
 }));
 
@@ -72,5 +83,4 @@ const HeaderAppBarToolbar: React.FC<Props> = (props => {
         </Toolbar>
     );
 });
-
-export default HeaderAppBarToolbar;
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderAppBarToolbar);
