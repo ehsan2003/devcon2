@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect, MapDispatchToProps, MapStateToProps} from 'react-redux';
+import {connect} from 'react-redux';
 import {makeStyles} from "@material-ui/styles";
 import {AppBar, SvgIconTypeMap, Theme} from "@material-ui/core";
 import {
@@ -8,23 +8,20 @@ import {
     Home as HomeIcon,
     ImportContacts as ImportContactsIcon
 } from "@material-ui/icons";
-import {RootState} from "../reducers";
 import {dispatchType} from "@shared/utils";
 import {OverridableComponent} from "@material-ui/core/OverridableComponent";
-import {StateMainMenuOpen} from "@reducers/ui/reducer-main-menu-open";
 import {mainMenuOpenSet} from "@actions/creator-main-menu-open-set";
-import MenuDrawer from "@components/MenuDrawer";
-import HeaderAppBarToolbar from "@components/HeaderAppBarToolbar";
+import MenuDrawer from "@components/Header/MenuDrawer";
+import HeaderAppBarToolbar from "@components/Header/HeaderAppBarToolbar";
+import {RootState} from "@reducers/index";
 
 export interface OwnProps {}
 
 
-const mapDispatchToProps: MapDispatchToProps<{
-    mainMenuOpenSet: typeof mainMenuOpenSet
-}, OwnProps> = {
+const mapDispatchToProps = {
     mainMenuOpenSet
 };
-const mapStateToProps: MapStateToProps<{ authorization: RootState['authorization'], menuOpen: StateMainMenuOpen }, OwnProps, RootState> = state => ({
+const mapStateToProps = (state: RootState) => ({
     authorization: state.authorization,
     menuOpen: state.ui.mainMenuOpen
 });
