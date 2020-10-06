@@ -45,11 +45,11 @@ const useStyles = makeStyles((theme: Theme) => ({
         userSelect: 'none'
     }, menuButton: {
         color: 'inherit',
-        marginLeft: theme.spacing(1),
+        marginLeft: theme.spacing(2),
         fontWeight: 'bold'
     }, authorizationButtons: {
         color: 'inherit',
-        marginLeft: theme.spacing(1),
+        marginLeft: theme.spacing(2),
         fontWeight: 'bold'
     }
 }));
