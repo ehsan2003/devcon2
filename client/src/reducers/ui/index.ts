@@ -1,8 +1,11 @@
 import {combineReducers} from "redux";
-import mainMenuOpen from "@reducers/ui/reducer-main-menu-open";
+import mainMenuOpen from "./reducer-main-menu-open";
+import deviceWidth from './reducer-device-width';
 
 const Ui = combineReducers({
-    mainMenuOpen
+    mainMenuOpen,
+    deviceWidth
+
 });
 
 export default Ui;
