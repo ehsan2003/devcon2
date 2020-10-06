@@ -1,22 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {connect, MapDispatchToProps, MapStateToProps} from 'react-redux';
 import {makeStyles} from "@material-ui/styles";
-import {
-    AppBar,
-    Button,
-    Drawer,
-    Hidden,
-    IconButton,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    SvgIconTypeMap,
-    Theme,
-    Toolbar,
-    Typography,
-    Zoom
-} from "@material-ui/core";
+import {AppBar, Button, Hidden, IconButton, SvgIconTypeMap, Theme, Toolbar, Typography, Zoom} from "@material-ui/core";
 import {
     AccountBox as ProfileIcon,
     Close as CloseIcon,
@@ -29,11 +14,22 @@ import containerTheme from "../theme";
 import {RootState} from "../reducers";
 import {dispatchType} from "@shared/utils";
 import {OverridableComponent} from "@material-ui/core/OverridableComponent";
+import {StateMainMenuOpen} from "@reducers/ui/reducer-main-menu-open";
+import {mainMenuOpenSet} from "@actions/creator-main-menu-open-set";
+import MenuDrawer from "@components/MenuDrawer";
 
 export interface OwnProps {}
 
-const mapDispatchToProps: MapDispatchToProps<{}, OwnProps> = {};
-const mapStateToProps: MapStateToProps<{ authorization: RootState['authorization'] }, OwnProps, RootState> = state => ({authorization: state.authorization});
+
+const mapDispatchToProps: MapDispatchToProps<{
+    mainMenuOpenSet: typeof mainMenuOpenSet
+}, OwnProps> = {
+    mainMenuOpenSet
+};
+const mapStateToProps: MapStateToProps<{ authorization: RootState['authorization'], menuOpen: StateMainMenuOpen }, OwnProps, RootState> = state => ({
+    authorization: state.authorization,
+    menuOpen: state.ui.mainMenuOpen
+});
 
 export interface Props extends ReturnType<typeof mapStateToProps>, OwnProps, dispatchType<typeof mapDispatchToProps> {}
 
@@ -53,12 +49,6 @@ const useStyles = makeStyles((theme: Theme) => ({
         position: 'absolute',
         top: 0,
         left: 0
-    },
-    drawer: {
-        width: drawerWidth
-    },
-    drawerPaper: {
-        width: drawerWidth
     },
     brandName: {
         flexGrow: 1,
@@ -100,7 +90,9 @@ const Header: React.FC<Props> = (props => {
     }[];
     const classes = useStyles(containerTheme);
     props.authorization.data = 'hello';
-    const [mainMenuOpen, setMainMenuOpen] = useState(false);
+    const mainMenuOpen = props.menuOpen.data;
+    const setMainMenuOpen = (open: boolean) => props.mainMenuOpenSet(open);
+
     return (
         <React.Fragment>
             <AppBar className={classes.appBar} position={'fixed'}>
@@ -127,26 +119,7 @@ const Header: React.FC<Props> = (props => {
                     </Hidden>
                 </Toolbar>
             </AppBar>
-            <Drawer
-                open={mainMenuOpen}
-                onClose={() => setMainMenuOpen(false)}
-                className={classes.drawer}
-                classes={{
-                    paper: classes.drawerPaper
-                }}
-            >
-                <Toolbar/>
-                <List>
-                    {menuItems.map(({icon: Icon, text, secondary, link}) =>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <Icon/>
-                            </ListItemIcon>
-                            <ListItemText primary={text} secondary={secondary}/>
-                        </ListItem>
-                    )}
-                </List>
-            </Drawer>
+            <MenuDrawer menuItems={menuItems} open={mainMenuOpen} setOpen={props.mainMenuOpenSet}/>
         </React.Fragment>
     );
 });
