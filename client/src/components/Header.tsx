@@ -1,22 +1,20 @@
 import React from 'react';
 import {connect, MapDispatchToProps, MapStateToProps} from 'react-redux';
 import {makeStyles} from "@material-ui/styles";
-import {AppBar, Button, Hidden, IconButton, SvgIconTypeMap, Theme, Toolbar, Typography, Zoom} from "@material-ui/core";
+import {AppBar, SvgIconTypeMap, Theme} from "@material-ui/core";
 import {
     AccountBox as ProfileIcon,
-    Close as CloseIcon,
     Dashboard as DashboardIcon,
     Home as HomeIcon,
-    ImportContacts as ImportContactsIcon,
-    Menu as MenuIcon
+    ImportContacts as ImportContactsIcon
 } from "@material-ui/icons";
-import containerTheme from "../theme";
 import {RootState} from "../reducers";
 import {dispatchType} from "@shared/utils";
 import {OverridableComponent} from "@material-ui/core/OverridableComponent";
 import {StateMainMenuOpen} from "@reducers/ui/reducer-main-menu-open";
 import {mainMenuOpenSet} from "@actions/creator-main-menu-open-set";
 import MenuDrawer from "@components/MenuDrawer";
+import HeaderAppBarToolbar from "@components/HeaderAppBarToolbar";
 
 export interface OwnProps {}
 
@@ -41,23 +39,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     root: {
         color: 'red',
     },
-    menuIcon: {
-        marginRight: theme.spacing(2),
-        position: 'relative'
-    },
-    menuIconIcon: {
-        position: 'absolute',
-        top: 0,
-        left: 0
-    },
-    brandName: {
-        flexGrow: 1,
-        userSelect: 'none'
-    }, menuButton: {
-        color: 'inherit',
-        marginRight: theme.spacing(1),
-        fontWeight: 'bold'
-    }
 }));
 
 const Header: React.FC<Props> = (props => {
@@ -88,7 +69,7 @@ const Header: React.FC<Props> = (props => {
         text: string,
         secondary: string
     }[];
-    const classes = useStyles(containerTheme);
+    const classes = useStyles();
     props.authorization.data = 'hello';
     const mainMenuOpen = props.menuOpen.data;
     const setMainMenuOpen = (open: boolean) => props.mainMenuOpenSet(open);
@@ -96,28 +77,11 @@ const Header: React.FC<Props> = (props => {
     return (
         <React.Fragment>
             <AppBar className={classes.appBar} position={'fixed'}>
-                <Toolbar>
-                    <Hidden smUp>
-                        <IconButton
-                            onClick={() => setMainMenuOpen(!mainMenuOpen)}
-                            color={'inherit'}
-                            className={classes.menuIcon}
-                        >
-                            <Zoom in={mainMenuOpen} unmountOnExit><CloseIcon className={classes.menuIconIcon}/></Zoom>
-                            <Zoom in={!mainMenuOpen} unmountOnExit><MenuIcon className={classes.menuIconIcon}/></Zoom>
-                        </IconButton>
-                    </Hidden>
-                    <Typography variant={'h6'} className={classes.brandName}>
-                        Devcon
-                    </Typography>
-                    <Hidden xsDown>
-                        {menuItems.map(({text}) =>
-                            <Button className={classes.menuButton}>
-                                {text}
-                            </Button>
-                        )}
-                    </Hidden>
-                </Toolbar>
+                <HeaderAppBarToolbar
+                    menuItems={menuItems}
+                    menuDrawerOpen={mainMenuOpen}
+                    setMenuDrawerOpen={setMainMenuOpen}
+                />
             </AppBar>
             <MenuDrawer menuItems={menuItems} open={mainMenuOpen} setOpen={props.mainMenuOpenSet}/>
         </React.Fragment>
