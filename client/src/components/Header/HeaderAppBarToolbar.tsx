@@ -34,8 +34,12 @@ const useStyles = makeStyles((theme: Theme) => ({
         userSelect: 'none'
     }, menuButton: {
         color: 'inherit',
-        marginRight: theme.spacing(1),
+        marginLeft: theme.spacing(1),
         fontWeight: 'bold'
+    }, authorizationButtons: {
+        color:'inherit',
+        marginLeft:theme.spacing(1),
+        fontWeight:'bold'
     }
 }));
 
@@ -58,11 +62,13 @@ const HeaderAppBarToolbar: React.FC<Props> = (props => {
             </Typography>
             <Hidden xsDown>
                 {props.menuItems.map(({text}) =>
-                    <Button key={text} className={classes.menuButton}>
+                    <Button size={'small'} key={text} className={classes.menuButton}>
                         {text}
                     </Button>
                 )}
             </Hidden>
+            <Button variant={'outlined'} className={classes.authorizationButtons}>register</Button>
+            <Button variant={'outlined'} className={classes.authorizationButtons}>login</Button>
         </Toolbar>
     );
 });
