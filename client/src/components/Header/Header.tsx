@@ -17,6 +17,12 @@ import {RootState} from "@reducers/index";
 
 export interface OwnProps {}
 
+export interface MenuItemObject {
+    icon: OverridableComponent<SvgIconTypeMap<any, any>>;
+    link: string;
+    text: string;
+    secondary?: string;
+}
 
 const mapDispatchToProps = {
     mainMenuOpenSet
@@ -39,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Header: React.FC<Props> = (props => {
-    const menuItems = [
+    let menuItems: MenuItemObject[] = [
         {
             link: '/home',
             text: 'home',
@@ -48,8 +54,10 @@ const Header: React.FC<Props> = (props => {
             link: '/blog',
             text: 'blog',
             icon: ImportContactsIcon
-        },
-        ...props.authorization.data ? [
+        }];
+    if (props.authorization.data)
+        menuItems = [
+            ...menuItems,
             {
                 link: '/dashboard',
                 text: 'dashboard',
@@ -59,13 +67,7 @@ const Header: React.FC<Props> = (props => {
                 text: 'profile',
                 icon: ProfileIcon
             }
-        ] : []
-    ] as {
-        icon: OverridableComponent<SvgIconTypeMap<any, any>>;
-        link: string,
-        text: string,
-        secondary: string
-    }[];
+        ];
     const classes = useStyles();
     props.authorization.data = 'hello';
     const mainMenuOpen = props.menuOpen.data;
