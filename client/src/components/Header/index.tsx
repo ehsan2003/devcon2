@@ -80,7 +80,6 @@ const Index: React.FC<Props> = (props => {
         ];
     const classes = useStyles();
     const mainMenuOpen = !props.isSm && props.menuOpen.data;
-    const setMainMenuOpen = (open: boolean) => props.mainMenuOpenSet(open);
 
     return (
         <React.Fragment>
