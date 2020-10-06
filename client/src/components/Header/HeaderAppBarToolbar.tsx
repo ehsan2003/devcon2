@@ -45,11 +45,11 @@ const useStyles = makeStyles((theme: Theme) => ({
         userSelect: 'none'
     }, menuButton: {
         color: 'inherit',
-        marginLeft: theme.spacing(2),
+        marginLeft: theme.spacing(1),
         fontWeight: 'bold'
     }, authorizationButtons: {
         color: 'inherit',
-        marginLeft: theme.spacing(2),
+        marginLeft: theme.spacing(1),
         fontWeight: 'bold'
     }
 }));
@@ -58,7 +58,7 @@ const HeaderAppBarToolbar: React.FC<Props> = (props => {
     const classes = useStyles();
     return (
         <Toolbar>
-            <Hidden smUp>
+            <Hidden mdUp>
                 <IconButton
                     onClick={() => props.setMenuDrawerOpen(!props.menuDrawerOpen)}
                     color={'inherit'}
@@ -71,7 +71,7 @@ const HeaderAppBarToolbar: React.FC<Props> = (props => {
             <Typography variant={'h6'} className={classes.brandName}>
                 Devcon
             </Typography>
-            <Hidden xsDown>
+            <Hidden smDown>
                 {props.menuItems.map(({text}) =>
                     <Button size={'small'} key={text} className={classes.menuButton}>
                         {text}

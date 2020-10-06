@@ -32,7 +32,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state: RootState) => ({
     authorization: state.authorization,
     menuOpen: state.ui.mainMenuOpen,
-    isSm: state.ui.deviceWidth.data.is.sm
+    isMd: state.ui.deviceWidth.data.is.md
 });
 
 export interface Props extends ReturnType<typeof mapStateToProps>, OwnProps, dispatchType<typeof mapDispatchToProps> {}
@@ -79,7 +79,7 @@ const Index: React.FC<Props> = (props => {
             }
         ];
     const classes = useStyles();
-    const mainMenuOpen = !props.isSm && props.menuOpen.data;
+    const mainMenuOpen = !props.isMd && props.menuOpen.data;
 
     return (
         <React.Fragment>
