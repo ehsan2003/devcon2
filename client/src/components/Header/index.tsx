@@ -6,7 +6,9 @@ import {
     AccountBox as ProfileIcon,
     Dashboard as DashboardIcon,
     Home as HomeIcon,
-    ImportContacts as ImportContactsIcon
+    ImportContacts as ImportContactsIcon,
+    Info as InfoIcon,
+    PermPhoneMsg as ContactUsIcon
 } from "@material-ui/icons";
 import {dispatchType} from "@shared/utils";
 import {OverridableComponent} from "@material-ui/core/OverridableComponent";
@@ -54,6 +56,14 @@ const Index: React.FC<Props> = (props => {
             link: '/blog',
             text: 'blog',
             icon: ImportContactsIcon
+        }, {
+            link: '/about',
+            text: 'about us',
+            icon: InfoIcon
+        }, {
+            link: '/contact',
+            text: 'contact us',
+            icon: ContactUsIcon
         }];
     if (props.authorization.data)
         menuItems = [
