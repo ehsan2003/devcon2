@@ -29,7 +29,8 @@ const mapDispatchToProps = {
 };
 const mapStateToProps = (state: RootState) => ({
     authorization: state.authorization,
-    menuOpen: state.ui.mainMenuOpen
+    menuOpen: state.ui.mainMenuOpen,
+    isSm: state.ui.deviceWidth.data.is.sm
 });
 
 export interface Props extends ReturnType<typeof mapStateToProps>, OwnProps, dispatchType<typeof mapDispatchToProps> {}
@@ -68,8 +69,7 @@ const Header: React.FC<Props> = (props => {
             }
         ];
     const classes = useStyles();
-    props.authorization.data = 'hello';
-    const mainMenuOpen = props.menuOpen.data;
+    const mainMenuOpen = !props.isSm&&props.menuOpen.data;
     const setMainMenuOpen = (open: boolean) => props.mainMenuOpenSet(open);
 
     return (
