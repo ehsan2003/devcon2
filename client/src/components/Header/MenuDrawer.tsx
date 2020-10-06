@@ -42,7 +42,7 @@ const MenuDrawer: React.FC<Props> = (props => {
             <Toolbar/>
             <List>
                 {props.menuItems.map(({icon: Icon, text, secondary, link}) =>
-                    <ListItem button>
+                    <ListItem button key={link}>
                         <ListItemIcon>
                             <Icon/>
                         </ListItemIcon>

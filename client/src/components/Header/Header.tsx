@@ -34,7 +34,6 @@ const mapStateToProps = (state: RootState) => ({
 
 export interface Props extends ReturnType<typeof mapStateToProps>, OwnProps, dispatchType<typeof mapDispatchToProps> {}
 
-const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) => ({
     appBar: {
         zIndex: theme.zIndex.drawer + 101

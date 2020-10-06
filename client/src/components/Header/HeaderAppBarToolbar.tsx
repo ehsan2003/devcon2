@@ -58,7 +58,7 @@ const HeaderAppBarToolbar: React.FC<Props> = (props => {
             </Typography>
             <Hidden xsDown>
                 {props.menuItems.map(({text}) =>
-                    <Button className={classes.menuButton}>
+                    <Button key={text} className={classes.menuButton}>
                         {text}
                     </Button>
                 )}
