@@ -1,20 +1,28 @@
 import {Reducer} from "redux";
-import {AllActions} from "@actions/index.ts";
+import {AllActions} from "@actions/index";
+import produce from 'immer';
 import {MAIN_MENU_OPEN_SET} from "@actions/creator-main-menu-open-set";
 
-export type StateMainMenuOpen = {
-    data: boolean | null;
-    error: any | null;
+export interface StateMainMenuOpen {
+    error: null | any;
+    data: boolean;
+}
+
+const initialState: StateMainMenuOpen = {
+    error: null,
+    data: false
 };
 
-const reducerMainMenuOpen: Reducer<StateMainMenuOpen, AllActions> =
-    (state = {error: null, data: false}, action) => {
-        switch (action.type) {
-            case MAIN_MENU_OPEN_SET:
-                return {error: null, data: action.payload};
-            default:
-                return state;
-        }
-    };
+const mainMenuOpen: Reducer<StateMainMenuOpen, AllActions> = (
+    mutableState = initialState
+    , action) => produce(mutableState, state => {
+    switch (action.type) {
+        case MAIN_MENU_OPEN_SET:
+            state.data = action.payload;
+            break;
+        default:
+            return state;
+    }
+});
 
-export default reducerMainMenuOpen;
+export default mainMenuOpen;
