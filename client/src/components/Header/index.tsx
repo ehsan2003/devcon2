@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-const Header: React.FC<Props> = (props => {
+const Index: React.FC<Props> = (props => {
     let menuItems: MenuItemObject[] = [
         {
             link: '/home',
@@ -84,4 +84,4 @@ const Header: React.FC<Props> = (props => {
     );
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Index);
