@@ -2,9 +2,11 @@ import {ActionTypeUserLoginFulfilled} from "@actions/creator-user-login-fulfille
 import {ActionTypeUserLogin} from "@actions/creator-user-login";
 import {ActionTypeUserLoginRejected} from "@actions/creator-user-login-rejected";
 import {ActionTypeMainMenuOpenSet} from "@actions/creator-main-menu-open-set";
+import {ActionTypeDeviceWidthChanged} from "@actions/creator-device-width-changed";
 
 export type AllActions =
     ActionTypeUserLoginFulfilled
     | ActionTypeUserLogin
     | ActionTypeUserLoginRejected
-    | ActionTypeMainMenuOpenSet;
+    | ActionTypeMainMenuOpenSet
+    | ActionTypeDeviceWidthChanged;
