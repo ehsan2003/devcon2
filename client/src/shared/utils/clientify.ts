@@ -1,0 +1,1 @@
+export type Clientify<T> = T & { _id: string };
