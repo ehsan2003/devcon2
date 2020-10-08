@@ -7,7 +7,6 @@ export interface Props {}
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
-        backgroundColor: 'red'
     }
 }));
 

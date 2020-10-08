@@ -6,6 +6,7 @@ import About from "@components/About";
 import Contact from "@components/Contact";
 import Blog from "@components/Blog";
 import {Toolbar} from "@material-ui/core";
+import PageProgress from "@components/PageProgress";
 
 class App extends Component {
     render() {
@@ -13,6 +14,7 @@ class App extends Component {
             <div>
                 <Header/>
                 <Toolbar/>
+                <PageProgress/>
                 <Switch>
                     <Route path={'/'} exact><Home/></Route>
                     <Route path={'/blog'}><Blog/></Route>
