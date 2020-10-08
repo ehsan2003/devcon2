@@ -4,6 +4,7 @@ import {RootState} from "../reducers";
 import {dispatchType} from "@shared/utils";
 import {makeStyles} from "@material-ui/styles";
 import {LinearProgress, Theme} from "@material-ui/core";
+import uiConfiguration from "@conf/ui";
 
 export interface OwnProps {
 
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const PageProgress: React.FC<Props> = (props => {
     const classes = useStyles();
-    return props.visible ? <LinearProgress  className={classes.root} variant='determinate' color={'secondary'} value={props.progress}/> : null;
+    return props.visible ? <LinearProgress  className={classes.root} variant={uiConfiguration.pageProgress.variant} color={'secondary'} value={props.progress}/> : null;
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageProgress);

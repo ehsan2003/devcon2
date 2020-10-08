@@ -15,6 +15,8 @@ module.exports = function (override, env) {
         "@actions": path.resolve(__dirname, 'src/actions'),
         "@epics": path.resolve(__dirname, 'src/epics'),
         "@shared": path.resolve(__dirname, 'src/shared'),
+        "@conf": path.resolve(__dirname, 'src/conf')
+
     })
     return override
 };
