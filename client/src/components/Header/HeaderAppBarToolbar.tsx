@@ -7,6 +7,7 @@ import {RootState} from "@reducers/index";
 import {OverridableComponent} from "@material-ui/core/OverridableComponent";
 import {Close as CloseIcon, Menu as MenuIcon} from "@material-ui/icons";
 import {mainMenuOpenSet} from "@actions/creator-main-menu-open-set";
+import {Link as RouterLink} from "react-router-dom";
 
 export interface OwnProps {
     menuItems: {
@@ -72,8 +73,8 @@ const HeaderAppBarToolbar: React.FC<Props> = (props => {
                 Devcon
             </Typography>
             <Hidden smDown>
-                {props.menuItems.map(({text}) =>
-                    <Button size={'small'} key={text} className={classes.menuButton}>
+                {props.menuItems.map(({text, link}) =>
+                    <Button size={'small'} to={link} component={RouterLink} key={text} className={classes.menuButton}>
                         {text}
                     </Button>
                 )}
