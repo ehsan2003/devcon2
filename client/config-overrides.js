@@ -6,6 +6,9 @@ module.exports = function (override, env) {
     if (!override.resolve.alias) {
         override.resolve.alias = {};
     }
+
+    override.devtool='cheap-module-eval-source-map'
+
     Object.assign(override.resolve.alias, {
         "@components": path.resolve(__dirname, 'src/components'),
         "@reducers": path.resolve(__dirname, 'src/reducers'),
