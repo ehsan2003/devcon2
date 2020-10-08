@@ -5,6 +5,7 @@ import rootReducer from './reducers';
 import {AllActions} from "@actions/index";
 import {ReducerState} from "react";
 import {deviceWidthChanged} from "@actions/creator-device-width-changed";
+import {userLogin} from "@actions/creator-user-login";
 
 const composeEnhancer = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const epicMiddleware = createEpicMiddleware<AllActions, AllActions, ReducerState<typeof rootReducer>>();
