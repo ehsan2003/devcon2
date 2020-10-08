@@ -4,7 +4,7 @@ import {USER_LOGIN_FULFILLED} from "@actions/creator-user-login-fulfilled";
 import {USER_LOGIN_REJECTED} from "@actions/creator-user-login-rejected";
 
 export type StateAuthorization = {
-    error: null | string, data: null | string
+    error: null | Error, data: null | string
 };
 const authorization: Reducer<StateAuthorization, AllActions> =
     (state = {
@@ -15,7 +15,7 @@ const authorization: Reducer<StateAuthorization, AllActions> =
             case USER_LOGIN_FULFILLED:
                 return {data: action.payload.token, error: null};
             case USER_LOGIN_REJECTED:
-                return {data: null, error: action.error.code};
+                return {data: null, error: action.error};
             default:
                 return state;
         }
