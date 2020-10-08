@@ -5,12 +5,14 @@ import Home from "@components/Home";
 import About from "@components/About";
 import Contact from "@components/Contact";
 import Blog from "@components/Blog";
+import {Toolbar} from "@material-ui/core";
 
 class App extends Component {
     render() {
         return (
             <div>
                 <Header/>
+                <Toolbar/>
                 <Switch>
                     <Route path={'/'} exact><Home/></Route>
                     <Route path={'/blog'}><Blog/></Route>
