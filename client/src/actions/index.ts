@@ -4,6 +4,7 @@ import {ActionTypeUserLoginRejected} from "@actions/creator-user-login-rejected"
 import {ActionTypeMainMenuOpenSet} from "@actions/creator-main-menu-open-set";
 import {ActionTypeDeviceWidthChanged} from "@actions/creator-device-width-changed";
 import {ActionTypeUserInfo} from "@actions/creator-user-info";
+import {ActionTypeUserInfoFulfilled} from "@actions/creator-user-info-fulfilled";
 
 export type AllActions =
     ActionTypeUserLoginFulfilled
@@ -11,4 +12,5 @@ export type AllActions =
     | ActionTypeUserLoginRejected
     | ActionTypeMainMenuOpenSet
     | ActionTypeDeviceWidthChanged
-    | ActionTypeUserInfo;
+    | ActionTypeUserInfo
+    | ActionTypeUserInfoFulfilled;
