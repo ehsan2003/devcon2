@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {makeStyles} from "@material-ui/styles";
-import {AppBar, SvgIconTypeMap, Theme,Toolbar} from "@material-ui/core";
+import {AppBar, SvgIconTypeMap, Theme} from "@material-ui/core";
 import {
     AccountBox as ProfileIcon,
     Dashboard as DashboardIcon,

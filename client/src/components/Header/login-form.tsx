@@ -84,7 +84,7 @@ const LoginForm: React.FC<Props> = (props => {
                 login
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
-                <form onSubmit={e=>{
+                <form onSubmit={e => {
                     console.log('submitting');
                     e.preventDefault();
 
