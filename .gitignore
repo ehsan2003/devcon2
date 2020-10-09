@@ -3,5 +3,6 @@
 *.log
 .yarnclean
 yarn.lock
+/client/yarn.lock
 package-lock.json
 /dist
