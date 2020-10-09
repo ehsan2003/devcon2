@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {makeStyles} from "@material-ui/styles";
-import {AppBar, SvgIconTypeMap, Theme} from "@material-ui/core";
+import {AppBar, SvgIconTypeMap, Theme,Toolbar} from "@material-ui/core";
 import {
     AccountBox as ProfileIcon,
     Dashboard as DashboardIcon,
@@ -14,6 +14,7 @@ import {mainMenuOpenSet} from "@actions/creator-main-menu-open-set";
 import MenuDrawer from "@components/Header/MenuDrawer";
 import HeaderAppBarToolbar from "@components/Header/HeaderAppBarToolbar";
 import {RootState} from "@reducers/index";
+import LoginForm from "@components/Header/login-form";
 
 export interface OwnProps {}
 
@@ -79,6 +80,7 @@ const Index: React.FC<Props> = (props => {
                 />
             </AppBar>
             <MenuDrawer menuItems={menuItems} open={mainMenuOpen} setOpen={props.mainMenuOpenSet}/>
+            <LoginForm/>
         </React.Fragment>
     );
 });
