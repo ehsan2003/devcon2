@@ -7,7 +7,7 @@ import {BadRequestError} from "@shared/errors";
 export type UsersLoginRequestHandler = RequestHandler<{}, { msg: string, token: string }, { password: string, username: string, email: string }>;
 
 class Login extends BaseController<UsersLoginRequestHandler> {
-
+    captchaSecured = true;
     readonly access = null;
     readonly method = 'post';
     readonly path: string = '/';
