@@ -8,6 +8,7 @@ import {ActionTypeUserInfoFulfilled} from "@actions/creator-user-info-fulfilled"
 import {ActionTypeUserInfoRejected} from "@actions/creator-user-info-rejected";
 import {ActionTypeProgressChange} from "@actions/creator-progress-change";
 import {ActionTypeProgressSetVisibility} from "@actions/creator-progress-set-visibility";
+import {ActionTypeLoginDialogOpenSet} from "@actions/creator-login-dialog-open-set";
 
 export type AllActions =
     ActionTypeUserLoginFulfilled
@@ -19,4 +20,5 @@ export type AllActions =
     | ActionTypeUserInfoFulfilled
     | ActionTypeUserInfoRejected
     | ActionTypeProgressChange
-    | ActionTypeProgressSetVisibility;
+    | ActionTypeProgressSetVisibility
+    | ActionTypeLoginDialogOpenSet;
