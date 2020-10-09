@@ -1,14 +1,17 @@
 import {ErrorCodes, Roles} from "@shared/utils";
 import {RequestHandler, Router} from "express";
-
 import passport from "passport";
-import {AccessForbiddenError, ConflictError, UnprocessableEntity} from "@shared/errors";
+import {AccessForbiddenError, ConflictError, RecaptchaError, UnprocessableEntity} from "@shared/errors";
 import {types as utilTypes} from 'util';
 import {ValidationChain, validationResult} from "express-validator";
 import {mongo} from "mongoose";
 import {Middleware} from "express-validator/src/base";
+import request from 'request-promise';
+import keys from "@conf/keys";
+
 
 export abstract class BaseController<LocalRequestHandler extends RequestHandler<any, { msg: string }, any, any>> {
+    protected captchaSecured: boolean = false;
     public abstract readonly method: 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
     protected readonly middlewareBeforeValidate: LocalRequestHandler[] = [];
     /**
@@ -61,6 +64,7 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
     private setMiddleware() {
         this.sanitizeCustomMiddleware();
         this.finalMiddleware = [
+            ...(this.captchaSecured ? [this.handleRecaptcha()] : []),
             ...(this.access !== null && this.access >= 0 ? [passport.authenticate('jwt', {session: false}), this.constructAccessChecker()] : []),
             ...(this.access === Roles.anonymous ? [passport.authenticate(['jwt', 'anonymous'], {session: false})] : []),
             ...this.middlewareBeforeValidate,
@@ -84,6 +88,26 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
                 return ((req, res, next) => middleware(req, res, next).catch(next)) as LocalRequestHandler;
             return middleware;
         });
+    }
+
+    private handleRecaptcha(): LocalRequestHandler {
+        return ((req, res, next) => {
+            console.log('sending');
+            request.post({
+                url: 'https://www.google.com/recaptcha/api/siteverify',
+                form: {
+                    response: req.body['g-recaptcha-response'],
+                    secret: keys.recaptcha.secretKey,
+                }
+            }).then(response => {
+                const json = JSON.parse(response);
+                if (json.success) {
+                    return next();
+                }
+                next(new RecaptchaError('failed to verify',json['error-codes']));
+
+            }).catch(next);
+        }) as LocalRequestHandler;
     }
 
     private setRouter() {
