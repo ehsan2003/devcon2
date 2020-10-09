@@ -15,6 +15,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.5",
+    "@types/validator": "^13.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
@@ -24,7 +25,8 @@
     "redux": "^4.0.5",
     "redux-observable": "^1.2.0",
     "rxjs": "^6.6.3",
-    "typescript": "^3.8"
+    "typescript": "^3.8",
+    "validator": "^13.1.17"
   },
   "proxy": "http://localhost:3001",
   "scripts": {
