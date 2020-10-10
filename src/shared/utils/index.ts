@@ -11,3 +11,4 @@ export * from './custom-validators';
 export * from './aggregation-chain';
 export * from './role-to-path';
 export * from './error-codes';
+export * from './recaptcha';
