@@ -8,6 +8,7 @@ import {OverridableComponent} from "@material-ui/core/OverridableComponent";
 import {Close as CloseIcon, Menu as MenuIcon} from "@material-ui/icons";
 import {mainMenuOpenSet} from "@actions/creator-main-menu-open-set";
 import {Link as RouterLink} from "react-router-dom";
+import {loginDialogOpenSet} from "@actions/creator-login-dialog-open-set";
 
 export interface OwnProps {
     menuItems: {
@@ -19,9 +20,11 @@ export interface OwnProps {
 }
 
 const mapDispatchToProps = {
-    setMenuDrawerOpen: mainMenuOpenSet
+    setMenuDrawerOpen: mainMenuOpenSet,
+    setLoginDialogOpen: loginDialogOpenSet
 };
 const mapStateToProps = (state: RootState) => ({
+    loginDialogOpen: state.ui.loginDialog.data.open,
     menuDrawerOpen: state.ui.mainMenuOpen.data
 });
 
@@ -80,7 +83,7 @@ const HeaderAppBarToolbar: React.FC<Props> = (props => {
                 )}
             </Hidden>
             <Button variant={'outlined'} className={classes.authorizationButtons}>register</Button>
-            <Button variant={'outlined'} className={classes.authorizationButtons}>login</Button>
+            <Button variant={'outlined'} className={classes.authorizationButtons} onClick={()=>props.setLoginDialogOpen(!props.loginDialogOpen)}>login</Button>
         </Toolbar>
     );
 });
