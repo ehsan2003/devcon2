@@ -30,7 +30,7 @@ export interface OwnProps {
 
 }
 
-const mapDispatchToProps = {userLogin};
+const mapDispatchToProps = {userLogin,loginDialogOpenSet};
 const mapStateToProps = (state: RootState) => ({open: state.ui.loginDialog.data.open});
 
 export interface Props extends ReturnType<typeof mapStateToProps>, OwnProps, dispatchType<typeof mapDispatchToProps> {}
@@ -80,11 +80,14 @@ const LoginForm: React.FC<Props> = (props => {
         e.preventDefault();
         props.userLogin(email, password, captchaValue as string);
     }
+    function handleClose(){
+        props.loginDialogOpenSet(false);
+    }
 
     return (
         <Dialog
             open={props.open}
-            onClose={() => loginDialogOpenSet(false)}
+            onClose={handleClose}
             TransitionComponent={Fade}
             classes={{
                 paper: classes.dialogPaper
