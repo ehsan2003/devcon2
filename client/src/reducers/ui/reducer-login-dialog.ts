@@ -12,7 +12,7 @@ export interface StateLoginDialog {
 const initialState: StateLoginDialog = {
     error: null,
     data: {
-        open: true
+        open: false
     }
 };
 
