@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {connect} from "react-redux";
 import {RootState} from "@reducers/index";
 import {dispatchType} from "@shared/utils";
 import {makeStyles} from "@material-ui/styles";
-
+import Recaptcha from 'react-google-recaptcha';
 import {
     Button,
     Dialog,
@@ -23,12 +23,14 @@ import {loginDialogOpenSet} from "@actions/creator-login-dialog-open-set";
 import theme from "../../theme";
 import validator from 'validator';
 import {Visibility, VisibilityOff} from "@material-ui/icons";
+import keys from '@conf/keys';
+import {userLogin} from "@actions/creator-user-login";
 
 export interface OwnProps {
 
 }
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {userLogin};
 const mapStateToProps = (state: RootState) => ({open: state.ui.loginDialog.data.open});
 
 export interface Props extends ReturnType<typeof mapStateToProps>, OwnProps, dispatchType<typeof mapDispatchToProps> {}
@@ -43,7 +45,11 @@ const useStyles = makeStyles((thm: Theme) => ({
     }, password: {
         maxWidth: 300,
         margin: thm.spacing(2),
-    }, dialogPaper: {
+    }, captcha: {
+        margin: thm.spacing(2)
+    }
+
+    , dialogPaper: {
         [thm.breakpoints.up('sm')]: {
             maxWidth: 400
         }
@@ -63,9 +69,18 @@ const useStyles = makeStyles((thm: Theme) => ({
 const LoginForm: React.FC<Props> = (props => {
     const classes = useStyles();
     const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
+    const [captchaValue, setCaptchaValue] = useState<string | null>(null);
     const [email, setEmail] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState('');
+    const isValidEmail = useMemo(()=>validator.isEmail(email),[email]);
+    const captchaRef=React.useRef<any>();
+    console.log(captchaRef);
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        props.userLogin(email, password, captchaValue as string);
+    }
+
     return (
         <Dialog
             open={props.open}
@@ -84,16 +99,12 @@ const LoginForm: React.FC<Props> = (props => {
                 login
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
-                <form onSubmit={e => {
-                    console.log('submitting');
-                    e.preventDefault();
-
-                }}>
+                <form onSubmit={handleSubmit}>
                     <TextField
-                        error={!!email && !validator.isEmail(email)}
+                        error={!!email && !isValidEmail}
                         label='Email Address'
                         type='email'
-                        helperText={validator.isEmail(email)}
+                        helperText={!isValidEmail && !!email ? 'invalid email' : null}
                         onChange={e => setEmail(e.target.value)}
                         className={classes.email}
                         autoFocus
@@ -107,19 +118,29 @@ const LoginForm: React.FC<Props> = (props => {
 
                         InputProps={{
                             endAdornment: (
-                                <InputAdornment position={'end'}
-                                                onClick={() => setShowPassword(v => !v)}
+                                <InputAdornment
+                                    position={'end'}
+                                    onClick={() => setShowPassword(v => !v)}
                                 >
                                     <IconButton>
-                                        {showPassword ? <Visibility fontSize={'small'}/> :
-                                            <VisibilityOff fontSize={'small'}/>}
+                                        {
+                                            showPassword ?
+                                                <Visibility fontSize={'small'}/> :
+                                                <VisibilityOff fontSize={'small'}/>
+                                        }
                                     </IconButton>
                                 </InputAdornment>
                             )
                         }}
                         fullWidth
                     />
+                    <div className={classes.captcha}>
+                        <Recaptcha ref={captchaRef} sitekey={keys.recaptcha} onChange={(newValue) => {
+                            console.log(newValue);
+                            setCaptchaValue(newValue);
+                        }}
 
+                        /></div>
                     <DialogActions>
                         <Button
                             type={'submit'}
@@ -128,7 +149,8 @@ const LoginForm: React.FC<Props> = (props => {
                             color={'primary'}
                             size={'large'}
                         >login</Button>
-                    </DialogActions></form>
+                    </DialogActions>
+                </form>
             </DialogContent>
         </Dialog>
     );

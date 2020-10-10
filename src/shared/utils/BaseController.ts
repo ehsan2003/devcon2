@@ -1,12 +1,11 @@
-import {ErrorCodes, Roles} from "@shared/utils";
+import {ErrorCodes, Roles, verifyRecaptcha} from "@shared/utils";
 import {RequestHandler, Router} from "express";
 import passport from "passport";
-import {AccessForbiddenError, ConflictError, RecaptchaError, UnprocessableEntity} from "@shared/errors";
+import {AccessForbiddenError, ConflictError, UnprocessableEntity} from "@shared/errors";
 import {types as utilTypes} from 'util';
 import {ValidationChain, validationResult} from "express-validator";
 import {mongo} from "mongoose";
 import {Middleware} from "express-validator/src/base";
-import request from 'request-promise';
 import keys from "@conf/keys";
 
 
@@ -92,21 +91,9 @@ export abstract class BaseController<LocalRequestHandler extends RequestHandler<
 
     private handleRecaptcha(): LocalRequestHandler {
         return ((req, res, next) => {
-            console.log('sending');
-            request.post({
-                url: 'https://www.google.com/recaptcha/api/siteverify',
-                form: {
-                    response: req.body['g-recaptcha-response'],
-                    secret: keys.recaptcha.secretKey,
-                }
-            }).then(response => {
-                const json = JSON.parse(response);
-                if (json.success) {
-                    return next();
-                }
-                next(new RecaptchaError('failed to verify',json['error-codes']));
-
-            }).catch(next);
+            verifyRecaptcha(keys.recaptcha.secretKey, req.body['g-recaptcha-response'], req.connection.remoteAddress)
+                .then(() => next())
+                .catch(next);
         }) as LocalRequestHandler;
     }
 
