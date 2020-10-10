@@ -22,8 +22,13 @@ export const epicUserLogin: Epic<AllActions, (ActionTypeUserLoginFulfilled | Act
                 , method: 'POST'
                 , body: action.payload
             }).pipe(
-                mergeMap(response => of(userLoginFulfilled((response.response as ResponseType<UsersLoginRequestHandler>).token), userInfo())),
+                mergeMap(response => {
+                    const token = (response.response as ResponseType<UsersLoginRequestHandler>).token;
+                    localStorage.setItem('authorization', token);
+                    return of(userLoginFulfilled(token), userInfo());
+                }),
                 catchError((err, caught) => of(userLoginRejected(err)))
             )
-        ));
+        ))
+;
 export default epicUserLogin;
