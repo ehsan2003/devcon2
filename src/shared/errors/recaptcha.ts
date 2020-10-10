@@ -1,6 +1,6 @@
 import {SiteError, SiteErrorErrorType} from "@shared/errors/site-error";
 import StatusCode from "status-code-enum";
-import {ErrorCodes, recaptcha} from "@shared/utils";
+import {ErrorCodes} from "@shared/utils";
 
 export class RecaptchaError extends SiteError {
     readonly status = StatusCode.ClientErrorTooManyRequests;
@@ -14,7 +14,7 @@ export class RecaptchaError extends SiteError {
     sanitizeResponse(response: { [p: string]: any }): { [p: string]: any } {
         return {
             ...super.sanitizeResponse(response),
-            translatedCode: recaptcha.translateErrors(this.captchaError)
+            translatedCode: this.captchaError
         };
     }
 }
