@@ -1,6 +1,8 @@
 import {Reducer} from "redux";
 import {AllActions} from "@actions/index";
 import produce from 'immer';
+import {USER_LOGIN_FULFILLED} from "@actions/creator-user-login-fulfilled";
+import {LOGIN_DIALOG_OPEN_SET} from "@actions/creator-login-dialog-open-set";
 
 export interface StateLoginDialog {
     error: null | Error;
@@ -20,8 +22,11 @@ const loginDialog: Reducer<StateLoginDialog, AllActions> = (
     mutableState = initialState
     , action) => produce(mutableState, state => {
     switch (action.type) {
-        case "LOGIN_DIALOG_OPEN_SET":
+        case LOGIN_DIALOG_OPEN_SET:
             state.data.open = action.payload;
+            break;
+        case USER_LOGIN_FULFILLED:
+            state.data.open=false;
             break;
         default:
             return state;
