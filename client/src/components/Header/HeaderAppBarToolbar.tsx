@@ -9,6 +9,7 @@ import {Close as CloseIcon, Menu as MenuIcon} from "@material-ui/icons";
 import {mainMenuOpenSet} from "@actions/creator-main-menu-open-set";
 import {Link as RouterLink} from "react-router-dom";
 import {loginDialogOpenSet} from "@actions/creator-login-dialog-open-set";
+import AppBarAuthorizationButtons from "@components/Header/appBarAuthorizationButtons";
 
 export interface OwnProps {
     menuItems: {
@@ -82,8 +83,7 @@ const HeaderAppBarToolbar: React.FC<Props> = (props => {
                     </Button>
                 )}
             </Hidden>
-            <Button variant={'outlined'} className={classes.authorizationButtons}>register</Button>
-            <Button variant={'outlined'} className={classes.authorizationButtons} onClick={()=>props.setLoginDialogOpen(!props.loginDialogOpen)}>login</Button>
+            <AppBarAuthorizationButtons/>
         </Toolbar>
     );
 });
