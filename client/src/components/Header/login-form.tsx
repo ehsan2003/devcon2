@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {RootState} from "@reducers/index";
 import {dispatchType} from "@shared/utils";
 import {makeStyles} from "@material-ui/styles";
-import Recaptcha from 'react-google-recaptcha';
+import Recaptcha from 'react-recaptcha';
 import {
     Button,
     Dialog,
@@ -71,11 +71,12 @@ const LoginForm: React.FC<Props> = (props => {
     const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
     const [captchaValue, setCaptchaValue] = useState<string | null>(null);
     const [email, setEmail] = useState('');
+    const [emailFocused, setEmailFocused] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState('');
     const isValidEmail = useMemo(() => validator.isEmail(email), [email]);
     const captchaRef = React.useRef<any>();
-    console.log(captchaRef);
+    const emailRef = React.useRef<any>();
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -103,9 +104,8 @@ const LoginForm: React.FC<Props> = (props => {
                 login
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
-                <form onSubmit={handleSubmit}>
+                <form>
                     <TextField
-                        error={!!email && !isValidEmail}
                         label='Email Address'
                         type='email'
                         helperText={!isValidEmail && !!email ? 'invalid email' : null}
@@ -125,8 +125,9 @@ const LoginForm: React.FC<Props> = (props => {
                                 <InputAdornment
                                     position={'end'}
                                     onClick={() => setShowPassword(v => !v)}
+                                    tabIndex={-1}
                                 >
-                                    <IconButton>
+                                    <IconButton tabIndex={-2}>
                                         {
                                             showPassword ?
                                                 <Visibility fontSize={'small'}/> :
@@ -139,17 +140,25 @@ const LoginForm: React.FC<Props> = (props => {
                         fullWidth
                     />
                     <div className={classes.captcha}>
-                        <Recaptcha ref={captchaRef} sitekey={keys.recaptcha} onChange={(newValue) => {
-                            setCaptchaValue(newValue);
-                        }}
+                        <Recaptcha
+                            tabindex={3}
+                            ref={captchaRef} sitekey={keys.recaptcha}
+                            verifyCallback={(newValue) => {
+                                setCaptchaValue(newValue);
+                            }}
+                            expiredCallback={() => setCaptchaValue(null)}
+                            badge={'inline'}
+                            size={'normal'}
+                            render={'onload'}
                         /></div>
                     <DialogActions>
                         <Button
-                            type={'submit'}
+                            tabIndex={1}
                             variant={'contained'}
                             className={classes.loginButton}
                             color={'primary'}
                             size={'large'}
+                            onClick={handleSubmit}
                         >login</Button>
                     </DialogActions>
                 </form>
