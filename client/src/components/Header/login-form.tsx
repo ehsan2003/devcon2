@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {connect} from "react-redux";
 import {RootState} from "@reducers/index";
 import {dispatchType} from "@shared/utils";
@@ -30,7 +30,7 @@ export interface OwnProps {
 
 }
 
-const mapDispatchToProps = {userLogin,loginDialogOpenSet};
+const mapDispatchToProps = {userLogin, loginDialogOpenSet};
 const mapStateToProps = (state: RootState) => ({open: state.ui.loginDialog.data.open});
 
 export interface Props extends ReturnType<typeof mapStateToProps>, OwnProps, dispatchType<typeof mapDispatchToProps> {}
@@ -73,14 +73,16 @@ const LoginForm: React.FC<Props> = (props => {
     const [email, setEmail] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState('');
-    const isValidEmail = useMemo(()=>validator.isEmail(email),[email]);
-    const captchaRef=React.useRef<any>();
+    const isValidEmail = useMemo(() => validator.isEmail(email), [email]);
+    const captchaRef = React.useRef<any>();
     console.log(captchaRef);
+
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         props.userLogin(email, password, captchaValue as string);
     }
-    function handleClose(){
+
+    function handleClose() {
         props.loginDialogOpenSet(false);
     }
 
@@ -96,7 +98,6 @@ const LoginForm: React.FC<Props> = (props => {
             fullWidth
         >
             <Hidden smUp>
-
                 <Toolbar/></Hidden>
             <DialogTitle>
                 login
@@ -139,10 +140,8 @@ const LoginForm: React.FC<Props> = (props => {
                     />
                     <div className={classes.captcha}>
                         <Recaptcha ref={captchaRef} sitekey={keys.recaptcha} onChange={(newValue) => {
-                            console.log(newValue);
                             setCaptchaValue(newValue);
                         }}
-
                         /></div>
                     <DialogActions>
                         <Button
