@@ -71,12 +71,11 @@ const LoginForm: React.FC<Props> = (props => {
     const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
     const [captchaValue, setCaptchaValue] = useState<string | null>(null);
     const [email, setEmail] = useState('');
-    const [emailFocused, setEmailFocused] = useState(false);
+    const [firstFocusOut, setFirstFocusOut] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState('');
     const isValidEmail = useMemo(() => validator.isEmail(email), [email]);
     const captchaRef = React.useRef<any>();
-    const emailRef = React.useRef<any>();
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -106,9 +105,11 @@ const LoginForm: React.FC<Props> = (props => {
             <DialogContent className={classes.dialogContent}>
                 <form>
                     <TextField
+                        error={firstFocusOut && !isValidEmail}
+                        onBlur={() => email.length && setFirstFocusOut(true)}
                         label='Email Address'
                         type='email'
-                        helperText={!isValidEmail && !!email ? 'invalid email' : null}
+                        helperText={!isValidEmail && firstFocusOut ? 'invalid email' : null}
                         onChange={e => setEmail(e.target.value)}
                         className={classes.email}
                         autoFocus
@@ -119,7 +120,6 @@ const LoginForm: React.FC<Props> = (props => {
                         type={showPassword ? 'text' : 'password'}
                         className={classes.password}
                         onChange={e => setPassword(e.target.value)}
-
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment
@@ -153,6 +153,7 @@ const LoginForm: React.FC<Props> = (props => {
                         /></div>
                     <DialogActions>
                         <Button
+                            disabled={!isValidEmail || !password || !captchaValue}
                             tabIndex={1}
                             variant={'contained'}
                             className={classes.loginButton}
