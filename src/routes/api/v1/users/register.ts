@@ -12,9 +12,9 @@ class Register extends BaseController<UsersRegisterRequestHandler> {
     protected middleware: UsersRegisterRequestHandler[]
         = [
         async (req, res) => {
-            const extracted = extractProps(req.body, 'email', 'username');
+            const extracted = extractProps(req.body, 'email');
             const user = new User({...extracted, password: await hashPassword(req.body.password)});
-            await user.save().catch(this.handleUniqueError(ErrorCodes.ERROR_USER_REGISTER_$_DUPLICATE, 'username or email is not unique'));
+            await user.save().catch(this.handleUniqueError(ErrorCodes.ERROR_USER_REGISTER_$_DUPLICATE, 'email already registered'));
             const jwtToken = signJwt(user);
             res.json({msg: 'success', token: jwtToken, result: secureUserInfo(user)});
         }
@@ -27,11 +27,6 @@ class Register extends BaseController<UsersRegisterRequestHandler> {
             .isLength({min: 8, max: 100}).withMessage('password length should be between 8 and 100')
             .matches(/\d/).withMessage('password should contains number')
             .matches(/\w/).withMessage('password should contains letters'),
-        body('username')
-            .exists().withMessage('username required')
-            .isString().withMessage('username is not a string')
-            .isSlug().withMessage('username is not a slug')
-            .isLength({min: 3, max: 20}).withMessage('username length should be between 3 and 20'),
         body('email')
             .exists().withMessage('email required')
             .isEmail().withMessage('email is invalid')
