@@ -7,7 +7,6 @@ import {USER_INFO_FULFILLED} from "@actions/creator-user-info-fulfilled";
 export interface StateCurrentUser {
     error: null | any;
     data: null | {
-        username: string;
         _id: string;
         role: Roles;
     };
