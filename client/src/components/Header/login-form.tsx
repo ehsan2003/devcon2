@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {connect} from "react-redux";
 import {RootState} from "@reducers/index";
 import {dispatchType} from "@shared/utils";
@@ -9,10 +9,10 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle, Fade,
+    DialogTitle,
+    Fade,
     Hidden,
     IconButton,
-    InputAdornment,
     Slide,
     TextField,
     Theme,
@@ -23,9 +23,10 @@ import {
 import {loginDialogOpenSet} from "@actions/creator-login-dialog-open-set";
 import theme from "../../theme";
 import validator from 'validator';
-import {Close as CloseIcon, Visibility, VisibilityOff} from "@material-ui/icons";
+import {Close as CloseIcon} from "@material-ui/icons";
 import keys from '@conf/keys';
 import {userLogin} from "@actions/creator-user-login";
+import PasswordShowInputAdornment from "@shared/utils/components/password-show-input-adornment";
 
 export interface OwnProps {
 
@@ -69,7 +70,7 @@ const useStyles = makeStyles((thm: Theme) => ({
         position: 'absolute',
         top: thm.spacing(2),
         right: thm.spacing(2),
-        [thm.breakpoints.down('sm')]: {
+        [thm.breakpoints.down('xs')]: {
             top: (thm.mixins.toolbar.minHeight as number + thm.spacing(1))
         }
     }
@@ -100,8 +101,8 @@ const LoginForm: React.FC<Props> = (props => {
         <Dialog
             open={props.open}
             onClose={handleClose}
-            transitionDuration={fullScreen?700:300}
-            TransitionComponent={fullScreen?Slide:Fade}
+            transitionDuration={fullScreen ? 700 : 300}
+            TransitionComponent={fullScreen ? Slide : Fade}
             TransitionProps={{direction: 'left'} as any}
             classes={{
                 paper: classes.dialogPaper
@@ -137,19 +138,9 @@ const LoginForm: React.FC<Props> = (props => {
                         onChange={e => setPassword(e.target.value)}
                         InputProps={{
                             endAdornment: (
-                                <InputAdornment
-                                    position={'end'}
-                                    onClick={() => setShowPassword(v => !v)}
-                                    tabIndex={-1}
-                                >
-                                    <IconButton tabIndex={-2}>
-                                        {
-                                            showPassword ?
-                                                <Visibility fontSize={'small'}/> :
-                                                <VisibilityOff fontSize={'small'}/>
-                                        }
-                                    </IconButton>
-                                </InputAdornment>
+                                <PasswordShowInputAdornment
+                                    show={showPassword}
+                                    setShow={(b) => setShowPassword(b)}/>
                             )
                         }}
                         fullWidth
