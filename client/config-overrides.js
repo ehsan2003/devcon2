@@ -1,5 +1,8 @@
 const path = require('path');
-module.exports = function (override, env) {
+const {override} = require('customize-cra')
+const {addReactRefresh}= require('customize-cra-react-refresh')
+
+module.exports = override(function (override, env) {
     if (!override.resolve) {
         override.resolve = {};
     }
@@ -18,5 +21,5 @@ module.exports = function (override, env) {
         "@conf": path.resolve(__dirname, 'src/conf')
 
     })
-    return override
-};
+    return (override)
+},addReactRefresh());
