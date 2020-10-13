@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {connect} from "react-redux";
 import {RootState} from "@reducers/index";
 import {dispatchType} from "@shared/utils";
@@ -9,20 +9,21 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle,
-    Fade,
+    DialogTitle, Fade,
     Hidden,
     IconButton,
     InputAdornment,
+    Slide,
     TextField,
     Theme,
     Toolbar,
+    Typography,
     useMediaQuery
 } from "@material-ui/core";
 import {loginDialogOpenSet} from "@actions/creator-login-dialog-open-set";
 import theme from "../../theme";
 import validator from 'validator';
-import {Visibility, VisibilityOff} from "@material-ui/icons";
+import {Close as CloseIcon, Visibility, VisibilityOff} from "@material-ui/icons";
 import keys from '@conf/keys';
 import {userLogin} from "@actions/creator-user-login";
 
@@ -45,8 +46,9 @@ const useStyles = makeStyles((thm: Theme) => ({
     }, password: {
         maxWidth: 300,
         margin: thm.spacing(2),
-    }, captcha: {
-        margin: thm.spacing(2)
+    }, captchaContainer: {
+        display: 'flex',
+        justifyContent: 'center'
     }
 
     , dialogPaper: {
@@ -63,12 +65,20 @@ const useStyles = makeStyles((thm: Theme) => ({
         marginRight: thm.spacing(3),
         marginBottom: thm.spacing(2),
         marginTop: thm.spacing(2)
+    }, closeIcon: {
+        position: 'absolute',
+        top: thm.spacing(2),
+        right: thm.spacing(2),
+        [thm.breakpoints.down('sm')]: {
+            top: (thm.mixins.toolbar.minHeight as number + thm.spacing(1))
+        }
     }
 }));
 
 const LoginForm: React.FC<Props> = (props => {
     const classes = useStyles();
     const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
+    const isSmDown = useMediaQuery('sm');
     const [captchaValue, setCaptchaValue] = useState<string | null>(null);
     const [email, setEmail] = useState('');
     const [firstFocusOut, setFirstFocusOut] = useState(false);
@@ -90,7 +100,9 @@ const LoginForm: React.FC<Props> = (props => {
         <Dialog
             open={props.open}
             onClose={handleClose}
-            TransitionComponent={Fade}
+            transitionDuration={fullScreen?700:300}
+            TransitionComponent={fullScreen?Slide:Fade}
+            TransitionProps={{direction: 'left'} as any}
             classes={{
                 paper: classes.dialogPaper
             }}
@@ -99,8 +111,11 @@ const LoginForm: React.FC<Props> = (props => {
         >
             <Hidden smUp>
                 <Toolbar/></Hidden>
-            <DialogTitle>
-                login
+            <DialogTitle disableTypography>
+                <Typography variant={'h6'}>login</Typography>
+                <IconButton className={classes.closeIcon} onClick={handleClose}>
+                    <CloseIcon/>
+                </IconButton>
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
                 <form>
@@ -139,8 +154,9 @@ const LoginForm: React.FC<Props> = (props => {
                         }}
                         fullWidth
                     />
-                    <div className={classes.captcha}>
+                    <div className={classes.captchaContainer}>
                         <Recaptcha
+                            size={fullScreen ? 'compact' : 'normal'}
                             tabindex={3}
                             ref={captchaRef} sitekey={keys.recaptcha}
                             verifyCallback={(newValue) => {
@@ -148,7 +164,6 @@ const LoginForm: React.FC<Props> = (props => {
                             }}
                             expiredCallback={() => setCaptchaValue(null)}
                             badge={'inline'}
-                            size={'normal'}
                             render={'onload'}
                         /></div>
                     <DialogActions>
