@@ -10,6 +10,7 @@ import {ActionTypeProgressChange} from "@actions/creator-progress-change";
 import {ActionTypeProgressSetVisibility} from "@actions/creator-progress-set-visibility";
 import {ActionTypeLoginDialogOpenSet} from "@actions/creator-login-dialog-open-set";
 import {ActionTypeUserLogout} from "@actions/creator-user-logout";
+import {ActionTypeUserRegister} from "@actions/creator-user-register";
 
 export type AllActions =
     ActionTypeUserLoginFulfilled
@@ -23,4 +24,5 @@ export type AllActions =
     | ActionTypeProgressChange
     | ActionTypeProgressSetVisibility
     | ActionTypeLoginDialogOpenSet
-    | ActionTypeUserLogout;
+    | ActionTypeUserLogout
+    | ActionTypeUserRegister;
