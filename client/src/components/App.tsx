@@ -7,6 +7,7 @@ import Contact from "@components/Contact";
 import Blog from "@components/Blog";
 import {Toolbar} from "@material-ui/core";
 import PageProgress from "@components/PageProgress";
+import RegisterPage from "@components/RegisterPage";
 
 class App extends Component {
     render() {
@@ -20,6 +21,7 @@ class App extends Component {
                     <Route path={'/blog'}><Blog/></Route>
                     <Route path={'/about'}><About/></Route>
                     <Route path={'/contact'}><Contact/></Route>
+                    <Route path={'/register'}><RegisterPage/></Route>
                 </Switch>
             </div>
         );
