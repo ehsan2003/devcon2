@@ -10,7 +10,7 @@ import {
 } from "@material-ui/icons";
 import {dispatchType} from "@shared/utils";
 import {OverridableComponent} from "@material-ui/core/OverridableComponent";
-import {mainMenuOpenSet} from "@actions/creator-main-menu-open-set";
+import {mainMenuOpenSet} from "@actions/ui/creator-main-menu-open-set";
 import MenuDrawer from "@components/Header/MenuDrawer";
 import HeaderAppBarToolbar from "@components/Header/HeaderAppBarToolbar";
 import {RootState} from "@reducers/index";

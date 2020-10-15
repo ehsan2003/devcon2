@@ -6,9 +6,9 @@ import {Button, Hidden, IconButton, Theme, Toolbar, Typography, Zoom} from "@mat
 import {RootState} from "@reducers/index";
 import {OverridableComponent} from "@material-ui/core/OverridableComponent";
 import {Close as CloseIcon, Menu as MenuIcon} from "@material-ui/icons";
-import {mainMenuOpenSet} from "@actions/creator-main-menu-open-set";
+import {mainMenuOpenSet} from "@actions/ui/creator-main-menu-open-set";
 import {Link as RouterLink} from "react-router-dom";
-import {loginDialogOpenSet} from "@actions/creator-login-dialog-open-set";
+import {loginDialogOpenSet} from "@actions/ui/creator-login-dialog-open-set";
 import AppBarAuthorizationButtons from "@components/Header/appBarAuthorizationButtons";
 
 export interface OwnProps {

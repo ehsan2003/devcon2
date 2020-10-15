@@ -21,8 +21,8 @@ import {
     Theme
 } from "@material-ui/core";
 import {AccountCircle, ExitToApp as LogoutIcon, Person} from "@material-ui/icons";
-import {userLogout} from "@actions/creator-user-logout";
-import {loginDialogOpenSet} from "@actions/creator-login-dialog-open-set";
+import {userLogout} from "@actions/ajax/creator-user-logout";
+import {loginDialogOpenSet} from "@actions/ui/creator-login-dialog-open-set";
 
 export interface OwnProps {
 }

@@ -20,12 +20,12 @@ import {
     Typography,
     useMediaQuery
 } from "@material-ui/core";
-import {loginDialogOpenSet} from "@actions/creator-login-dialog-open-set";
+import {loginDialogOpenSet} from "@actions/ui/creator-login-dialog-open-set";
 import theme from "../../theme";
 import validator from 'validator';
 import {Close as CloseIcon} from "@material-ui/icons";
 import keys from '@conf/keys';
-import {userLogin} from "@actions/creator-user-login";
+import {userLogin} from "@actions/ajax/creator-user-login";
 import PasswordShowInputAdornment from "@shared/utils/components/password-show-input-adornment";
 
 export interface OwnProps {

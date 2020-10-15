@@ -1,8 +1,8 @@
 import {Reducer} from "redux";
 import {AllActions} from "@actions/index";
-import {USER_LOGIN_FULFILLED} from "@actions/creator-user-login-fulfilled";
-import {USER_LOGIN_REJECTED} from "@actions/creator-user-login-rejected";
-import {USER_LOGOUT} from "@actions/creator-user-logout";
+import {USER_LOGIN_FULFILLED} from "@actions/ajax/creator-user-login-fulfilled";
+import {USER_LOGIN_REJECTED} from "@actions/ajax/creator-user-login-rejected";
+import {USER_LOGOUT} from "@actions/ajax/creator-user-logout";
 
 export type StateAuthorization = {
     error: null | Error, data: null | string

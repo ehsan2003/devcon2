@@ -3,12 +3,12 @@ import {catchError, map, mergeMap} from "rxjs/operators";
 import {AllActions} from "@actions/index";
 import rootReducer from '@reducers/index';
 import {ReducerState} from "react";
-import {ActionTypeUserInfoFulfilled, userInfoFulfilled} from "@actions/creator-user-info-fulfilled";
-import {ActionTypeUserInfo, USER_INFO} from "@actions/creator-user-info";
+import {ActionTypeUserInfoFulfilled, userInfoFulfilled} from "@actions/ajax/creator-user-info-fulfilled";
+import {ActionTypeUserInfo, USER_INFO} from "@actions/ajax/creator-user-info";
 import {ajax} from "rxjs/ajax";
 import {ResponseType} from "@shared/utils";
 import {UsersCurrentRequestHandler} from "../../../src/routes/api/v1/users/current";
-import {ActionTypeUserInfoRejected, userInfoRejected} from "@actions/creator-user-info-rejected";
+import {ActionTypeUserInfoRejected, userInfoRejected} from "@actions/ajax/creator-user-info-rejected";
 import {of} from "rxjs";
 
 

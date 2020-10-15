@@ -1,8 +1,8 @@
 import {Reducer} from "redux";
 import {AllActions} from "@actions/index";
 import produce from 'immer';
-import {PROGRESS_SET_VISIBILITY} from "@actions/creator-progress-set-visibility";
-import {PROGRESS_CHANGE} from "@actions/creator-progress-change";
+import {PROGRESS_SET_VISIBILITY} from "@actions/ui/creator-progress-set-visibility";
+import {PROGRESS_CHANGE} from "@actions/ui/creator-progress-change";
 
 export interface StateMainProgress {
     error: null | any;
