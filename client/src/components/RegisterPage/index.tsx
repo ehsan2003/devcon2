@@ -3,11 +3,12 @@ import {connect} from "react-redux";
 import {RootState} from "@reducers/index";
 import {dispatchType, PasswordShowInputAdornment} from "@shared/utils";
 import {makeStyles} from "@material-ui/styles";
-import {Button, Grid, Icon, Paper, TextField, Theme, Toolbar, Typography, useMediaQuery} from "@material-ui/core";
+import {Button, Grid, Icon, Paper, TextField, Theme, Typography, useMediaQuery} from "@material-ui/core";
 import theme from "../../theme";
 import Recaptcha from "react-recaptcha";
 import keys from "@conf/keys";
 import {Cancel as CancelIcon, Check as CheckIcon} from "@material-ui/icons";
+import {CSSTransition, TransitionGroup} from "react-transition-group";
 
 export interface OwnProps {
 
@@ -25,7 +26,7 @@ const useStyles = makeStyles((thm: Theme) => ({
     },
     gridPaper: {
         padding: `${thm.spacing(5)}px`,
-        paddingBottom:thm.spacing(2)
+        paddingBottom: thm.spacing(2)
     },
     midHeight: {
         position: 'absolute',
@@ -42,8 +43,8 @@ const useStyles = makeStyles((thm: Theme) => ({
         justifyContent: 'center'
     },
     background: {
-        paddingTop:thm.spacing(8),
-        paddingBottom:thm.spacing(3),
+        paddingTop: thm.spacing(8),
+        paddingBottom: thm.spacing(3),
         minHeight: `calc(100vh - ${thm.mixins.toolbar.minHeight}px)`,
         [Object.keys(thm.mixins.toolbar)[1]]: {
             height: `calc(100vh - ${(thm.mixins.toolbar[Object.keys(thm.mixins.toolbar)[0]] as any).minHeight}px)`
@@ -63,10 +64,30 @@ const useStyles = makeStyles((thm: Theme) => ({
     }, textGrids: {
         maxWidth: '100%'
     }, submitButtonContainer: {
-        paddingTop:thm.spacing(3)
+        paddingTop: thm.spacing(3)
+    }, validationIconGrid: {
+        position: 'relative',
+        overflow: 'hidden',
+        width: 24,
+        height: 24
     }
 }));
-
+const useAnimationStyles = makeStyles((thm: Theme) => ({
+    enter: {
+        opacity: 0
+    }
+    , enterActive: {
+        opacity: 1,
+        transition: 'opacity 150ms'
+    }
+    , exit: {
+        opacity: 1
+    }
+    , exitActive: {
+        opacity: 0,
+        transition: 'opacity 150ms'
+    }
+}));
 const RegisterPage: React.FC<Props> = (props => {
     const passwordValidators:
         {
@@ -89,6 +110,7 @@ const RegisterPage: React.FC<Props> = (props => {
             label: 'confirm  match'
         }
     ];
+    const animationClasses = useAnimationStyles();
     const classes = useStyles();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -99,7 +121,12 @@ const RegisterPage: React.FC<Props> = (props => {
     const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
     const captchaRef = useRef<any>();
     return (
-        <Grid container alignContent={'center'} alignItems={'center'} justify={'center'} direction={'column'} className={classes.background}>
+        <Grid container
+              alignContent={'center'}
+              alignItems={'center'}
+              justify={'center'}
+              direction={'column'}
+              className={classes.background}>
             <div
                 className={classes.midHeight}
             />
@@ -164,10 +191,19 @@ const RegisterPage: React.FC<Props> = (props => {
                 <Grid item container className={classes.validatorContainer}>
                     <Grid container>
                         {passwordValidators.map(({validator, label}) => <Grid item container>
-                            <Grid item>
-                                <Icon>{validator(password, confirm) ?
-                                    <CheckIcon className={classes.validPasswordIcon}/> :
-                                    <CancelIcon className={classes.invalidPasswordIcon}/>}</Icon>
+                            <Grid item className={classes.validationIconGrid}>
+                                <Icon>
+                                    <TransitionGroup
+                                    >{
+                                        validator(password, confirm) ?
+                                            <CSSTransition key={1} timeout={150} classNames={animationClasses}>
+                                                <CheckIcon className={classes.validPasswordIcon}/>
+                                            </CSSTransition> :
+                                            <CSSTransition key={2} timeout={150} classNames={animationClasses}>
+                                                <CancelIcon className={classes.invalidPasswordIcon}/>
+                                            </CSSTransition>
+                                    }</TransitionGroup>
+                                </Icon>
                             </Grid>
                             <Grid item><Typography variant={'caption'}>{label}</Typography></Grid>
                         </Grid>)}
