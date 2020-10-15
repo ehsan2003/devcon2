@@ -20,14 +20,20 @@ export interface Props extends ReturnType<typeof mapStateToProps>, OwnProps, dis
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
-        position:'fixed',
-        width:'100vw'
-    },
+        position: 'fixed',
+        width: '100vw',
+        zIndex: theme.zIndex.modal + 1
+    }, hidden: {
+        backgroundColor: 'transparent'
+    }
 }));
 
 const PageProgress: React.FC<Props> = (props => {
     const classes = useStyles();
-    return props.visible ? <LinearProgress  className={classes.root} variant={uiConfiguration.pageProgress.variant} color={'secondary'} value={props.progress}/> : null;
+    return props.visible ? <LinearProgress
+        className={classes.root} classes={{colorSecondary: classes.hidden}}
+        variant={uiConfiguration.pageProgress.variant} color={'secondary'}
+        value={props.progress}/> : null;
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageProgress);
