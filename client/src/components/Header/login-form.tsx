@@ -131,6 +131,7 @@ const LoginForm: React.FC<Props> = (props => {
             <DialogContent className={classes.dialogContent}>
                 <form>
                     <TextField
+                        variant={'outlined'}
                         error={firstFocusOut && !isValidEmail}
                         onBlur={() => email.length && setFirstFocusOut(true)}
                         label='Email Address'
@@ -143,6 +144,7 @@ const LoginForm: React.FC<Props> = (props => {
                         fullWidth
                     />
                     <TextField
+                        variant={'outlined'}
                         value={password}
                         label={'Password'}
                         type={showPassword ? 'text' : 'password'}
