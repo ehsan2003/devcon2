@@ -8,12 +8,17 @@ import store from "./store";
 import {ThemeProvider} from "@material-ui/styles";
 import theme from "./theme";
 import {BrowserRouter} from "react-router-dom";
+import {SnackbarProvider} from "notistack";
 
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
             <BrowserRouter>
-                <ThemeProvider theme={theme}><App/></ThemeProvider>
+                <ThemeProvider theme={theme}>
+                    <SnackbarProvider>
+                        <App/>
+                    </SnackbarProvider>
+                </ThemeProvider>
             </BrowserRouter>
         </Provider>
     </React.StrictMode>,
