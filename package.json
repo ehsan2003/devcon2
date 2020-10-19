@@ -84,7 +84,7 @@
     "ext": "ts"
   },
   "scripts": {
-    "start:client": "concurrently --names server,browser -c yellow,blue \"npm run start:dev\" \"cd client && npm start\" ",
+    "start:client": "concurrently --names server,browser -c yellow,blue \"yarn run start:dev\" \"cd client && yarn run start\" ",
     "start:dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
