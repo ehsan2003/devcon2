@@ -12,7 +12,10 @@ import {
     ActionTypeAddNotification,
     ActionTypeDeviceWidthChanged,
     ActionTypeDismissNotification,
+    ActionTypeLoginDialogCaptchaSet,
     ActionTypeLoginDialogOpenSet,
+    ActionTypeLoginDialogSetEmail,
+    ActionTypeLoginDialogSetPassword,
     ActionTypeMainMenuOpenSet,
     ActionTypeProgressChange,
     ActionTypeProgressSetVisibility,
@@ -35,4 +38,7 @@ export type AllActions =
     | ActionTypeUserRegister
     | ActionTypeRemoveNotification
     | ActionTypeDismissNotification
-    | ActionTypeAddNotification;
+    | ActionTypeAddNotification
+    | ActionTypeLoginDialogCaptchaSet
+    | ActionTypeLoginDialogSetEmail
+    | ActionTypeLoginDialogSetPassword;
