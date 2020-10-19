@@ -20,7 +20,7 @@ import {
     Typography,
     useMediaQuery
 } from "@material-ui/core";
-import {loginDialogOpenSet} from "@actions/ui/creator-login-dialog-open-set";
+import {loginDialogCaptchaSet, loginDialogOpenSet, loginDialogSetEmail, loginDialogSetPassword} from "@actions/ui";
 import theme from "../../theme";
 import validator from 'validator';
 import {Close as CloseIcon} from "@material-ui/icons";
@@ -32,8 +32,17 @@ export interface OwnProps {
 
 }
 
-const mapDispatchToProps = {userLogin, loginDialogOpenSet};
-const mapStateToProps = (state: RootState) => ({open: state.ui.loginDialog.data.open});
+const mapDispatchToProps = {
+    userLogin
+    , loginDialogOpenSet
+    , loginDialogCaptchaSet, loginDialogSetEmail, loginDialogSetPassword
+};
+const mapStateToProps = (state: RootState) => ({
+    open: state.ui.loginDialog.data.open,
+    captchaValue: state.ui.loginDialog.data.captchaValue,
+    password: state.ui.loginDialog.data.password,
+    email: state.ui.loginDialog.data.email,
+});
 
 export interface Props extends ReturnType<typeof mapStateToProps>, OwnProps, dispatchType<typeof mapDispatchToProps> {}
 
@@ -79,12 +88,13 @@ const useStyles = makeStyles((thm: Theme) => ({
 const LoginForm: React.FC<Props> = (props => {
     const classes = useStyles();
     const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
-    const isSmDown = useMediaQuery('sm');
-    const [captchaValue, setCaptchaValue] = useState<string | null>(null);
-    const [email, setEmail] = useState('');
+
+    const email = props.email;
+    const captchaValue = props.captchaValue;
+    const password = props.password;
+
     const [firstFocusOut, setFirstFocusOut] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [password, setPassword] = useState('');
     const isValidEmail = useMemo(() => validator.isEmail(email), [email]);
     const captchaRef = React.useRef<any>();
 
@@ -126,16 +136,18 @@ const LoginForm: React.FC<Props> = (props => {
                         label='Email Address'
                         type='email'
                         helperText={!isValidEmail && firstFocusOut ? 'invalid email' : null}
-                        onChange={e => setEmail(e.target.value)}
+                        value={email}
+                        onChange={e => props.loginDialogSetEmail(e.target.value)}
                         className={classes.email}
                         autoFocus
                         fullWidth
                     />
                     <TextField
+                        value={password}
                         label={'Password'}
                         type={showPassword ? 'text' : 'password'}
                         className={classes.password}
-                        onChange={e => setPassword(e.target.value)}
+                        onChange={e => props.loginDialogSetPassword(e.target.value)}
                         InputProps={{
                             endAdornment: (
                                 <PasswordShowInputAdornment
@@ -151,9 +163,9 @@ const LoginForm: React.FC<Props> = (props => {
                             tabindex={3}
                             ref={captchaRef} sitekey={keys.recaptcha}
                             verifyCallback={(newValue) => {
-                                setCaptchaValue(newValue);
+                                props.loginDialogCaptchaSet(newValue);
                             }}
-                            expiredCallback={() => setCaptchaValue(null)}
+                            expiredCallback={() => props.loginDialogCaptchaSet(null)}
                             badge={'inline'}
                             render={'onload'}
                         /></div>
