@@ -23,7 +23,7 @@ import {
 import {AccountCircle, ExitToApp as LogoutIcon, Person} from "@material-ui/icons";
 import {userLogout} from "@actions/ajax/creator-user-logout";
 import {loginDialogOpenSet} from "@actions/ui/creator-login-dialog-open-set";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 export interface OwnProps {
 }
@@ -57,6 +57,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const AppBarAuthorizationButtons: React.FC<Props> = (props => {
     const classes = useStyles();
+    const location = useLocation();
+    const isAuthorizationPages = location.pathname === '/register';
     const [anchorEl, setAnchorEl] = useState<Element | null>(null);
     const [logoutDialogIsOpen, setLogoutDialogIsOpen] = useState(false);
 
@@ -132,11 +134,12 @@ const AppBarAuthorizationButtons: React.FC<Props> = (props => {
                     </Grow>
                 )}
             </Popper>
-        </> : <>
-            <Button variant={'outlined'} className={classes.authorizationButtons} component={Link} to={'/register'}>register</Button>
+        </> : !isAuthorizationPages ? <>
+            <Button variant={'outlined'} className={classes.authorizationButtons} component={Link}
+                    to={'/register'}>register</Button>
             <Button variant={'outlined'} className={classes.authorizationButtons}
                     onClick={() => props.setLoginDialogOpen(!props.loginDialogOpen)}>login</Button>
-        </>
+        </> : null
     );
 });
 
