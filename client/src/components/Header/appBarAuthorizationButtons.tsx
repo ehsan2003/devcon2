@@ -23,6 +23,7 @@ import {
 import {AccountCircle, ExitToApp as LogoutIcon, Person} from "@material-ui/icons";
 import {userLogout} from "@actions/ajax/creator-user-logout";
 import {loginDialogOpenSet} from "@actions/ui/creator-login-dialog-open-set";
+import {Link} from "react-router-dom";
 
 export interface OwnProps {
 }
@@ -132,7 +133,7 @@ const AppBarAuthorizationButtons: React.FC<Props> = (props => {
                 )}
             </Popper>
         </> : <>
-            <Button variant={'outlined'} className={classes.authorizationButtons}>register</Button>
+            <Button variant={'outlined'} className={classes.authorizationButtons} component={Link} to={'/register'}>register</Button>
             <Button variant={'outlined'} className={classes.authorizationButtons}
                     onClick={() => props.setLoginDialogOpen(!props.loginDialogOpen)}>login</Button>
         </>
