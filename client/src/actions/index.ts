@@ -9,11 +9,14 @@ import {
     ActionTypeUserRegister
 } from "@actions/ajax";
 import {
+    ActionTypeAddNotification,
     ActionTypeDeviceWidthChanged,
+    ActionTypeDismissNotification,
     ActionTypeLoginDialogOpenSet,
     ActionTypeMainMenuOpenSet,
     ActionTypeProgressChange,
-    ActionTypeProgressSetVisibility
+    ActionTypeProgressSetVisibility,
+    ActionTypeRemoveNotification
 } from "@actions/ui";
 
 export type AllActions =
@@ -29,4 +32,7 @@ export type AllActions =
     | ActionTypeProgressSetVisibility
     | ActionTypeLoginDialogOpenSet
     | ActionTypeUserLogout
-    | ActionTypeUserRegister;
+    | ActionTypeUserRegister
+    | ActionTypeRemoveNotification
+    | ActionTypeDismissNotification
+    | ActionTypeAddNotification;
