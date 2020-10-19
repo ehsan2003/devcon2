@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {makeStyles} from "@material-ui/styles";
-import {AppBar, SvgIconTypeMap, Theme} from "@material-ui/core";
+import {AppBar, Slide, SvgIconTypeMap, Theme, useScrollTrigger} from "@material-ui/core";
 import {
     AccountBox as ProfileIcon,
     Dashboard as DashboardIcon,
@@ -71,14 +71,14 @@ const Index: React.FC<Props> = (props => {
         ];
     const classes = useStyles();
     const mainMenuOpen = !props.isMd && props.menuOpen.data;
-
+    const scrollTriggered = useScrollTrigger();
     return (
         <React.Fragment>
-            <AppBar className={classes.appBar} position={'fixed'}>
+            <Slide direction={'down'} timeout={400}  in={!scrollTriggered}><AppBar className={classes.appBar} position={'fixed'}>
                 <HeaderAppBarToolbar
                     menuItems={menuItems}
                 />
-            </AppBar>
+            </AppBar></Slide>
             <MenuDrawer menuItems={menuItems} open={mainMenuOpen} setOpen={props.mainMenuOpenSet}/>
             <LoginForm/>
         </React.Fragment>
