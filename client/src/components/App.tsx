@@ -8,6 +8,7 @@ import Blog from "@components/Blog";
 import {Toolbar} from "@material-ui/core";
 import PageProgress from "@components/PageProgress";
 import RegisterPage from "@components/RegisterPage";
+import Notifier from "@components/Notifier";
 
 class App extends Component {
     render() {
@@ -16,6 +17,7 @@ class App extends Component {
                 <Header/>
                 <Toolbar/>
                 <PageProgress/>
+                <Notifier/>
                 <Switch>
                     <Route path={'/'} exact><Home/></Route>
                     <Route path={'/blog'}><Blog/></Route>
