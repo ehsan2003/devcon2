@@ -8,7 +8,7 @@ export interface StateNotifications {
     data: {
         key:SnackbarKey;
         message:string;
-        options:OptionsObject;
+        options?:OptionsObject;
         dismissed:boolean;
     }[];
 }
