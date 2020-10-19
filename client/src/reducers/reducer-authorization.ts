@@ -3,9 +3,10 @@ import {AllActions} from "@actions/index";
 import {USER_LOGIN_FULFILLED} from "@actions/ajax/creator-user-login-fulfilled";
 import {USER_LOGIN_REJECTED} from "@actions/ajax/creator-user-login-rejected";
 import {USER_LOGOUT} from "@actions/ajax/creator-user-logout";
+import {AjaxError} from "rxjs/ajax";
 
 export type StateAuthorization = {
-    error: null | Error, data: null | string
+    error: null | AjaxError, data: null | string
 };
 const defaultState: StateAuthorization = {
     error: null,

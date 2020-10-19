@@ -4,7 +4,7 @@ import {AjaxError} from "rxjs/ajax";
 export const USER_LOGIN_REJECTED = 'USER_LOGIN_REJECTED';
 
 export interface ActionTypeUserLoginRejected extends Action<typeof USER_LOGIN_REJECTED> {
-    error: Error;
+    error: AjaxError;
     status: number;
 }
 
