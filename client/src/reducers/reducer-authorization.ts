@@ -6,7 +6,7 @@ import {USER_LOGOUT} from "@actions/ajax/creator-user-logout";
 import {AjaxError} from "rxjs/ajax";
 
 export type StateAuthorization = {
-    error: null | AjaxError, data: null | string
+    error: null | AjaxError['response'], data: null | string
 };
 const defaultState: StateAuthorization = {
     error: null,
@@ -20,7 +20,7 @@ const authorization: Reducer<StateAuthorization, AllActions> =
             case USER_LOGIN_REJECTED:
                 return {data: null, error: action.error};
             case USER_LOGOUT:
-                return {data:null,error:null};
+                return {data: null, error: null};
             default:
                 return state;
         }
