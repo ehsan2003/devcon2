@@ -20,13 +20,13 @@ import {
     Typography,
     useMediaQuery
 } from "@material-ui/core";
-import {loginDialogCaptchaSet, loginDialogOpenSet, loginDialogSetEmail, loginDialogSetPassword} from "@actions/ui";
 import theme from "../../theme";
 import validator from 'validator';
 import {Close as CloseIcon} from "@material-ui/icons";
 import keys from '@conf/keys';
 import {userLogin} from "@actions/ajax/creator-user-login";
 import PasswordShowInputAdornment from "@shared/utils/components/password-show-input-adornment";
+import {loginDialogSetProp} from "@actions/ui";
 
 export interface OwnProps {
 
@@ -34,8 +34,10 @@ export interface OwnProps {
 
 const mapDispatchToProps = {
     userLogin
-    , loginDialogOpenSet
-    , loginDialogCaptchaSet, loginDialogSetEmail, loginDialogSetPassword
+    , loginDialogOpenSet: (open: boolean) => loginDialogSetProp({open})
+    , loginDialogCaptchaSet: (captcha: string | null) => loginDialogSetProp({captchaValue: captcha})
+    , loginDialogSetEmail: (email: string) => loginDialogSetProp({email})
+    , loginDialogSetPassword: (password: string) => loginDialogSetProp({password})
 };
 const mapStateToProps = (state: RootState) => ({
     open: state.ui.loginDialog.data.open,

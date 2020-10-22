@@ -22,15 +22,15 @@ import {
 } from "@material-ui/core";
 import {AccountCircle, ExitToApp as LogoutIcon, Person} from "@material-ui/icons";
 import {userLogout} from "@actions/ajax/creator-user-logout";
-import {loginDialogOpenSet} from "@actions/ui/creator-login-dialog-open-set";
 import {Link, useLocation} from "react-router-dom";
+import {loginDialogSetProp} from "@actions/ui";
 
 export interface OwnProps {
 }
 
 const mapDispatchToProps = {
     logout: userLogout,
-    setLoginDialogOpen: loginDialogOpenSet
+    setLoginDialogOpen: (open: boolean) => loginDialogSetProp({open}),
 };
 const mapStateToProps = (state: RootState) => ({
     authorized: !!state.authorization.data,

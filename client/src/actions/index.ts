@@ -12,10 +12,7 @@ import {
     ActionTypeAddNotification,
     ActionTypeDeviceWidthChanged,
     ActionTypeDismissNotification,
-    ActionTypeLoginDialogCaptchaSet,
-    ActionTypeLoginDialogOpenSet,
-    ActionTypeLoginDialogSetEmail,
-    ActionTypeLoginDialogSetPassword,
+    ActionTypeLoginDialogSetProp,
     ActionTypeMainMenuOpenSet,
     ActionTypeProgressChange,
     ActionTypeProgressSetVisibility,
@@ -33,12 +30,9 @@ export type AllActions =
     | ActionTypeUserInfoRejected
     | ActionTypeProgressChange
     | ActionTypeProgressSetVisibility
-    | ActionTypeLoginDialogOpenSet
     | ActionTypeUserLogout
     | ActionTypeUserRegister
     | ActionTypeRemoveNotification
     | ActionTypeDismissNotification
     | ActionTypeAddNotification
-    | ActionTypeLoginDialogCaptchaSet
-    | ActionTypeLoginDialogSetEmail
-    | ActionTypeLoginDialogSetPassword;
+    | ActionTypeLoginDialogSetProp;

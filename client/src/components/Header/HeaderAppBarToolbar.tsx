@@ -8,8 +8,8 @@ import {OverridableComponent} from "@material-ui/core/OverridableComponent";
 import {Close as CloseIcon, Menu as MenuIcon} from "@material-ui/icons";
 import {mainMenuOpenSet} from "@actions/ui/creator-main-menu-open-set";
 import {Link as RouterLink} from "react-router-dom";
-import {loginDialogOpenSet} from "@actions/ui/creator-login-dialog-open-set";
 import AppBarAuthorizationButtons from "@components/Header/appBarAuthorizationButtons";
+import {loginDialogSetProp} from "@actions/ui";
 
 export interface OwnProps {
     menuItems: {
@@ -22,7 +22,7 @@ export interface OwnProps {
 
 const mapDispatchToProps = {
     setMenuDrawerOpen: mainMenuOpenSet,
-    setLoginDialogOpen: loginDialogOpenSet
+    setLoginDialogOpen: (open: boolean) => loginDialogSetProp({open})
 };
 const mapStateToProps = (state: RootState) => ({
     loginDialogOpen: state.ui.loginDialog.data.open,
