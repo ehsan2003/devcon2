@@ -1,190 +1,137 @@
-import React, {useMemo, useState} from 'react';
+import React from 'react';
 import {connect} from "react-redux";
 import {RootState} from "@reducers/index";
-import {dispatchType} from "@shared/utils";
-import {makeStyles} from "@material-ui/styles";
-import Recaptcha from 'react-recaptcha';
+import {CenterCaptcha, dispatchType, PasswordField} from "@shared/utils";
+import {CreateCSSProperties, makeStyles} from "@material-ui/styles";
 import {
     Button,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
-    Fade,
+    Grid,
     Hidden,
     IconButton,
-    Slide,
     TextField,
     Theme,
     Toolbar,
     Typography,
-    useMediaQuery
+    useMediaQuery,
+    useTheme
 } from "@material-ui/core";
-import theme from "../../theme";
-import validator from 'validator';
-import {Close as CloseIcon} from "@material-ui/icons";
-import keys from '@conf/keys';
-import {userLogin} from "@actions/ajax/creator-user-login";
-import PasswordShowInputAdornment from "@shared/utils/components/password-show-input-adornment";
 import {loginDialogSetProp} from "@actions/ui";
+import {Close as CloseIcon} from '@material-ui/icons';
 
 export interface OwnProps {
 
 }
 
-const mapDispatchToProps = {
-    userLogin
-    , loginDialogOpenSet: (open: boolean) => loginDialogSetProp({open})
-    , loginDialogCaptchaSet: (captcha: string | null) => loginDialogSetProp({captchaValue: captcha})
-    , loginDialogSetEmail: (email: string) => loginDialogSetProp({email})
-    , loginDialogSetPassword: (password: string) => loginDialogSetProp({password})
-};
+const mapDispatchToProps = {setProperty: loginDialogSetProp};
 const mapStateToProps = (state: RootState) => ({
-    open: state.ui.loginDialog.data.open,
-    captchaValue: state.ui.loginDialog.data.captchaValue,
-    password: state.ui.loginDialog.data.password,
-    email: state.ui.loginDialog.data.email,
+    dialogProps: state.ui.loginDialog.data
 });
 
 export interface Props extends ReturnType<typeof mapStateToProps>, OwnProps, dispatchType<typeof mapDispatchToProps> {}
 
-const useStyles = makeStyles((thm: Theme) => ({
-    root: {
-        backgroundColor: 'red'
+const useStyles = makeStyles((theme: Theme) => ({
+    dialog: {},
+    dialogTitle: {
+        position: 'relative'
     },
-    email: {
-        maxWidth: 300,
-        margin: thm.spacing(2),
-    }, password: {
-        maxWidth: 300,
-        margin: thm.spacing(2),
-    }, captchaContainer: {
-        display: 'flex',
-        justifyContent: 'center'
-    }
-
-    , dialogPaper: {
-        [thm.breakpoints.up('sm')]: {
-            maxWidth: 400
-        }
-    },
-    dialogContent: {
-
-        textAlign: 'center',
-        overflowX: 'hidden'
-    },
-    loginButton: {
-        marginRight: thm.spacing(3),
-        marginBottom: thm.spacing(2),
-        marginTop: thm.spacing(2)
-    }, closeIcon: {
+    closeButton: {
         position: 'absolute',
-        top: thm.spacing(2),
-        right: thm.spacing(2),
-        [thm.breakpoints.down('xs')]: {
-            top: (thm.mixins.toolbar.minHeight as number + thm.spacing(1))
+        top: theme.spacing(1),
+        right: theme.spacing(2),
+    },
+    fieldsGrid: {
+        '& > * + *': {
+            marginTop: theme.spacing(2)
         }
     }
-}));
-
+    , submitLogin: {
+        margin: `auto ${theme.spacing(2)}px ${theme.spacing(2)}px ${theme.spacing(2)}px`
+    }
+}) as { [key: string]: CreateCSSProperties });
 const LoginForm: React.FC<Props> = (props => {
+    const theme = useTheme();
     const classes = useStyles();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
+    const shouldFullScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
-    const email = props.email;
-    const captchaValue = props.captchaValue;
-    const password = props.password;
 
-    const [firstFocusOut, setFirstFocusOut] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
-    const isValidEmail = useMemo(() => validator.isEmail(email), [email]);
-    const captchaRef = React.useRef<any>();
-
-    function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        props.userLogin(email, password, captchaValue as string);
+    function setFormProps(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+        props.setProperty({[e.target.name]: e.target.value});
     }
 
     function handleClose() {
-        props.loginDialogOpenSet(false);
+        props.setProperty({open: false});
     }
 
     return (
         <Dialog
-            open={props.open}
+            className={classes.dialog}
             onClose={handleClose}
-            transitionDuration={fullScreen ? 700 : 300}
-            TransitionComponent={fullScreen ? Slide : Fade}
-            TransitionProps={{direction: 'left'} as any}
-            classes={{
-                paper: classes.dialogPaper
-            }}
-            fullScreen={fullScreen}
+            open={props.dialogProps.open}
+            fullScreen={shouldFullScreen}
+            maxWidth={'xs'}
             fullWidth
         >
             <Hidden smUp>
-                <Toolbar/></Hidden>
-            <DialogTitle disableTypography>
-                <Typography variant={'h6'}>login</Typography>
-                <IconButton className={classes.closeIcon} onClick={handleClose}>
+                <Toolbar/>
+            </Hidden>
+            <DialogTitle disableTypography className={classes.dialogTitle}>
+                <Typography variant={'h6'}>
+                    login
+                </Typography>
+                <IconButton
+                    onClick={handleClose}
+                    className={classes.closeButton}>
                     <CloseIcon/>
                 </IconButton>
             </DialogTitle>
-            <DialogContent className={classes.dialogContent}>
-                <form>
-                    <TextField
-                        variant={'outlined'}
-                        error={firstFocusOut && !isValidEmail}
-                        onBlur={() => email.length && setFirstFocusOut(true)}
-                        label='Email Address'
-                        type='email'
-                        helperText={!isValidEmail && firstFocusOut ? 'invalid email' : null}
-                        value={email}
-                        onChange={e => props.loginDialogSetEmail(e.target.value)}
-                        className={classes.email}
-                        autoFocus
-                        fullWidth
-                    />
-                    <TextField
-                        variant={'outlined'}
-                        value={password}
-                        label={'Password'}
-                        type={showPassword ? 'text' : 'password'}
-                        className={classes.password}
-                        onChange={e => props.loginDialogSetPassword(e.target.value)}
-                        InputProps={{
-                            endAdornment: (
-                                <PasswordShowInputAdornment
-                                    show={showPassword}
-                                    setShow={(b) => setShowPassword(b)}/>
-                            )
-                        }}
-                        fullWidth
-                    />
-                    <div className={classes.captchaContainer}>
-                        <Recaptcha
-                            size={fullScreen ? 'compact' : 'normal'}
-                            tabindex={3}
-                            ref={captchaRef} sitekey={keys.recaptcha}
-                            verifyCallback={(newValue) => {
-                                props.loginDialogCaptchaSet(newValue);
+            <DialogContent>
+                <Grid
+                    justify={'center'}
+                    container
+                >
+                    <Grid
+                        className={classes.fieldsGrid}
+                        xs={10}
+                        sm={11}
+                        item
+                    >
+                        <TextField
+                            value={props.dialogProps.email}
+                            onChange={setFormProps}
+                            name={'email'}
+                            label={'Email'}
+                            variant={'outlined'}
+                            fullWidth
+                        />
+                        <PasswordField
+                            value={props.dialogProps.password}
+                            onChange={setFormProps}
+                            name={'password'}
+                            label={'Password'}
+                            variant={'outlined'}
+                            fullWidth
+                        />
+                        <CenterCaptcha
+                            onChange={(value) => props.setProperty({captchaValue: value})}
+                            CaptchaProps={{
+                                size: shouldFullScreen ? 'compact' : 'normal'
                             }}
-                            expiredCallback={() => props.loginDialogCaptchaSet(null)}
-                            badge={'inline'}
-                            render={'onload'}
-                        /></div>
-                    <DialogActions>
-                        <Button
-                            disabled={!isValidEmail || !password || !captchaValue}
-                            tabIndex={1}
-                            variant={'contained'}
-                            className={classes.loginButton}
-                            color={'primary'}
-                            size={'large'}
-                            onClick={handleSubmit}
-                        >login</Button>
-                    </DialogActions>
-                </form>
+                        />
+                        <DialogActions>
+                            <Button
+                                variant={'contained'}
+                                color={'primary'}
+                                size={'large'}
+                                className={classes.submitLogin}>
+                                login
+                            </Button>
+                        </DialogActions>
+                    </Grid>
+                </Grid>
             </DialogContent>
         </Dialog>
     );
