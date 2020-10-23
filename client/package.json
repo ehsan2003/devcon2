@@ -18,6 +18,7 @@
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/validator": "^13.1.0",
+    "ajv": "^6.12.6",
     "jsonwebtoken": "^8.5.1",
     "notistack": "^1.0.1",
     "react": "^16.13.1",
@@ -57,6 +58,7 @@
     ]
   },
   "devDependencies": {
+    "@types/json-schema": "^7.0.6",
     "customize-cra": "^1.0.0",
     "customize-cra-react-refresh": "^1.1.0",
     "react-app-rewired": "^2.1.6"
