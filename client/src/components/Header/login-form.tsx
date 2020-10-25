@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {connect} from "react-redux";
 import {RootState} from "@reducers/index";
 import {CenterCaptcha, dispatchType, PasswordField} from "@shared/utils";
@@ -21,6 +21,7 @@ import {
 } from "@material-ui/core";
 import {loginDialogSetProp} from "@actions/ui";
 import {Close as CloseIcon} from '@material-ui/icons';
+import Recaptcha from 'react-recaptcha';
 
 export interface OwnProps {
 
@@ -53,6 +54,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }) as { [key: string]: CreateCSSProperties });
 const LoginForm: React.FC<Props> = (props => {
+    const captchaRef=useRef<Recaptcha |null>(null);
+
     const theme = useTheme();
     const classes = useStyles();
     const shouldFullScreen = useMediaQuery(theme.breakpoints.down('xs'));
@@ -65,6 +68,11 @@ const LoginForm: React.FC<Props> = (props => {
     function handleClose() {
         props.setProperty({open: false});
     }
+    function handleSubmit(){
+        props.setProperty({captchaValue:null});
+        captchaRef.current?.reset();
+    }
+
 
     return (
         <Dialog
@@ -116,6 +124,7 @@ const LoginForm: React.FC<Props> = (props => {
                             fullWidth
                         />
                         <CenterCaptcha
+                            ref={captchaRef}
                             onChange={(value) => props.setProperty({captchaValue: value})}
                             CaptchaProps={{
                                 size: shouldFullScreen ? 'compact' : 'normal'
@@ -123,6 +132,7 @@ const LoginForm: React.FC<Props> = (props => {
                         />
                         <DialogActions>
                             <Button
+                                onClick={handleSubmit}
                                 variant={'contained'}
                                 color={'primary'}
                                 size={'large'}
