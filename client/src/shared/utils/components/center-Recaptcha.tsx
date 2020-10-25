@@ -9,7 +9,7 @@ export interface Props {
     CaptchaProps?: RecaptchaProps;
 }
 
-const CenterRecaptcha = React.forwardRef<null, Props>((props, ref) => {
+const CenterRecaptcha = React.forwardRef<Recaptcha, Props>((props, ref) => {
     const defaultCaptchaProps: RecaptchaProps = {
         badge: 'inline',
         render: 'explicit',
