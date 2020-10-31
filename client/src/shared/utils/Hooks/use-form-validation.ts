@@ -1,42 +1,23 @@
-import {useValidator} from "@shared/utils/Hooks/index";
-import {ErrorObject} from "ajv";
-import {get, reduce, set, toPath} from 'lodash';
+import {useValidator} from "@shared/utils/Hooks";
+import {merge, reduce, set, toPath} from "lodash";
 
-export default <T>(schema: any, data: T, enabledProps: DeepPartial<KeysTo<T, boolean>>, serverErrors: DeepPartial<KeysTo<T, string>>): { isValid: boolean, errors: { all: DeepPartial<KeysTo<T, string>>, visible: DeepPartial<KeysTo<T, string>> } } => {
-    const validation = useValidator(schema, data);
-
-    if (validation.isValid)
+export default <T, SE extends DeepPartial<KeysTo<T, string>>>(schema: any, data: T, serverErrors: SE): {
+    isValid: true,
+    errors: {}
+} | { isValid: false, errors: DeepPartial<KeysTo<T, string>> & SE } => {
+    const validationResult = useValidator(schema, data);
+    if (validationResult.isValid)
         return {
             isValid: true,
-            errors: {
-                all: {},
-                visible: {}
-            }
+            errors: {}
         };
-    else {
-        const errors = validation.errors || [] as ErrorObject[];
-
-        return {
-            isValid: false,
-            errors: reduce(
-                errors
-                , (base, err) => {
-                    // removes '.' from the beginning of the path
-                    const path = toPath(err.dataPath.substr(1));
-                    const allPath = ['all', ...path];
-                    const visiblePath = ['visible', ...path];
-                    set(base, allPath, get(serverErrors, path) || err.message || 'invalid value');
-                    if (get(enabledProps, path))
-                        set(base, visiblePath, get(serverErrors, path) || err.message || 'invalid value');
-                    return base;
-
-                }
-                , {
-                    visible: {},
-                    all: {}
-                }
-            ) as any
-
-        };
-    }
+    const validationErrors = reduce(validationResult.errors, (base, err) => {
+        const path = toPath(err.dataPath);
+        set(base, path, err.message);
+        return base;
+    }, {});
+    return {
+        isValid: false,
+        errors: merge({}, validationErrors, serverErrors)
+    };
 };
